@@ -56,5 +56,5 @@ pnpm start
 |---------------------|----------|
 | Nguyễn Huy Hoàng    | 2211093  |
 | Nguyễn Thanh Hoàng  | 2211101  |
-| Trương An Khang     | …        |
-| Quách Hoàng         | …        |
+| Trương An Khang     | 2211476  |
+| Quách Nguyễn Hoàng  | 1952705  |
