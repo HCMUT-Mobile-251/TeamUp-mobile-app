@@ -45,8 +45,18 @@ cd be
 ### Frontend
 ```bash
 cd fe
+
+# Using pnpm
 pnpm install
 pnpm start
+
+# OR using npm
+npm install
+npm start
+
+# OR using yarn
+yarn install
+yarn start
 ```
 
 ---
