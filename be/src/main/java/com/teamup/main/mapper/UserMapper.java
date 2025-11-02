@@ -4,16 +4,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.teamup.main.entity.User;
 import com.teamup.main.dto.request.UserCreationRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
+import com.teamup.main.model.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "studentId", ignore = true)
+    @Mapping(target = "faculty", ignore = true)
+    @Mapping(target = "phoneNumber", ignore = true)
     User toUser(UserCreationRequest request);
     
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "username", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

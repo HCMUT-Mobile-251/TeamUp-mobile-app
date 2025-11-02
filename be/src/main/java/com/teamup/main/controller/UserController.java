@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.teamup.main.dto.request.UserCreationRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.dto.response.ApiResponse;
-import com.teamup.main.entity.User;
+import com.teamup.main.model.User;
 import com.teamup.main.service.UserService;
 
 import jakarta.validation.Valid;

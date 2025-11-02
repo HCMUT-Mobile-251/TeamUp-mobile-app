@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.teamup.main.dto.request.UserCreationRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
-import com.teamup.main.entity.User;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.exception.ErrorCode;
 import com.teamup.main.mapper.UserMapper;
+import com.teamup.main.model.User;
 import com.teamup.main.repository.UserRepository;
 
 @Service
@@ -24,13 +24,13 @@ public class UserService {
     private UserMapper userMapper;
 
     public User createRequest(UserCreationRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
         User user = userMapper.toUser(request);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
