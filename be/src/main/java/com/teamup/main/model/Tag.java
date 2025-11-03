@@ -18,20 +18,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String userId;
-    String studentId;
-    String firstName;
-    String lastName;
-    String email;
-    String phoneNumber;
-    String faculty;
+    String tagId;
+    String name;
 
-    @OneToMany(mappedBy = "user")
-    Set<GroupMember> groupMembers = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "tag")
     Set<UserTag> userTags = new HashSet<>();
 }

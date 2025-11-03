@@ -1,4 +1,4 @@
-package com.teamup.main.dto.response;
+package com.teamup.main.dto.request;
 
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

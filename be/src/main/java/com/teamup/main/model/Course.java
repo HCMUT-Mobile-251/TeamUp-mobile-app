@@ -3,6 +3,7 @@ package com.teamup.main.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,20 +19,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String userId;
-    String studentId;
-    String firstName;
-    String lastName;
-    String email;
-    String phoneNumber;
-    String faculty;
+    String courseId;
+    String name;
 
-    @OneToMany(mappedBy = "user")
-    Set<GroupMember> groupMembers = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    Set<UserTag> userTags = new HashSet<>();
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Group> groups = new HashSet<>();
 }

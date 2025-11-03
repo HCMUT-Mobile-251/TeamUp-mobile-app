@@ -3,11 +3,9 @@ package com.teamup.main.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.teamup.main.dto.request.UserCreationRequest;
+import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.exception.ErrorCode;
@@ -23,15 +21,14 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User createRequest(UserCreationRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new AppException(ErrorCode.EMAIL_ALREADY_EXISTS);
+    public User createUser(GoogleAccount request) {
+        String email = request.getEmail();
+        java.util.Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            return getUserById(userOpt.get().getUserId());
         }
 
         User user = userMapper.toUser(request);
-        // PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        // user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         return userRepository.save(user);
     }
 

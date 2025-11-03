@@ -10,7 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.teamup.main.dto.response.GoogleAccount;
+import com.teamup.main.dto.request.GoogleAccount;
 
 @Service
 public class AuthService {
@@ -32,7 +32,7 @@ public class AuthService {
     @Value("${google.GOOGLE_LINK_GET_USER_INFO}")
     private String googleLinkGetUserInfo;
 
-    // <-- non-static so @Value fields are available
+    // fe gửi code và be gửi cho GG
     public String getToken(String code) throws IOException {
         String response = Request.Post(this.googleLinkGetToken)
                 .bodyForm(
@@ -49,12 +49,12 @@ public class AuthService {
         return jobj.has("access_token") ? jobj.get("access_token").getAsString() : null;
     }
 
+    // be nhận được token tkgg và gửi token tới gg lấy infor
     public GoogleAccount getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = this.googleLinkGetUserInfo + accessToken;
 
         String response = Request.Get(link).execute().returnContent().asString();
         GoogleAccount googlePojo = new Gson().fromJson(response, GoogleAccount.class);
-        System.out.println("Google Account Info: " + String.valueOf(googlePojo));
         return googlePojo;
     }
 }
