@@ -29,7 +29,7 @@ public class User {
     String phoneNumber;
     String faculty;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user") // phải trỏ đúng tên biến bên GroupMember
     Set<GroupMember> groupMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "user")

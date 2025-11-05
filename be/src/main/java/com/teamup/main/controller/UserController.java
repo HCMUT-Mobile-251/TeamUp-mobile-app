@@ -29,9 +29,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //
-    // User only
-    //
+    /*
+     * User only
+     */
     @PutMapping("/{userId}")
     public ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
         return ApiResponse.<User>builder()
@@ -59,16 +59,16 @@ public class UserController {
                 .build();
     }
 
-    //
-    // Admin only
-    //
+    /*
+     * Amin only
+     */
     @PostMapping
     public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
         GoogleAccount googleAccount = GoogleAccount.builder()
-            .email(request.getEmail())
-            .given_name(request.getFirstName())
-            .family_name(request.getLastName())
-            .build();
+                .email(request.getEmail())
+                .given_name(request.getFirstName())
+                .family_name(request.getLastName())
+                .build();
         return ApiResponse.<User>builder()
                 .code(200)
                 .message("Tạo người dùng thành công")
@@ -79,10 +79,10 @@ public class UserController {
     @GetMapping("all")
     public ApiResponse<List<User>> getUsers() {
         return ApiResponse.<List<User>>builder()
-            .code(200)
-            .message("Lấy danh sách người dùng thành công")
-            .result(userService.getUsers())
-            .build();
+                .code(200)
+                .message("Lấy danh sách người dùng thành công")
+                .result(userService.getUsers())
+                .build();
     }
 
     @GetMapping("/{userId}")

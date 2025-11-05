@@ -2,11 +2,11 @@ package com.teamup.main.model;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class Course {
     String courseId;
     String name;
 
-    // khi nào create list course thì comment lại
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Group> groups = new HashSet<>();
+    // comment lại tránh vòng lặp vô hạn khi serializing, course ko cần biết có những group nào
+    // @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Set<Group> groups = new HashSet<>();
 }

@@ -8,6 +8,9 @@ import jakarta.persistence.MapsId;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+/*
+ * tự viết bảng riêng cho mối quan hệ N-N giữa User và Group, lợi ích là có thể thêm các thuộc tính khác, nhược điểm là phức tạp hơn
+ */
 @Entity
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
