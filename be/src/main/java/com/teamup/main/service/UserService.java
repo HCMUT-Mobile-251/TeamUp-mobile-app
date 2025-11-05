@@ -21,9 +21,28 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    //
+    // User only
+    //
+    public List<User> getUsersByStudentId(String studentId) {
+        return userRepository.findByStudentIdContainingIgnoreCase(studentId);
+    }
+
+    public User updateUser(String userId, UserUpdateRequest request) {
+        User user = getUserById(userId);
+        userMapper.updateUser(user, request);
+        return userRepository.save(user);
+    }
+    
+    public void deleteUser(String userId) {
+        userRepository.deleteById(userId);
+    }
+
+    //
+    // Admin only
+    //
     public User createUser(GoogleAccount request) {
-        String email = request.getEmail();
-        java.util.Optional<User> userOpt = userRepository.findByEmail(email);
+        java.util.Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
         if (userOpt.isPresent()) {
             return getUserById(userOpt.get().getUserId());
         }
@@ -38,18 +57,5 @@ public class UserService {
 
     public User getUserById(String userId) {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    public User updateUser(String userId, UserUpdateRequest request) {
-        User user = getUserById(userId);
-        if (user == null) {
-            throw new AppException(ErrorCode.USER_NOT_FOUND);
-        }
-        userMapper.updateUser(user, request);
-        return userRepository.save(user);
-    }
-
-    public void deleteUser(String userId) {
-        userRepository.deleteById(userId);
     }
 }

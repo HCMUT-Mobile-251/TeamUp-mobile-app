@@ -26,4 +26,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     Set<UserTag> userTags = new HashSet<>();
+
+    @OneToMany(mappedBy = "tag")
+    Set<GroupTag> groupTags = new HashSet<>();
 }

@@ -5,8 +5,6 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -21,10 +19,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String courseId;
     String name;
 
+    // khi nào create list course thì comment lại
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Group> groups = new HashSet<>();
 }

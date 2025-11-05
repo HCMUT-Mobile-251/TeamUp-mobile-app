@@ -14,10 +14,17 @@ public interface UserMapper {
     @Mapping(target = "studentId", ignore = true)
     @Mapping(target = "faculty", ignore = true)
     @Mapping(target = "phoneNumber", ignore = true)
+    @Mapping(target = "userTags", ignore = true)
+    @Mapping(target = "groupMembers", ignore = true)
     @Mapping(source = "given_name", target = "firstName")
     @Mapping(source = "family_name", target = "lastName")
-    @Mapping(source = "email", target = "email")
     User toUser(GoogleAccount request);
-
+    
+    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "firstName", ignore = true)
+    @Mapping(target = "lastName", ignore = true)
+    @Mapping(target = "userTags", ignore = true)
+    @Mapping(target = "groupMembers", ignore = true)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

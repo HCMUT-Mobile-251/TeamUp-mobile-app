@@ -7,4 +7,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class AuthRequest {
     String code;
+    String scope;
+    String authuser;
+    String prompt;
 }

@@ -10,6 +10,7 @@ import com.teamup.main.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     // Custom query methods can be defined here if needed
-    boolean existsByEmail(String email);
+    java.util.List<User> findByStudentId(String studentId);
+    java.util.List<User> findByStudentIdContainingIgnoreCase(String studentId);
     Optional<User> findByEmail(String email);
 }
