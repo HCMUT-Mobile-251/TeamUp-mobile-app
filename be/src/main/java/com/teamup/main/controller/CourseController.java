@@ -41,7 +41,7 @@ public class CourseController {
     /*
      * Admin only
      */
-    @PostMapping
+    @PostMapping("/admin")
     public ApiResponse<List<Course>> createCourse(@RequestBody @Valid List<Course> request) {
         return ApiResponse.<List<Course>>builder()
                 .code(200)
@@ -50,7 +50,7 @@ public class CourseController {
                 .build();
     }
 
-    @PutMapping("/{courseId}")
+    @PutMapping("/admin/{courseId}")
     public ApiResponse<Course> updateCourse(@PathVariable String courseId, @RequestBody @Valid Course request) {
         return ApiResponse.<Course>builder()
                 .code(200)
@@ -59,7 +59,7 @@ public class CourseController {
                 .build();
     }
 
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public ApiResponse<List<Course>> getCourses() {
         return ApiResponse.<List<Course>>builder()
                 .code(200)
@@ -68,7 +68,7 @@ public class CourseController {
                 .build();
     }
 
-    @DeleteMapping("/{courseId}")
+    @DeleteMapping("/admin/{courseId}")
     public ApiResponse<Void> deleteCourse(@PathVariable String courseId) {
         courseService.deleteCourse(courseId);
         return ApiResponse.<Void>builder()

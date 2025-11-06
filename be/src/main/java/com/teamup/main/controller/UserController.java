@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserCreationRequest;
+import com.teamup.main.dto.request.UserDeleteRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.model.User;
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ApiResponse<Void> deleteUser(@PathVariable String userId) {
-        userService.deleteUser(userId);
+    public ApiResponse<Void> deleteUser(@PathVariable UserDeleteRequest userDeleteRequest) {
+        userService.deleteUser(userDeleteRequest.getUserId());
         return ApiResponse.<Void>builder()
                 .code(200)
                 .message("Xóa người dùng thành công")
@@ -60,9 +61,9 @@ public class UserController {
     }
 
     /*
-     * Amin only
+     * Admin only
      */
-    @PostMapping
+    @PostMapping("/admin")
     public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
         GoogleAccount googleAccount = GoogleAccount.builder()
                 .email(request.getEmail())
@@ -76,7 +77,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("all")
+    @GetMapping("/admin/all")
     public ApiResponse<List<User>> getUsers() {
         return ApiResponse.<List<User>>builder()
                 .code(200)
@@ -85,7 +86,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/admin/{userId}")
     public ApiResponse<User> getUsersId(@PathVariable String userId) {
         return ApiResponse.<User>builder()
                 .code(200)
