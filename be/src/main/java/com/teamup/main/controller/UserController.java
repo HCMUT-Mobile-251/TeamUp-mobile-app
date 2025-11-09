@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserCreationRequest;
-import com.teamup.main.dto.request.UserDeleteRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.dto.response.ApiResponse;
-import com.teamup.main.model.User;
+import com.teamup.main.model.Users;
 import com.teamup.main.service.UserService;
 
 import jakarta.validation.Valid;
@@ -34,8 +33,8 @@ public class UserController {
      * User only
      */
     @PutMapping("/{userId}")
-    public ApiResponse<User> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
-        return ApiResponse.<User>builder()
+    public ApiResponse<Users> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
+        return ApiResponse.<Users>builder()
                 .code(200)
                 .message("Cập nhật người dùng thành công")
                 .result(userService.updateUser(userId, request))
@@ -43,8 +42,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ApiResponse<List<User>> getUsersByStudentId(@RequestParam String studentId) {
-        return ApiResponse.<List<User>>builder()
+    public ApiResponse<List<Users>> getUsersByStudentId(@RequestParam String studentId) {
+        return ApiResponse.<List<Users>>builder()
                 .code(200)
                 .message("Lấy danh sách người dùng thành công")
                 .result(userService.getUsersByStudentId(studentId))
@@ -52,11 +51,20 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ApiResponse<Void> deleteUser(@PathVariable UserDeleteRequest userDeleteRequest) {
-        userService.deleteUser(userDeleteRequest.getUserId());
+    public ApiResponse<Void> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
         return ApiResponse.<Void>builder()
                 .code(200)
                 .message("Xóa người dùng thành công")
+                .build();
+    }
+
+    @GetMapping("/{userId}")
+    public ApiResponse<Users> getUsersId(@PathVariable String userId) {
+        return ApiResponse.<Users>builder()
+                .code(200)
+                .message("Lấy người dùng thành công")
+                .result(userService.getUserById(userId))
                 .build();
     }
 
@@ -64,13 +72,13 @@ public class UserController {
      * Admin only
      */
     @PostMapping("/admin")
-    public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
+    public ApiResponse<Users> createUser(@RequestBody @Valid UserCreationRequest request) {
         GoogleAccount googleAccount = GoogleAccount.builder()
                 .email(request.getEmail())
                 .given_name(request.getFirstName())
                 .family_name(request.getLastName())
                 .build();
-        return ApiResponse.<User>builder()
+        return ApiResponse.<Users>builder()
                 .code(200)
                 .message("Tạo người dùng thành công")
                 .result(userService.createUser(googleAccount))
@@ -78,20 +86,12 @@ public class UserController {
     }
 
     @GetMapping("/admin/all")
-    public ApiResponse<List<User>> getUsers() {
-        return ApiResponse.<List<User>>builder()
+    public ApiResponse<List<Users>> getUsers() {
+        return ApiResponse.<List<Users>>builder()
                 .code(200)
                 .message("Lấy danh sách người dùng thành công")
                 .result(userService.getUsers())
                 .build();
     }
 
-    @GetMapping("/admin/{userId}")
-    public ApiResponse<User> getUsersId(@PathVariable String userId) {
-        return ApiResponse.<User>builder()
-                .code(200)
-                .message("Lấy người dùng thành công")
-                .result(userService.getUserById(userId))
-                .build();
-    }
 }

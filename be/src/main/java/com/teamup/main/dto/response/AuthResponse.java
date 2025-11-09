@@ -1,6 +1,6 @@
 package com.teamup.main.dto.response;
 
-import com.teamup.main.model.User;
+import com.teamup.main.model.Users;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -10,5 +10,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class AuthResponse {
     String accessToken;
-    User user;
+    Users user;
 }

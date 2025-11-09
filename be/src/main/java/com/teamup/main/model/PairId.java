@@ -3,23 +3,30 @@ package com.teamup.main.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class PairId implements Serializable {
-    private String firstId;
-    private String secondId;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-    public PairId() {}
-    public PairId(String firstId, String secondId) {
-        this.firstId = firstId;
-        this.secondId = secondId;
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
+public class PairId implements Serializable {
+    String firstId;
+    String secondId;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PairId)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof PairId))
+            return false;
         PairId that = (PairId) o;
         return Objects.equals(firstId, that.firstId) &&
-               Objects.equals(secondId, that.secondId);
+                Objects.equals(secondId, that.secondId);
     }
 
     @Override

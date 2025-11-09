@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamup.main.dto.response.ApiResponse;
-import com.teamup.main.model.Course;
+import com.teamup.main.model.Courses;
 import com.teamup.main.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -30,8 +30,8 @@ public class CourseController {
      * User only
      */
     @GetMapping
-    public ApiResponse<List<Course>> getCourseById(@RequestParam String search) {
-        return ApiResponse.<List<Course>>builder()
+    public ApiResponse<List<Courses>> getCourseById(@RequestParam String search) {
+        return ApiResponse.<List<Courses>>builder()
                 .code(200)
                 .message("Lấy khóa học thành công")
                 .result(courseService.getCourseById(search))
@@ -42,8 +42,8 @@ public class CourseController {
      * Admin only
      */
     @PostMapping("/admin")
-    public ApiResponse<List<Course>> createCourse(@RequestBody @Valid List<Course> request) {
-        return ApiResponse.<List<Course>>builder()
+    public ApiResponse<List<Courses>> createCourse(@RequestBody @Valid List<Courses> request) {
+        return ApiResponse.<List<Courses>>builder()
                 .code(200)
                 .message("Tạo khóa học thành công")
                 .result(courseService.createCourse(request))
@@ -51,17 +51,17 @@ public class CourseController {
     }
 
     @PutMapping("/admin/{courseId}")
-    public ApiResponse<Course> updateCourse(@PathVariable String courseId, @RequestBody @Valid Course request) {
-        return ApiResponse.<Course>builder()
+    public ApiResponse<Courses> updateCourse(@RequestBody @Valid Courses request) {
+        return ApiResponse.<Courses>builder()
                 .code(200)
                 .message("Cập nhật khóa học thành công")
-                .result(courseService.updateCourse(courseId, request))
+                .result(courseService.updateCourse(request))
                 .build();
     }
 
     @GetMapping("/admin/all")
-    public ApiResponse<List<Course>> getCourses() {
-        return ApiResponse.<List<Course>>builder()
+    public ApiResponse<List<Courses>> getCourses() {
+        return ApiResponse.<List<Courses>>builder()
                 .code(200)
                 .message("Lấy danh sách khóa học thành công")
                 .result(courseService.getCourses())

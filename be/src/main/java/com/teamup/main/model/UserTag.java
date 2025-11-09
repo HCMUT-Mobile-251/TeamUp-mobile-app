@@ -1,5 +1,7 @@
 package com.teamup.main.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -11,15 +13,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UserTag {
     @EmbeddedId
+    @JsonIgnore
     PairId id;
 
     @ManyToOne
     @MapsId("firstId")
-    @JoinColumn(name = "userId")
-    User user;
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    Users user;
 
     @ManyToOne
     @MapsId("secondId")
-    @JoinColumn(name = "tagId")
-    Tag tag;
-} 
+    @JoinColumn(name = "group_id")
+    @JsonIgnore
+    Tags tag;
+}

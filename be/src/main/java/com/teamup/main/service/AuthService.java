@@ -12,29 +12,36 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.response.ApiResponse;
+import com.teamup.main.exception.AppException;
+import com.teamup.main.exception.ErrorCode;
+
+import lombok.experimental.FieldDefaults;
 
 @Service
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class AuthService {
     @Value("${google.GOOGLE_CLIENT_ID}")
-    private String googleClientId;
+    String googleClientId;
 
     @Value("${google.GOOGLE_CLIENT_SECRET}")
-    private String googleClientSecret;
+    String googleClientSecret;
 
     @Value("${google.GOOGLE_REDIRECT_URI}")
-    private String googleRedirectUri;
+    String googleRedirectUri;
 
     @Value("${google.GOOGLE_GRANT_TYPE}")
-    private String googleGrantType;
+    String googleGrantType;
 
     @Value("${google.GOOGLE_LINK_GET_TOKEN}")
-    private String googleLinkGetToken;
+    String googleLinkGetToken;
 
     @Value("${google.GOOGLE_LINK_GET_USER_INFO}")
-    private String googleLinkGetUserInfo;
+    String googleLinkGetUserInfo;
 
     @Value("${google.ADMIN_EMAIL}")
-    private String googleAdminEmail;
+    String googleAdminEmail;
+
+    final Gson gson = new Gson();
 
     // fe gửi code và be gửi cho GG
     public String getToken(String code) throws IOException {
@@ -49,49 +56,46 @@ public class AuthService {
                                 .build())
                 .execute().returnContent().asString();
 
-        JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
+        JsonObject jobj = gson.fromJson(response, JsonObject.class);
         return jobj.has("access_token") ? jobj.get("access_token").getAsString() : null;
     }
 
     // be nhận được token tkgg và gửi token tới gg lấy infor
-    public GoogleAccount getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
-        String link = this.googleLinkGetUserInfo + accessToken;
+    public GoogleAccount getUserInfo(final String accessToken) {
+        try {
+            String uri = this.googleLinkGetUserInfo + accessToken;
 
-        String response = Request.Get(link).execute().returnContent().asString();
-        GoogleAccount googlePojo = new Gson().fromJson(response, GoogleAccount.class);
-        return googlePojo;
+            String response = Request.Get(uri).execute().returnContent().asString();
+            GoogleAccount googlePojo = gson.fromJson(response, GoogleAccount.class);
+            return googlePojo;
+        } catch (IOException e) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS);
+        }
     }
 
-    public ApiResponse<Boolean> verifyAccessToken(String accessToken) throws IOException {
-        String verifyUrl = this.googleLinkGetUserInfo + accessToken;
-        String response = Request.Get(verifyUrl).execute().returnContent().asString();
+    public ApiResponse<Boolean> verifyAccessToken(String accessToken) {
+        try {
+            String uri = this.googleLinkGetUserInfo + accessToken;
+            String response = Request.Get(uri).execute().returnContent().asString();
 
-        JsonObject json = new Gson().fromJson(response, JsonObject.class);
-
-        // Nếu có trường "error" nghĩa là token sai hoặc hết hạn
-        if (json.has("error")) {
+            GoogleAccount json = gson.fromJson(response, GoogleAccount.class);
+            if (!json.isVerified_email()) {
+                return ApiResponse.<Boolean>builder()
+                        .code(401)
+                        .message("Token không hợp lệ hoặc hết hạn: verified_email=" + json.isVerified_email())
+                        .result(json.isVerified_email())
+                        .build();
+            }
+            // message đặc biệt
             return ApiResponse.<Boolean>builder()
-                    .code(401)
-                    .message("Token không hợp lệ: " + json.get("error").getAsString())
-                    .result(false)
+                    .code(200)
+                    .message(this.googleAdminEmail.equals(json.getEmail()) ? "Admin" : "User")
+                    .result(true)
                     .build();
+        } catch (ClientProtocolException e) {
+            throw new AppException(ErrorCode.INTERNET_ERROR);
+        } catch (IOException e) {
+            throw new AppException(ErrorCode.BAD_GATEWAY);
         }
-
-        // Kiểm tra client_id để chắc chắn token do app của mày tạo
-        String audience = json.get("audience").getAsString();
-        if (!audience.equals(this.googleClientId)) {
-            return ApiResponse.<Boolean>builder()
-                    .code(401)
-                    .message("Token không thuộc về ứng dụng này: " + json.get("error").getAsString())
-                    .result(false)
-                    .build();
-        }
-
-        // message đặc biệt
-        return ApiResponse.<Boolean>builder()
-                .code(200)
-                .message(this.googleAdminEmail.equals(json.get("email").getAsString()) ? "Admin" : "User")
-                .result(true)
-                .build();
     }
 }
