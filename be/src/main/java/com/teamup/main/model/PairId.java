@@ -9,11 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+@Embeddable
 @Data
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class PairId implements Serializable {
     String firstId;
     String secondId;

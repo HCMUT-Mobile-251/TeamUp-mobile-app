@@ -11,6 +11,9 @@ import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.exception.ErrorCode;
 import com.teamup.main.mapper.UserMapper;
+import com.teamup.main.model.PairId;
+import com.teamup.main.model.Tags;
+import com.teamup.main.model.UserTag;
 import com.teamup.main.model.Users;
 import com.teamup.main.repository.UserRepository;
 
@@ -24,6 +27,9 @@ public class UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    TagService tagService;
 
     /*
      * User only
@@ -39,10 +45,18 @@ public class UserService {
     }
 
     public void deleteUser(String userId) {
-        if (getUserById(userId) != null) {
-            userRepository.deleteById(userId);
-        }
-        throw new AppException(ErrorCode.USER_NOT_FOUND);
+        getUserById(userId);
+        userRepository.deleteById(userId);
+    }
+
+    public void updateUserTag(String userId, Tags tag) {
+        Users user = getUserById(userId);
+        // Ensure the tag exists
+        tag = tagService.findTag(tag.getTagId());
+        PairId id = new PairId(userId, tag.getTagId());
+        UserTag userTag = new UserTag(id, user, tag);
+        user.getUserTags().add(userTag);
+        userRepository.save(user);
     }
 
     /**

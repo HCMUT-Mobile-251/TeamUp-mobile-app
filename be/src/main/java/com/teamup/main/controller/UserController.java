@@ -9,6 +9,7 @@ import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserCreationRequest;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.dto.response.ApiResponse;
+import com.teamup.main.model.Tags;
 import com.teamup.main.model.Users;
 import com.teamup.main.service.UserService;
 
@@ -65,6 +66,15 @@ public class UserController {
                 .code(200)
                 .message("Lấy người dùng thành công")
                 .result(userService.getUserById(userId))
+                .build();
+    }
+
+    @PutMapping("/{userId}/tag")
+    public ApiResponse<Void> updateUserTag(@PathVariable String userId, @RequestBody @Valid Tags tag) {
+        userService.updateUserTag(userId, tag);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("User updated in group successfully")
                 .build();
     }
 

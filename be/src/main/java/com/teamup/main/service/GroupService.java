@@ -18,7 +18,10 @@ import com.teamup.main.mapper.UserMapper;
 import com.teamup.main.model.Courses;
 import com.teamup.main.model.Groups;
 import com.teamup.main.model.GroupMember;
+import com.teamup.main.model.GroupTag;
 import com.teamup.main.model.PairId;
+import com.teamup.main.model.Tags;
+import com.teamup.main.model.UserTag;
 import com.teamup.main.model.Users;
 import com.teamup.main.repository.CourseRepository;
 import com.teamup.main.repository.GroupRepository;
@@ -45,6 +48,9 @@ public class GroupService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    TagService tagService;
+
     /*
      * User only
      */
@@ -60,18 +66,13 @@ public class GroupService {
         Groups group = groupMapper.toCreateGroup(groupRequest);
         group.setCourse(course);
         group.setSemester(getCurrentSemester());
-        group.setLeaderId(user); // leader
+        // leader
+        group.setLeaderId(user);
 
         // để có groupId
-        System.out.println("dsd" + user.getUserId());
         group = groupRepository.save(group);
-        System.out.println("23232" + user.getUserId() + " " + group.getGroupId());
         PairId id = new PairId(user.getUserId(), group.getGroupId());
-        GroupMember leaderMember = new GroupMember();
-        leaderMember.setId(id);
-        leaderMember.setUser(user);
-        leaderMember.setGroup(group);
-        leaderMember.setJoinMessage("It's mine!");
+        GroupMember leaderMember = new GroupMember(id, "It's mine!", user, group);
 
         // Add vào collection (cascade sẽ persist)
         group.getGroupMembers().add(leaderMember);
@@ -103,7 +104,16 @@ public class GroupService {
             }
         }
         throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
+    }
 
+    public void updateGroupTag(String groupId, Tags tag) {
+        Groups group = findGroup(groupId);
+        // Ensure the tag exists
+        tag = tagService.findTag(tag.getTagId());
+        PairId id = new PairId(group.getGroupId(), tag.getTagId());
+        GroupTag groupTag = new GroupTag(id, group, tag);
+        group.getGroupTags().add(groupTag);
+        groupRepository.save(group);
     }
 
     public List<UserResponse> getMembers(String groupId) {
@@ -137,12 +147,8 @@ public class GroupService {
 
         if (!users.isEmpty()) {
             for (Users user : users) {
-                GroupMember groupMember = new GroupMember();
                 PairId id = new PairId(user.getUserId(), group.getGroupId());
-                groupMember.setId(id);
-                groupMember.setUser(user);
-                groupMember.setGroup(group);
-                groupMember.setJoinMessage("Add by leader!");
+                GroupMember groupMember = new GroupMember(id, "Add by leader!", user, group);
                 group.getGroupMembers().add(groupMember);
             }
             return groupRepository.save(group);

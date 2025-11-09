@@ -9,6 +9,7 @@ import com.teamup.main.dto.request.GroupRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.dto.response.UserResponse;
 import com.teamup.main.model.Groups;
+import com.teamup.main.model.Tags;
 import com.teamup.main.service.GroupService;
 
 import jakarta.validation.Valid;
@@ -27,9 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class GroupController {
     @Autowired
     private GroupService groupService;
-
-    // !fix lại memberlist và update userid và courseid vẫn chưa chạy được, throw
-    // AppException có thể thay thế apiResponse
 
     /*
      * User only
@@ -50,6 +48,15 @@ public class GroupController {
                 .code(200)
                 .message("Group updated successfully")
                 .result(groupService.updateGroup(request))
+                .build();
+    }
+
+    @PutMapping("/{groupId}/tag")
+    public ApiResponse<Void> updateGroupTag(@PathVariable String groupId, @RequestBody @Valid Tags tag) {
+        groupService.updateGroupTag(groupId, tag);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Group updated successfully")
                 .build();
     }
 

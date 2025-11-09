@@ -19,9 +19,9 @@ import lombok.experimental.FieldDefaults;
  */
 @Entity
 @Data
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GroupMember {
     @EmbeddedId
     @JsonIgnore

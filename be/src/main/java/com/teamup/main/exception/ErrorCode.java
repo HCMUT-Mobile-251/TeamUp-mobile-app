@@ -20,6 +20,7 @@ public enum ErrorCode {
     USER_NOT_FOUND("Người dùng không tồn tại!", 404),
     GROUP_NOT_FOUND("Nhóm không tồn tại!", 404),
     COURSE_NOT_FOUND("Khóa học không tồn tại!", 404),
+    TAG_NOT_FOUND("Tag không tồn tại!", 404),
     USER_NOT_IN_GROUP("Người dùng không thuộc nhóm!", 404),
     GROUP_FULL("Nhóm đã đầy!", 409),
     NO_LEADER("Vui lòng đổi leader để rời nhóm!", 409),
