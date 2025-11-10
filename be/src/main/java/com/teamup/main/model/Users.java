@@ -42,7 +42,6 @@ public class Users {
     Set<GroupMember> groups = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({ "user" })
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Set<UserTag> userTags = new HashSet<>();

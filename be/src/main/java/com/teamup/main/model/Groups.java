@@ -44,7 +44,6 @@ public class Groups {
     Courses course;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties({ "group" })
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Set<GroupTag> groupTags = new HashSet<>();

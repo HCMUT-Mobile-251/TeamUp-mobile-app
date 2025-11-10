@@ -39,18 +39,18 @@ public class UserService {
     }
 
     public Users updateUser(String userId, UserUpdateRequest request) {
-        Users user = getUserById(userId);
+        Users user = findById(userId);
         userMapper.updateUser(user, request);
         return userRepository.save(user);
     }
 
     public void deleteUser(String userId) {
-        getUserById(userId);
+        findById(userId);
         userRepository.deleteById(userId);
     }
 
     public void updateUserTag(String userId, Tags tag) {
-        Users user = getUserById(userId);
+        Users user = findById(userId);
         // Ensure the tag exists
         tag = tagService.findTag(tag.getTagId());
         PairId id = new PairId(userId, tag.getTagId());
@@ -76,7 +76,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Users getUserById(String userId) {
+    public Users findById(String userId) {
         return userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public List<Users> findAllById(List<String> listUserId) {
+        return userRepository.findAllById(listUserId);
     }
 }

@@ -20,9 +20,10 @@ public class UserTag {
     @EmbeddedId
     @JsonIgnore
     PairId id;
-
+    
     @ManyToOne
     @MapsId("firstId")
+    @JsonIgnore
     Users user;
 
     @ManyToOne

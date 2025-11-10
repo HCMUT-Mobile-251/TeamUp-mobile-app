@@ -18,12 +18,12 @@ public class CourseService {
     /*
      * User only
      */
-    public List<Courses> getCourseById(String course) {
-        List<Courses> byId = courseRepository.findByCourseIdContainingIgnoreCase(course);
+    public List<Courses> getCourse(String course) {
+        List<Courses> byId = courseRepository.findByCourseIdContainingIgnoreCase(course.trim());
         if (!byId.isEmpty()) {
             return byId;
         }
-        List<Courses> byName = courseRepository.findByNameContainingIgnoreCase(course);
+        List<Courses> byName = courseRepository.findByNameContainingIgnoreCase(course.trim());
         return byName;
     }
 
@@ -52,7 +52,7 @@ public class CourseService {
     }
 
     public void deleteCourse(String courseId) {
-        Courses course = findCourse(courseId);
-        courseRepository.delete(course);
+        findCourse(courseId);
+        courseRepository.deleteById(courseId);
     }
 }

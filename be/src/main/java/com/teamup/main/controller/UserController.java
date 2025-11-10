@@ -61,11 +61,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<Users> getUsersId(@PathVariable String userId) {
+    public ApiResponse<Users> getUserById(@PathVariable String userId) {
         return ApiResponse.<Users>builder()
                 .code(200)
                 .message("Lấy người dùng thành công")
-                .result(userService.getUserById(userId))
+                .result(userService.findById(userId))
                 .build();
     }
 

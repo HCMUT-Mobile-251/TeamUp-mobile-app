@@ -38,8 +38,7 @@ public class GroupMember {
 
     @ManyToOne
     @MapsId("secondId")
-    @JsonIgnoreProperties({ "groupTags", "groupMembers", "leaderId", "description", "groupClass", "topicName",
-            "maxMembers" })
+    @JsonIgnoreProperties({ "groupTags", "groupMembers", "leaderId", "description", "maxMembers" })
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Groups group;

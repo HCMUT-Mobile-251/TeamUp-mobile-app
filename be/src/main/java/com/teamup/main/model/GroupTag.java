@@ -20,9 +20,10 @@ public class GroupTag {
     @EmbeddedId
     @JsonIgnore
     PairId id;
-
+    
     @ManyToOne
     @MapsId("firstId")
+    @JsonIgnore
     Groups group;
 
     @ManyToOne

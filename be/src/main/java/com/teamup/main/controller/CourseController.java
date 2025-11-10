@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teamup.main.dto.request.CourseRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.model.Courses;
 import com.teamup.main.service.CourseService;
@@ -30,11 +31,11 @@ public class CourseController {
      * User only
      */
     @GetMapping
-    public ApiResponse<List<Courses>> getCourseById(@RequestParam String search) {
+    public ApiResponse<List<Courses>> getCourse(@RequestParam String course) {
         return ApiResponse.<List<Courses>>builder()
                 .code(200)
                 .message("Lấy khóa học thành công")
-                .result(courseService.getCourseById(search))
+                .result(courseService.getCourse(course))
                 .build();
     }
 

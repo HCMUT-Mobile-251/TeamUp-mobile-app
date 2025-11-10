@@ -15,4 +15,9 @@ public interface GroupRepository extends JpaRepository<Groups, String> {
     List<Groups> findByNameContainingIgnoreCase(String name);
 
     List<Groups> findByGroupClassContainingIgnoreCase(String groupClass);
+
+    List<Groups> findBySemester(int semester);
+
+    // Tìm group theo cả id hoặc name của course
+    List<Groups> findByCourse_CourseIdOrCourse_NameContainingIgnoreCase(String courseId, String courseName);
 }

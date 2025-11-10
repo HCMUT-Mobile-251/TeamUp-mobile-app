@@ -21,11 +21,8 @@ import com.teamup.main.model.GroupMember;
 import com.teamup.main.model.GroupTag;
 import com.teamup.main.model.PairId;
 import com.teamup.main.model.Tags;
-import com.teamup.main.model.UserTag;
 import com.teamup.main.model.Users;
-import com.teamup.main.repository.CourseRepository;
 import com.teamup.main.repository.GroupRepository;
-import com.teamup.main.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.experimental.FieldDefaults;
@@ -37,10 +34,13 @@ public class GroupService {
     GroupRepository groupRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    CourseRepository courseRepository;
+    CourseService courseService;
+
+    @Autowired
+    TagService tagService;
 
     @Autowired
     GroupMapper groupMapper;
@@ -48,19 +48,14 @@ public class GroupService {
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    TagService tagService;
-
     /*
      * User only
      */
     @Transactional
     public Groups createGroup(GroupRequest groupRequest) {
-        Users user = userRepository.findById(groupRequest.getLeaderId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Users user = userService.findById(groupRequest.getLeaderId());
 
-        Courses course = courseRepository.findById(groupRequest.getCourseId())
-                .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND));
+        Courses course = courseService.findCourse(groupRequest.getCourseId());
 
         // Tạo group và persist trước để có id
         Groups group = groupMapper.toCreateGroup(groupRequest);
@@ -92,14 +87,12 @@ public class GroupService {
         Groups group = findGroup(groupRequest.getGroupId());
 
         // check user phải thuộc group mới được update
-        Users leader = userRepository.findById(groupRequest.getLeaderId())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Users leader = userService.findById(groupRequest.getLeaderId());
         for (UserResponse member : getMembers(groupRequest.getGroupId())) {
             if (member.getUserId().equals(leader.getUserId())) {
                 groupMapper.toUpdateGroup(group, groupRequest);
                 group.setLeaderId(leader);
-                group.setCourse(courseRepository.findById(groupRequest.getCourseId())
-                        .orElseThrow(() -> new AppException(ErrorCode.COURSE_NOT_FOUND)));
+                group.setCourse(courseService.findCourse(groupRequest.getCourseId()));
                 return groupRepository.save(group);
             }
         }
@@ -107,6 +100,7 @@ public class GroupService {
     }
 
     public void updateGroupTag(String groupId, Tags tag) {
+        // ensure the group exists
         Groups group = findGroup(groupId);
         // Ensure the tag exists
         tag = tagService.findTag(tag.getTagId());
@@ -133,7 +127,7 @@ public class GroupService {
 
     public Groups addMember(String groupId, List<String> listUserId) {
         Groups group = findGroup(groupId);
-        List<Users> users = userRepository.findAllById(listUserId);
+        List<Users> users = userService.findAllById(listUserId);
 
         // kiểm tra size list > group size
         if (group.getGroupMembers().size() + users.size() > (int) group.getMaxMembers()) {
@@ -195,14 +189,5 @@ public class GroupService {
         // int totalPages = page.getTotalPages();
         // long totalItems = page.getTotalElements();
         return groups;
-    }
-
-    public List<Groups> getSearchNormalGroup(String group) {
-        List<Groups> byId = groupRepository.findByGroupClassContainingIgnoreCase(group);
-        if (!byId.isEmpty()) {
-            return byId;
-        }
-        List<Groups> byName = groupRepository.findByNameContainingIgnoreCase(group);
-        return byName;
     }
 }
