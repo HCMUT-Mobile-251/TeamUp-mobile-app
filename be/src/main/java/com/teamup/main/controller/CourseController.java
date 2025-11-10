@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.teamup.main.dto.request.CourseRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.model.Courses;
 import com.teamup.main.service.CourseService;
