@@ -60,4 +60,24 @@ public class Groups {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Users leaderId;
+
+    public void addMember(GroupMember m) {
+        groupMembers.add(m);
+        m.setGroup(this);
+    }
+
+    public void removeMember(GroupMember m) {
+        groupMembers.remove(m);
+        m.setGroup(null);
+    }
+
+    public void addTag(GroupTag m) {
+        groupTags.add(m);
+        m.setGroup(this);
+    }
+
+    public void removeTag(GroupTag m) {
+        groupTags.remove(m);
+        m.setGroup(null);
+    }
 }

@@ -3,13 +3,15 @@ package com.teamup.main.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.dto.response.UserResponse;
 import com.teamup.main.model.Users;
 
-@Mapper(componentModel = "spring")
+// ignore các trường không có trong request, giữ nguyên giá trị cũ bên model
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
     @Mapping(target = "userId", ignore = true)
     @Mapping(target = "studentId", ignore = true)
@@ -28,6 +30,6 @@ public interface UserMapper {
     @Mapping(target = "userTags", ignore = true)
     @Mapping(target = "groups", ignore = true)
     void updateUser(@MappingTarget Users user, UserUpdateRequest request);
-    
+
     UserResponse queryUser(@MappingTarget UserResponse request, Users user);
 }

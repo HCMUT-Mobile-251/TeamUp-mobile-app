@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.teamup.main.dto.request.GoogleAccount;
 import com.teamup.main.dto.request.UserUpdateRequest;
 import com.teamup.main.exception.AppException;
-import com.teamup.main.exception.ErrorCode;
+import com.teamup.main.enums.ErrorCode;
 import com.teamup.main.mapper.UserMapper;
 import com.teamup.main.model.PairId;
 import com.teamup.main.model.Tags;
@@ -49,13 +49,17 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public void updateUserTag(String userId, Tags tag) {
+    public void updateUserTag(String userId, List<Tags> listTag) {
         Users user = findById(userId);
-        // Ensure the tag exists
-        tag = tagService.findTag(tag.getTagId());
-        PairId id = new PairId(userId, tag.getTagId());
-        UserTag userTag = new UserTag(id, user, tag);
-        user.getUserTags().add(userTag);
+
+        user.getUserTags().clear();
+        for (Tags tag : listTag) {
+            // check tag exist
+            Tags existingTag = tagService.findTag(tag.getTagId());
+            PairId id = new PairId(userId, existingTag.getTagId());
+            UserTag userTag = new UserTag(id, user, existingTag);
+            user.getUserTags().add(userTag);
+        }
         userRepository.save(user);
     }
 

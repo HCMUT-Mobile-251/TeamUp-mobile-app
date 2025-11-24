@@ -1,4 +1,4 @@
-package com.teamup.main.exception;
+package com.teamup.main.enums;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,6 +25,8 @@ public enum ErrorCode {
     GROUP_FULL("Nhóm đã đầy!", 409),
     NO_LEADER("Vui lòng đổi leader để rời nhóm!", 409),
     ADJUST_MAX_MEMBER("Vui lòng điều chỉnh lại thành viên để chỉnh trường maxMembers!", 409),
+    USER_JOINED_ANOTHER_GROUP_SAME_COURSE("Người dùng đã tham gia nhóm khác với môn học tương tự trong kỳ này!", 409),
+    USER_ALREADY_IN_GROUP("Người dùng đã ở trong nhóm!", 409),
 
     NOT_MATCH_ANY("Không tìm thấy kết quả phù hợp", 200);
 

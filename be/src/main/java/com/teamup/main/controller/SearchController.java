@@ -25,11 +25,12 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping("/normal")
-    public ApiResponse<List<GroupResponse>> normalSearchGroups(@RequestParam String group) {
+    public ApiResponse<List<GroupResponse>> normalSearchGroups(@RequestParam String group,
+            @RequestParam String userId) {
         return ApiResponse.<List<GroupResponse>>builder()
                 .code(200)
                 .message("Search completed successfully")
-                .result(searchService.normalSearchGroup(group))
+                .result(searchService.normalSearchGroup(group, userId))
                 .build();
     }
 

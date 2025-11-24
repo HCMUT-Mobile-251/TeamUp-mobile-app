@@ -16,4 +16,7 @@ public class SearchRequest {
 
     List<String> tagId;
     Courses course;
+
+    // để biết user có phải member của group hay không
+    String userId;
 }

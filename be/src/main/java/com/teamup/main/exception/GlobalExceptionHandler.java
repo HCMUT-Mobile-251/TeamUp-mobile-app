@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.teamup.main.dto.response.ApiResponse;
+import com.teamup.main.enums.ErrorCode;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.teamup.main.dto.request.SearchRequest;
 import com.teamup.main.dto.response.GroupResponse;
+import com.teamup.main.enums.GroupStatus;
 import com.teamup.main.mapper.GroupMapper;
 import com.teamup.main.model.Courses;
 import com.teamup.main.model.Groups;
@@ -23,13 +24,13 @@ public class SearchService {
     GroupRepository groupRepository;
 
     @Autowired
+    GroupService groupService;
+
+    @Autowired
     GroupMapper groupMapper;
 
     @Autowired
     CourseService courseService;
-
-    @Autowired
-    GroupService groupService;
 
     // tìm nâng cao, lọc theo tầng
     public List<GroupResponse> advanceSearchGroups(SearchRequest request) {
@@ -68,6 +69,7 @@ public class SearchService {
                     .toList();
         }
 
+        // filter theo tags nếu mọi thông tin khác không null hoặc rỗng
         if (request.getCourse() != null
                 || request.getCourse().getCourseId().isBlank()
                 || request.getCourse().getName().isBlank()
@@ -87,11 +89,17 @@ public class SearchService {
                     .toList();
         }
 
-        return groups.stream().map(groupMapper::toSearchGroup).toList();
+        // handle transform to GroupResponse and set isMember
+        return groups.stream().map(g -> {
+            GroupResponse response = groupMapper.toSearchGroup(g);
+            response.setIsMember(groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(
+                    request.getUserId(), g.getGroupId(), GroupStatus.JOINED));
+            return response;
+        }).toList();
     }
 
     // 1 ô tìm kiếm bình thường
-    public List<GroupResponse> normalSearchGroup(String group) {
+    public List<GroupResponse> normalSearchGroup(String group, String userId) {
         // tránh trùng
         Set<Groups> results = new HashSet<>();
         results.addAll(groupRepository.findByTopicNameContainingIgnoreCase(group));
@@ -106,6 +114,14 @@ public class SearchService {
                 .map(groupMapper::toSearchGroup)
                 .collect(java.util.stream.Collectors.toSet());
 
-        return finalResults.stream().toList();
+        // set isMember
+        return finalResults.stream()
+                .map(response -> {
+                    response.setIsMember(
+                            groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(userId,
+                                    response.getGroupId(), GroupStatus.JOINED));
+                    return response;
+                })
+                .toList();
     }
 }

@@ -30,11 +30,11 @@ public class CourseController {
      * User only
      */
     @GetMapping
-    public ApiResponse<List<Courses>> getCourse(@RequestParam String course) {
+    public ApiResponse<List<Courses>> getCourse(@RequestParam String search) {
         return ApiResponse.<List<Courses>>builder()
                 .code(200)
                 .message("Lấy khóa học thành công")
-                .result(courseService.getCourse(course))
+                .result(courseService.getCourse(search))
                 .build();
     }
 

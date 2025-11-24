@@ -8,11 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import com.teamup.main.controller.AuthController;
 import com.teamup.main.dto.request.GroupRequest;
+import com.teamup.main.dto.response.GroupResponse;
 import com.teamup.main.dto.response.UserResponse;
 import com.teamup.main.exception.AppException;
-import com.teamup.main.exception.ErrorCode;
+import com.teamup.main.enums.ErrorCode;
+import com.teamup.main.enums.GroupStatus;
 import com.teamup.main.mapper.GroupMapper;
 import com.teamup.main.mapper.UserMapper;
 import com.teamup.main.model.Courses;
@@ -30,6 +32,8 @@ import lombok.experimental.FieldDefaults;
 @Service
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GroupService {
+
+    private final AuthController authController;
     @Autowired
     GroupRepository groupRepository;
 
@@ -48,13 +52,18 @@ public class GroupService {
     @Autowired
     UserMapper userMapper;
 
+    GroupService(AuthController authController) {
+        this.authController = authController;
+    }
+
     /*
      * User only
      */
     @Transactional
     public Groups createGroup(GroupRequest groupRequest) {
-        Users user = userService.findById(groupRequest.getLeaderId());
-
+        // check user tồn tại
+        Users leader = userService.findById(groupRequest.getLeaderId());
+        // check course tồn tại
         Courses course = courseService.findCourse(groupRequest.getCourseId());
 
         // Tạo group và persist trước để có id
@@ -62,15 +71,16 @@ public class GroupService {
         group.setCourse(course);
         group.setSemester(getCurrentSemester());
         // leader
-        group.setLeaderId(user);
+        group.setLeaderId(leader);
 
         // để có groupId
         group = groupRepository.save(group);
-        PairId id = new PairId(user.getUserId(), group.getGroupId());
-        GroupMember leaderMember = new GroupMember(id, "It's mine!", user, group);
+        PairId id = new PairId(leader.getUserId(), group.getGroupId());
+        GroupMember leaderMember = new GroupMember(id, GroupStatus.JOINED, GroupStatus.CREATE_GROUP.getDescription(),
+                leader, group);
 
-        // Add vào collection (cascade sẽ persist)
-        group.getGroupMembers().add(leaderMember);
+        // thêm leader vào group members
+        group.addMember(leaderMember);
 
         return groupRepository.save(group);
     }
@@ -86,11 +96,13 @@ public class GroupService {
     public Groups updateGroup(GroupRequest groupRequest) {
         Groups group = findGroup(groupRequest.getGroupId());
 
-        // check user phải thuộc group mới được update
+        // check user phải thuộc group mới được chuyển thành leader
         Users leader = userService.findById(groupRequest.getLeaderId());
         for (UserResponse member : getMembers(groupRequest.getGroupId())) {
             if (member.getUserId().equals(leader.getUserId())) {
                 groupMapper.toUpdateGroup(group, groupRequest);
+
+                // phải set tay
                 group.setLeaderId(leader);
                 group.setCourse(courseService.findCourse(groupRequest.getCourseId()));
                 return groupRepository.save(group);
@@ -99,21 +111,27 @@ public class GroupService {
         throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
     }
 
-    public void updateGroupTag(String groupId, Tags tag) {
-        // ensure the group exists
+    public void updateGroupTag(String groupId, List<Tags> listTag) {
+        // check group tồn tại
         Groups group = findGroup(groupId);
-        // Ensure the tag exists
-        tag = tagService.findTag(tag.getTagId());
-        PairId id = new PairId(group.getGroupId(), tag.getTagId());
-        GroupTag groupTag = new GroupTag(id, group, tag);
-        group.getGroupTags().add(groupTag);
+
+        group.getGroupTags().clear();
+        for (Tags tag : listTag) {
+            // check tag tồn tại
+            tag = tagService.findTag(tag.getTagId());
+            PairId id = new PairId(group.getGroupId(), tag.getTagId());
+            GroupTag groupTag = new GroupTag(id, group, tag);
+            group.getGroupTags().add(groupTag);
+        }
         groupRepository.save(group);
     }
 
     public List<UserResponse> getMembers(String groupId) {
         Groups group = findGroup(groupId);
+
         return group.getGroupMembers()
                 .stream()
+                .filter(gm -> gm.getStatus() == GroupStatus.JOINED)
                 .map(gm -> {
                     Users u = gm.getUser();
                     return userMapper.queryUser(new UserResponse(), u);
@@ -125,32 +143,145 @@ public class GroupService {
         return groupRepository.findById(groupId).orElseThrow(() -> new AppException(ErrorCode.GROUP_NOT_FOUND));
     }
 
+    public Boolean isJoinAnotherGroupWithSameCourse(String userId, String courseId) {
+        int semester = getCurrentSemester();
+        Groups groups = groupRepository
+                .findGroupWithJoinedMember(semester,
+                        courseId, userId);
+        if (groups != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getSize(String groupId) {
+        return (int) findGroup(groupId).getGroupMembers().stream()
+                .filter(member -> member.getStatus() == GroupStatus.JOINED)
+                .count();
+    }
+
     public Groups addMember(String groupId, List<String> listUserId) {
         Groups group = findGroup(groupId);
         List<Users> users = userService.findAllById(listUserId);
 
-        // kiểm tra size list > group size
-        if (group.getGroupMembers().size() + users.size() > (int) group.getMaxMembers()) {
+        // check size list > group size
+        if (getSize(groupId) + users.size() > (int) group.getMaxMembers()) {
             throw new AppException(ErrorCode.GROUP_FULL);
         }
 
-        // ! kiểm tra list sai 1 vài userid báo lỗi kịp thời, tạm chưa cần
+        // ! check list sai 1 vài userid báo lỗi kịp thời, tạm chưa cần
         // if (users.size() != listUserId.size()) {
         // throw new AppException(ErrorCode.USER_NOT_FOUND);
         // }
 
         if (!users.isEmpty()) {
             for (Users user : users) {
+                // tìm xem user đã từng gửi yêu cầu chưa
+                // filter theo PairId, tồn tại thì xóa cái cũ
+                group.getGroupMembers().stream()
+                        .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                                && (member.getStatus() != GroupStatus.JOINED))
+                        .findFirst()
+                        .ifPresent(member -> group.removeMember(member));
+
+                // đã trong nhóm
+                if (groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(user.getUserId(),
+                        groupId,
+                        GroupStatus.JOINED)) {
+                    throw new AppException(ErrorCode.USER_ALREADY_IN_GROUP);
+                }
+
+                // check user đã trong group khác với môn học tương tự trong kỳ này chưa
+                if (isJoinAnotherGroupWithSameCourse(user.getUserId(), group.getCourse().getCourseId())) {
+                    throw new AppException(ErrorCode.USER_JOINED_ANOTHER_GROUP_SAME_COURSE);
+                }
+
                 PairId id = new PairId(user.getUserId(), group.getGroupId());
-                GroupMember groupMember = new GroupMember(id, "Add by leader!", user, group);
-                group.getGroupMembers().add(groupMember);
+                // thêm vào group với trạng thái chờ đối phương phê duyệt
+                GroupMember groupMember = new GroupMember(id, GroupStatus.PENDING_APPROVAL,
+                        GroupStatus.ADD_MEMBER.getDescription(), user,
+                        group);
+                group.addMember(groupMember);
             }
             return groupRepository.save(group);
         }
         throw new AppException(ErrorCode.USER_NOT_FOUND);
     }
 
-    public Groups kickOrOutGroup(String groupId, String userId) {
+    public void joinRequest(String groupId, String userId, String message) {
+        Groups group = findGroup(groupId);
+        Users user = userService.findById(userId);
+
+        // check đủ members chưa
+        if (getSize(groupId) >= (int) group.getMaxMembers()) {
+            throw new AppException(ErrorCode.GROUP_FULL);
+        }
+
+        // tìm xem user đã từng gửi yêu cầu chưa
+        // filter theo PairId, tồn tại thì xóa cái cũ
+        group.getGroupMembers().stream()
+                .filter(member -> member.getUser().getUserId().equals(userId)
+                        && (member.getStatus() != GroupStatus.JOINED))
+                .findFirst()
+                .ifPresent(member -> group.removeMember(member));
+
+        // đã trong nhóm
+        if (groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(userId, groupId,
+                GroupStatus.JOINED)) {
+            throw new AppException(ErrorCode.USER_ALREADY_IN_GROUP);
+        }
+
+        // check user đã trong group khác với môn học tương tự trong kỳ này chưa
+        if (isJoinAnotherGroupWithSameCourse(userId, group.getCourse().getCourseId())) {
+            throw new AppException(ErrorCode.USER_JOINED_ANOTHER_GROUP_SAME_COURSE);
+        }
+
+        PairId id = new PairId(userId, groupId);
+        GroupMember groupMember = new GroupMember(id, GroupStatus.WAITING_APPROVAL, message, user, group);
+        group.addMember(groupMember);
+        groupRepository.save(group);
+    }
+
+    // dùng cho leader và user từ chối lời mời
+    public void rejectJoinRequest(String groupId, String userId) {
+        Groups group = findGroup(groupId);
+
+        try {
+            group.getGroupMembers().stream()
+                    .filter(member -> member.getUser().getUserId().equals(userId)
+                            && (member.getStatus() == GroupStatus.WAITING_APPROVAL
+                                    || member.getStatus() == GroupStatus.PENDING_APPROVAL))
+                    .findFirst()
+                    .ifPresent(member -> member.setStatus(GroupStatus.REJECTED));
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
+        }
+        groupRepository.save(group);
+    }
+
+    // dùng cho leader và user chấp nhận lời mời
+    public void acceptJoinRequest(String groupId, String userId) {
+        Groups group = findGroup(groupId);
+
+        // check user đã trong group khác với môn học tương tự trong kỳ này chưa
+        if (isJoinAnotherGroupWithSameCourse(userId, group.getCourse().getCourseId())) {
+            throw new AppException(ErrorCode.USER_JOINED_ANOTHER_GROUP_SAME_COURSE);
+        }
+
+        try {
+            group.getGroupMembers().stream()
+                    .filter(member -> member.getUser().getUserId().equals(userId)
+                            && (member.getStatus() == GroupStatus.WAITING_APPROVAL
+                                    || member.getStatus() == GroupStatus.PENDING_APPROVAL))
+                    .findFirst()
+                    .ifPresent(member -> member.setStatus(GroupStatus.JOINED));
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
+        }
+        groupRepository.save(group);
+    }
+
+    public Groups kickOrOutGroup(String groupId, String userId, Boolean isKick) {
         Groups group = findGroup(groupId);
 
         // check user có phải leader
@@ -159,16 +290,16 @@ public class GroupService {
         }
 
         // check user có trong group
-        for (UserResponse user : getMembers(groupId)) {
-            if (user.getUserId().equals(userId)) {
-                if (!group.getGroupMembers()
-                        .removeIf(member -> member.getUser().getUserId().equals(userId))) {
-                    throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
-                }
-                return groupRepository.save(group);
-            }
+        try {
+            group.getGroupMembers().stream()
+                    .filter(member -> member.getUser().getUserId().equals(userId)
+                            && member.getStatus() == GroupStatus.JOINED)
+                    .findFirst()
+                    .ifPresent(member -> member.setStatus(isKick ? GroupStatus.REMOVED : GroupStatus.LEFT));
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
         }
-        throw new AppException(ErrorCode.USER_NOT_IN_GROUP);
+        return groupRepository.save(group);
     }
 
     public void deleteGroup(String groupId) {
@@ -176,6 +307,41 @@ public class GroupService {
             throw new AppException(ErrorCode.GROUP_NOT_FOUND);
         }
         groupRepository.deleteById(groupId);
+    }
+
+    public List<GroupResponse> getIndividualGroups(int pageNumber, int pageSize, String userId) {
+        int semester = getCurrentSemester();
+        List<String> tagIds = userService.findById(userId).getUserTags()
+                .stream()
+                .map(t -> t.getTag().getTagId())
+                .toList();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        // nếu user không có tag nào thì trả về bất kỳ
+        if (tagIds.isEmpty()) {
+            Page<Groups> page = groupRepository.findBySemester(semester, pageable);
+            List<Groups> groups = page.getContent();
+            return groups.stream().map(g -> {
+                GroupResponse response = groupMapper.toSearchGroup(g);
+                response.setIsMember(groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(
+                        userId, g.getGroupId(), GroupStatus.JOINED));
+                return response;
+            }).toList();
+        }
+
+        Page<Groups> page = groupRepository.findBySemesterAndGroupTags_Id_SecondIdIn(
+                semester,
+                tagIds,
+                pageable);
+        List<Groups> groups = page.getContent();
+
+        return groups.stream().map(g -> {
+            GroupResponse response = groupMapper.toSearchGroup(g);
+            response.setIsMember(groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(
+                    userId, g.getGroupId(), GroupStatus.JOINED));
+            return response;
+        }).toList();
     }
 
     /*

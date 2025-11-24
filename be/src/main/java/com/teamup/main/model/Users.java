@@ -35,14 +35,35 @@ public class Users {
     String faculty;
 
     // phải trỏ đúng tên mappedBy biến bên GroupMember
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // dùng set tranh trùng lặp
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({ "joinMessage", "user" })
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Set<GroupMember> groups = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Set<UserTag> userTags = new HashSet<>();
+
+    public void addUserTag(UserTag userTag) {
+        userTags.add(userTag);
+        userTag.setUser(this);
+    }
+
+    public void removeUserTag(UserTag userTag) {
+        userTags.remove(userTag);
+        userTag.setUser(null);
+    }
+
+    public void addGroupMember(GroupMember groupMember) {
+        groups.add(groupMember);
+        groupMember.setUser(this);
+    }
+
+    public void removeGroupMember(GroupMember groupMember) {
+        groups.remove(groupMember);
+        groupMember.setUser(null);
+    }
 }

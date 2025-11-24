@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,7 +34,7 @@ public class UserController {
     /*
      * User only
      */
-    @PutMapping("/{userId}")
+    @PatchMapping("/{userId}")
     public ApiResponse<Users> updateUser(@PathVariable String userId, @RequestBody @Valid UserUpdateRequest request) {
         return ApiResponse.<Users>builder()
                 .code(200)
@@ -69,9 +70,9 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/{userId}/tag")
-    public ApiResponse<Void> updateUserTag(@PathVariable String userId, @RequestBody @Valid Tags tag) {
-        userService.updateUserTag(userId, tag);
+    @PatchMapping("/{userId}/tags")
+    public ApiResponse<Void> updateUserTag(@PathVariable String userId, @RequestBody @Valid List<Tags> listTag) {
+        userService.updateUserTag(userId, listTag);
         return ApiResponse.<Void>builder()
                 .code(200)
                 .message("User updated in group successfully")
@@ -83,6 +84,7 @@ public class UserController {
      */
     @PostMapping("/admin")
     public ApiResponse<Users> createUser(@RequestBody @Valid UserCreationRequest request) {
+        // transform to GoogleAccount
         GoogleAccount googleAccount = GoogleAccount.builder()
                 .email(request.getEmail())
                 .given_name(request.getFirstName())

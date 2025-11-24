@@ -1,5 +1,7 @@
 package com.teamup.main.exception;
 
+import com.teamup.main.enums.ErrorCode;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;

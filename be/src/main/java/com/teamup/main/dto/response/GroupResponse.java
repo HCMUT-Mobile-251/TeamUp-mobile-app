@@ -20,4 +20,7 @@ public class GroupResponse {
 
     Courses course;
     Set<GroupTag> groupTags;
+
+    // để ui hiện thị nút join hoặc view
+    Boolean isMember;
 }

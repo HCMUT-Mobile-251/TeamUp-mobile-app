@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.teamup.main.exception.AppException;
-import com.teamup.main.exception.ErrorCode;
+import com.teamup.main.enums.ErrorCode;
 import com.teamup.main.model.Courses;
 import com.teamup.main.repository.CourseRepository;
 
