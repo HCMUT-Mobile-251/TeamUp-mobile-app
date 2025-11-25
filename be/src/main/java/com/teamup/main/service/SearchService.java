@@ -71,11 +71,11 @@ public class SearchService {
 
         // filter theo tags nếu mọi thông tin khác không null hoặc rỗng
         if (request.getCourse() != null
-                || request.getCourse().getCourseId().isBlank()
-                || request.getCourse().getName().isBlank()
-                || request.getName().isBlank()
-                || request.getTopicName().isBlank()
-                || request.getGroupClass().isBlank()) {
+                && request.getCourse().getCourseId().isBlank()
+                && request.getCourse().getName().isBlank()
+                && request.getName().isBlank()
+                && request.getTopicName().isBlank()
+                && request.getGroupClass().isBlank()) {
             groups = groups.stream()
                     .filter(g -> {
                         for (String tag : request.getTagId()) {
