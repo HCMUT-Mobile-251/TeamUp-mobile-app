@@ -32,8 +32,6 @@ import lombok.experimental.FieldDefaults;
 @Service
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GroupService {
-
-    private final AuthController authController;
     @Autowired
     GroupRepository groupRepository;
 
@@ -51,10 +49,6 @@ public class GroupService {
 
     @Autowired
     UserMapper userMapper;
-
-    GroupService(AuthController authController) {
-        this.authController = authController;
-    }
 
     /*
      * User only

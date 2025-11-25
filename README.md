@@ -21,7 +21,7 @@
 - **JPA / Hibernate** (làm việc với DB)  
 - **MySQL** (cơ sở dữ liệu chính)  
 
-### Mobile App
+### Frontend
 - **React Native + Expo** (phát triển ứng dụng đa nền tảng)  
 - **Axios / Retrofit** (kết nối API)  
 - **React Navigation** (điều hướng màn hình)  
@@ -48,6 +48,8 @@ mvn spring-boot:run
 ### Frontend
 ```bash
 cd fe
+
+# Using pnpm
 pnpm install
 pnpm start
 
@@ -56,7 +58,9 @@ or can be replace pnpm with npm or yarn
 
 
 ## 👨‍💻 Thành viên đóng góp
-Nguyễn Huy Hoàng - 2211093
-Nguyễn Thanh Hoàng - 2211101
-Trương An Khang - 
-Quách Hoàng - 
+| Họ tên              | MSSV     |
+|---------------------|----------|
+| Nguyễn Huy Hoàng    | 2211093  |
+| Nguyễn Thanh Hoàng  | 2211101  |
+| Trương An Khang     | 2211476  |
+| Quách Nguyễn Hoàng  | 1952705  |
