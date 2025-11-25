@@ -39,17 +39,23 @@
 ### Backend
 ```bash
 cd be
-./mvnw spring-boot:run
+./mvnw clean spring-boot:run
+
+or simple 
+mvn spring-boot:run
 ```
 
 ### Frontend
 ```bash
 cd fe
+
+# Using pnpm
 pnpm install
 pnpm start
+
+or can be replace pnpm with npm or yarn
 ```
 
----
 
 ## 👨‍💻 Thành viên đóng góp
 | Họ tên              | MSSV     |
