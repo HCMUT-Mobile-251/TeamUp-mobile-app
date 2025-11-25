@@ -1,5 +1,7 @@
 package com.teamup.main.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,4 +24,9 @@ public enum GroupStatus {
     CREATE_GROUP("Nhóm được tạo bởi nhóm trưởng!");
 
     String description;
+
+    @JsonValue
+    public String getDescription() {
+        return description;
+    }
 }

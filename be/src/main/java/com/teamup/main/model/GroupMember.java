@@ -1,5 +1,7 @@
 package com.teamup.main.model;
 
+import java.time.Instant;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.teamup.main.enums.GroupStatus;
@@ -34,6 +36,8 @@ public class GroupMember {
     @Enumerated(EnumType.STRING)
     GroupStatus status;
     String joinMessage;
+    Instant time;
+    boolean isDeleted = false;
 
     @ManyToOne
     @MapsId("firstId")

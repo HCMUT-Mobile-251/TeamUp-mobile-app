@@ -1,14 +1,15 @@
 package com.teamup.main.service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.teamup.main.controller.AuthController;
 import com.teamup.main.dto.request.GroupRequest;
 import com.teamup.main.dto.response.GroupResponse;
 import com.teamup.main.dto.response.UserResponse;
@@ -70,8 +71,9 @@ public class GroupService {
         // để có groupId
         group = groupRepository.save(group);
         PairId id = new PairId(leader.getUserId(), group.getGroupId());
+        Instant now = Instant.now();
         GroupMember leaderMember = new GroupMember(id, GroupStatus.JOINED, GroupStatus.CREATE_GROUP.getDescription(),
-                leader, group);
+                now, false, leader, group);
 
         // thêm leader vào group members
         group.addMember(leaderMember);
@@ -170,14 +172,6 @@ public class GroupService {
 
         if (!users.isEmpty()) {
             for (Users user : users) {
-                // tìm xem user đã từng gửi yêu cầu chưa
-                // filter theo PairId, tồn tại thì xóa cái cũ
-                group.getGroupMembers().stream()
-                        .filter(member -> member.getUser().getUserId().equals(user.getUserId())
-                                && (member.getStatus() != GroupStatus.JOINED))
-                        .findFirst()
-                        .ifPresent(member -> group.removeMember(member));
-
                 // đã trong nhóm
                 if (groupRepository.existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(user.getUserId(),
                         groupId,
@@ -190,10 +184,31 @@ public class GroupService {
                     throw new AppException(ErrorCode.USER_JOINED_ANOTHER_GROUP_SAME_COURSE);
                 }
 
+                // tìm xem user đã từng gửi yêu cầu chưa
+                // đang send request thì join luôn
+                Optional<GroupMember> existing = group.getGroupMembers().stream()
+                        .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                                && member.getStatus() == GroupStatus.WAITING_APPROVAL)
+                        .findFirst();
+                if (existing.isPresent()) {
+                    GroupMember member = existing.get();
+                    group.addMember(member);
+                    member.setStatus(GroupStatus.JOINED);
+                    return groupRepository.save(group); // return sớm
+                }
+
+                // filter theo PairId, tồn tại thì xóa cái cũ
+                group.getGroupMembers().stream()
+                        .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                                && (member.getStatus() != GroupStatus.JOINED))
+                        .findFirst()
+                        .ifPresent(member -> group.removeMember(member));
+
                 PairId id = new PairId(user.getUserId(), group.getGroupId());
+                Instant now = Instant.now();
                 // thêm vào group với trạng thái chờ đối phương phê duyệt
                 GroupMember groupMember = new GroupMember(id, GroupStatus.PENDING_APPROVAL,
-                        GroupStatus.ADD_MEMBER.getDescription(), user,
+                        GroupStatus.ADD_MEMBER.getDescription(), now, false, user,
                         group);
                 group.addMember(groupMember);
             }
@@ -212,6 +227,18 @@ public class GroupService {
         }
 
         // tìm xem user đã từng gửi yêu cầu chưa
+        // được mời thì join luôn
+        Optional<GroupMember> existing = group.getGroupMembers().stream()
+                .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                        && member.getStatus() == GroupStatus.PENDING_APPROVAL)
+                .findFirst();
+        if (existing.isPresent()) {
+            GroupMember member = existing.get();
+            group.addMember(member);
+            member.setStatus(GroupStatus.JOINED);
+            return; // return sớm
+        }
+
         // filter theo PairId, tồn tại thì xóa cái cũ
         group.getGroupMembers().stream()
                 .filter(member -> member.getUser().getUserId().equals(userId)
@@ -231,7 +258,8 @@ public class GroupService {
         }
 
         PairId id = new PairId(userId, groupId);
-        GroupMember groupMember = new GroupMember(id, GroupStatus.WAITING_APPROVAL, message, user, group);
+        Instant now = Instant.now();
+        GroupMember groupMember = new GroupMember(id, GroupStatus.WAITING_APPROVAL, message, now, false, user, group);
         group.addMember(groupMember);
         groupRepository.save(group);
     }
