@@ -20,6 +20,8 @@ import ProfileScreen from "./screens/ProfileScreen";
 import JoinGroupScreen from "./screens/JoinGroupScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
+import Onboarding1Screen from "./screens/Onboarding1Screen";
+import Onboarding2Screen from "./screens/Onboarding2Screen";
 
 export const AuthContext = React.createContext();
 
@@ -133,6 +135,7 @@ function Tabs({ navigation }) {
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
 
   // 👉 đọc flag SKIP_AUTH từ app.json
   const SKIP_AUTH = Constants.expoConfig?.extra?.SKIP_AUTH;
@@ -145,7 +148,9 @@ export default function App() {
         setLoading(false);
       } else {
         const t = await SecureStore.getItemAsync("auth_token");
+        const onboardingSeen = await SecureStore.getItemAsync("onboarding_seen");
         setToken(t);
+        setHasSeenOnboarding(onboardingSeen === "true");
         setLoading(false);
       }
     })();
@@ -161,9 +166,18 @@ export default function App() {
         await SecureStore.deleteItemAsync("auth_token");
         setToken(null);
       },
+      markOnboardingSeen: async () => {
+        await SecureStore.setItemAsync("onboarding_seen", "true");
+        setHasSeenOnboarding(true);
+      },
+      resetOnboarding: async () => {
+        await SecureStore.deleteItemAsync("onboarding_seen");
+        setHasSeenOnboarding(false);
+      },
       token,
+      hasSeenOnboarding,
     }),
-    [token]
+    [token, hasSeenOnboarding]
   );
 
   if (loading) {
@@ -204,6 +218,34 @@ export default function App() {
                 name="AdvancedSearch"
                 component={AdvancedSearchScreen}
                 options={{ title: "Tìm kiếm nâng cao" }}
+              />
+              <Stack.Screen
+                name="Onboarding1"
+                component={Onboarding1Screen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Onboarding2"
+                component={Onboarding2Screen}
+                options={{ headerShown: false }}
+              />
+            </>
+          ) : !hasSeenOnboarding ? (
+            <>
+              <Stack.Screen
+                name="Onboarding1"
+                component={Onboarding1Screen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Onboarding2"
+                component={Onboarding2Screen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerShown: false }}
               />
             </>
           ) : (

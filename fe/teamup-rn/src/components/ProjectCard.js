@@ -4,11 +4,18 @@ import Tag from "./Tag";
 import { colors, radii, shadow } from "../ui/theme";
 
 export default function ProjectCard({
-  title = "Đồ án AI",
-  tags = ["AI", "Machine learning"],
-  members = 3,
+  data,
+  title,
+  tags,
+  members,
   onPress,
 }) {
+  // Use data from API if available, otherwise use props
+  const displayTitle = data?.name || data?.topicName || title || "Đồ án";
+  const displayTags = data?.tags?.map(t => t.name) || tags || [];
+  const displayMembers = data?.currentMembers || data?.memberCount || members || 0;
+  const maxMembers = data?.maxMembers || null;
+
   return (
     <View
       style={[
@@ -28,9 +35,16 @@ export default function ProjectCard({
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
-          {title}
-        </Text>
+        <View style={{ flex: 1, marginRight: 12 }}>
+          <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
+            {displayTitle}
+          </Text>
+          {data?.groupClass && (
+            <Text style={{ fontSize: 14, color: colors.subtext, marginTop: 4 }}>
+              Lớp: {data.groupClass}
+            </Text>
+          )}
+        </View>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={onPress}
@@ -42,21 +56,36 @@ export default function ProjectCard({
           }}
         >
           <Text style={{ color: colors.pink, fontWeight: "800" }}>
-            Tham gia
+            Xem
           </Text>
         </TouchableOpacity>
       </View>
 
-      <View style={{ flexDirection: "row", marginTop: 10, flexWrap: "wrap" }}>
-        {tags.map((t, i) => (
-          <Tag key={i} label={t} />
-        ))}
-      </View>
+      {displayTags.length > 0 && (
+        <View style={{ flexDirection: "row", marginTop: 10, flexWrap: "wrap" }}>
+          {displayTags.slice(0, 3).map((t, i) => (
+            <Tag key={i} label={t} />
+          ))}
+          {displayTags.length > 3 && (
+            <Tag label={`+${displayTags.length - 3}`} />
+          )}
+        </View>
+      )}
 
       <View
         style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}
       >
-        <Text style={{ color: colors.subtext }}>👥 {members}</Text>
+        <Text style={{ color: colors.subtext }}>
+          👥 {displayMembers}{maxMembers ? `/${maxMembers}` : ''}
+        </Text>
+        {data?.description && (
+          <Text
+            style={{ color: colors.subtext, marginLeft: 12, flex: 1 }}
+            numberOfLines={1}
+          >
+            • {data.description}
+          </Text>
+        )}
       </View>
     </View>
   );

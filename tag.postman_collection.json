@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "3728727a-b39c-4c6c-a6c4-42aedcd22248",
+		"name": "tag",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40131075",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/70syivl/tag?action=share&source=collection_link&creator=40131075"
+	},
+	"item": [
+		{
+			"name": "update-tag-user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"tagId\": \"3dba97e7-210a-45c6-ba39-b8cd147068a2\",\r\n        \"name\": \"anh văn\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/user/ce9b3366-3c54-4687-981c-ca7a21ab2c66/tags",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"ce9b3366-3c54-4687-981c-ca7a21ab2c66",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-tag-group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"tagId\": \"68a43104-88f0-4bf2-96b4-7b8c356d3dae\",\r\n        \"name\": \"name ko qtr :vv\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/group/4745fd8f-c2d1-4ffb-8b53-0d6f0578d798/tags",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"group",
+						"4745fd8f-c2d1-4ffb-8b53-0d6f0578d798",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"name\": \"đại cương\"\r\n    },\r\n    {\r\n        \"name\": \"công nghệ phần mềm\"\r\n    },\r\n    {\r\n        \"name\": \"anh văn\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tag/admin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tag",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "del",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"name\": \"đại cương\"\r\n    },\r\n    {\r\n        \"name\": \"công nghệ phần mềm\"\r\n    },\r\n    {\r\n        \"name\": \"anh văn\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tag/admin/c5d29769-f27c-49fa-bf32-e5df8133ee5c",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tag",
+						"admin",
+						"c5d29769-f27c-49fa-bf32-e5df8133ee5c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"name\": \"đại cương\"\r\n    },\r\n    {\r\n        \"name\": \"công nghệ phần mềm\"\r\n    },\r\n    {\r\n        \"name\": \"anh văn\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tag/admin/all",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tag",
+						"admin",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"name\": \"đại cương\"\r\n    },\r\n    {\r\n        \"name\": \"công nghệ phần mềm\"\r\n    },\r\n    {\r\n        \"name\": \"anh văn\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/tag?search=vân",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"tag"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "vân"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

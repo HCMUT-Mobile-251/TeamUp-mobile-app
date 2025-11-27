@@ -7,12 +7,18 @@ import {
   SafeAreaView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 import Tag from "../src/components/Tag";
 import { AuthContext } from "../App";
 import { colors, radii, shadow } from "../src/ui/theme";
 
 export default function ProfileScreen() {
-  const { signOut } = useContext(AuthContext);
+  const { signOut, resetOnboarding } = useContext(AuthContext);
+  const navigation = useNavigation();
+
+  const handleViewOnboarding = async () => {
+    navigation.navigate("Onboarding1");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -67,11 +73,40 @@ export default function ProfileScreen() {
           ))}
         </View>
 
+        {/* Nút xem onboarding */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={handleViewOnboarding}
+          style={{ marginTop: 32, borderRadius: radii.lg, ...shadow.card }}
+        >
+          <LinearGradient
+            colors={[colors.pink, "#FF6BA9"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              borderRadius: radii.lg,
+              paddingVertical: 16,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: colors.white,
+                fontWeight: "800",
+                fontSize: 16,
+              }}
+            >
+              Xem giới thiệu app
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
         {/* Nút đăng xuất */}
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={signOut}
-          style={{ marginTop: 32, borderRadius: radii.lg, ...shadow.card }}
+          style={{ marginTop: 16, borderRadius: radii.lg, ...shadow.card }}
         >
           <LinearGradient
             colors={[colors.primary, colors.primary2]}

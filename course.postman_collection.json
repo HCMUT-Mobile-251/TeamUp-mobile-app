@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "08593836-a10c-46ec-b114-535bdf7785ce",
+		"name": "course",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40131075",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/v0qktmu/course?action=share&source=collection_link&creator=40131075"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"courseId\": \"400433\",\r\n        \"name\": \"Luận văn tốt nghiệp\"\r\n    },\r\n    {\r\n        \"courseId\": \"409303\",\r\n        \"name\": \"Luận văn tốt nghiệp\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS2009\",\r\n        \"name\": \"Csở cơ học lượng tử - vlcr\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS2013\",\r\n        \"name\": \"CAD ứng dụng\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS2015\",\r\n        \"name\": \"Thực tập cơ kỹ thuật 1\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS2031\",\r\n        \"name\": \"Đồ án môn học - thiết kế kt\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS2069\",\r\n        \"name\": \"PP số cho KH dữ liệu\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS3105\",\r\n        \"name\": \"Cơ sở y khoa\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS3153\",\r\n        \"name\": \"Thực tập cơ kỹ thuật\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS3171\",\r\n        \"name\": \"Đồ án môn học - thiết kế kt\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4005\",\r\n        \"name\": \"Đồ án chuyên ngành (vlkt)\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4007\",\r\n        \"name\": \"Đồ án chuyên ngành (ckt)\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4317\",\r\n        \"name\": \"Luận văn tốt nghiệp (ckt)\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4325\",\r\n        \"name\": \"Đề cương luận văn tn\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4337\",\r\n        \"name\": \"Đồ án tốt nghiệp (ckt)\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS4347\",\r\n        \"name\": \"Đồ án tốt nghiệp\"\r\n    },\r\n    {\r\n        \"courseId\": \"AS5009\",\r\n        \"name\": \"Chuyên đề vật lý nâng cao 1\"\r\n    }\r\n\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/course/admin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"course",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search-id or name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/course?search=Y",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"course"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "Y"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/course/admin/all",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"course",
+						"admin",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
