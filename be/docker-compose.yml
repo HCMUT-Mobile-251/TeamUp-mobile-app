@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    # Sử dụng Dockerfile trong thư mục hiện tại để build image
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # Ánh xạ port 8080 của container ra port 8080 trên host
+    ports:
+      - "8080:8080"
+      
+    # ĐỊNH NGHĨA QUAN TRỌNG: Tải tất cả biến môi trường từ file .env
+    env_file:
+      - ./.env
+      
+    # Khởi động lại nếu nó bị lỗi
+    restart: always
+
+# Bạn có thể thêm service database (như mysql) ở đây nếu cần
+# networks:
+#   - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
