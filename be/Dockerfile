@@ -11,5 +11,8 @@ WORKDIR /app
 # copy jar từ stage 1
 COPY --from=builder /app/target/*.jar app.jar
 
+# copy file .env vào container
+# COPY --from=builder /app/.env .env
+
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
