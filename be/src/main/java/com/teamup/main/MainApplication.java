@@ -12,4 +12,4 @@ public class MainApplication {
 
 }
 // fe login GET href này : 
-// https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/auth/login&response_type=code&client_id=67346913521-0bql06om6o8kj610ferhl52le2uqh3jr.apps.googleusercontent.com&approval_prompt=force
+// https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=https://teamup-mobile-app.onrender.com/auth/login&response_type=code&client_id=67346913521-0bql06om6o8kj610ferhl52le2uqh3jr.apps.googleusercontent.com&approval_prompt=force
