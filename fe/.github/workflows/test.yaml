@@ -1,0 +1,61 @@
+name: CI - Test & Coverage
+
+on:
+  push:
+    branches: [ main, UnitTest, develop, SonarCloud ]
+  pull_request:
+    branches: [ main, develop, UnitTest, SonarCloud ]
+
+permissions:
+  contents: write
+  actions: read
+  checks: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage --coverageReporters="json-summary" --coverageReporters="lcov"
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      # 👇 NEW: Extract coverage percentage
+      - name: Extract coverage percentage
+        id: coverage_json
+        run: |
+          LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "lines=$LINES" >> $GITHUB_OUTPUT
+
+      # Generate coverage badge
+      - name: Generate coverage badge
+        id: coverage
+        uses: emibcn/badge-action@v2
+        with:
+          label: coverage
+          status: ${{ steps.coverage_json.outputs.lines }}
+          color: green
+          path: coverage-badge.svg
+
+      - name: Commit coverage badge
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update coverage badge"
+          file_pattern: coverage-badge.svg
