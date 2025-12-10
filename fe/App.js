@@ -142,8 +142,8 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      if (SKIP_AUTH) {
-        // Bỏ qua đăng nhập – gán token giả để app vào thẳng Home
+      if (SKIP_AUTH || Platform.OS === 'web') {
+        // Bỏ qua đăng nhập – gán token giả để app vào thẳng Home (hoặc chạy trên web)
         setToken("debug-token");
         setLoading(false);
       } else {
