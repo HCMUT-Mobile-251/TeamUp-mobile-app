@@ -1,54 +1,168 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import Screen from "../src/ui/Screen";
 import Tag from "../src/components/Tag";
 import ProjectCard from "../src/components/ProjectCard";
 import { colors, radii } from "../src/ui/theme";
+import { searchGroups } from "../src/api/searchService";
+import { getAllTags } from "../src/api/tagService";
 
 export default function SearchScreen({ navigation }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [tagsLoading, setTagsLoading] = useState(true);
+
+  // Load popular tags on mount
+  useEffect(() => {
+    loadTags();
+  }, []);
+
+  const loadTags = async () => {
+    try {
+      const response = await getAllTags();
+      if (response.code === 200) {
+        setTags(response.result || []);
+      }
+    } catch (error) {
+      console.error("Error loading tags:", error);
+      // Fallback to default tags
+      setTags([
+        { tagId: "1", name: "Machine learning" },
+        { tagId: "2", name: "Web Development" },
+        { tagId: "3", name: "Mobile app" },
+        { tagId: "4", name: "IoT" },
+        { tagId: "5", name: "UX/UI" },
+        { tagId: "6", name: "Data Science" },
+      ]);
+    } finally {
+      setTagsLoading(false);
+    }
+  };
+
+  const handleSearch = async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await searchGroups(query);
+      if (response.code === 200) {
+        setSearchResults(response.result || []);
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearchChange = (text) => {
+    setSearchQuery(text);
+    // Debounce search
+    const timeoutId = setTimeout(() => {
+      handleSearch(text);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  };
+
+  const handleTagPress = (tagName) => {
+    setSearchQuery(tagName);
+    handleSearch(tagName);
+  };
+
   return (
     <Screen>
-      <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
-        Tìm kiếm
-      </Text>
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: "#E2E8F0",
-          borderRadius: radii.lg,
-          paddingHorizontal: 12,
-          paddingVertical: 8,
-          marginBottom: 12,
-          backgroundColor: colors.white,
-        }}
-      >
-        <TextInput placeholder="Tìm đề tài, thành viên" />
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
+          Tìm kiếm
+        </Text>
 
-      <Text style={{ fontWeight: "800", marginBottom: 8 }}>Tags phổ biến</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {[
-          "Machine learning",
-          "Web Development",
-          "Mobile app",
-          "IoT",
-          "UX/UI",
-          "Data Science",
-        ].map((t) => (
-          <Tag key={t} label={t} />
-        ))}
-      </View>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            borderRadius: radii.lg,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            marginBottom: 12,
+            backgroundColor: colors.white,
+          }}
+        >
+          <TextInput
+            placeholder="Tìm đề tài, môn học, thành viên..."
+            value={searchQuery}
+            onChangeText={handleSearchChange}
+            style={{ fontSize: 16 }}
+          />
+        </View>
 
-      <Text style={{ marginTop: 16, fontWeight: "800" }}>Đề xuất</Text>
-      {[1, 2, 3].map((i) => (
-        <ProjectCard key={i} onPress={() => navigation.navigate("JoinGroup")} />
-      ))}
-      <Text
-        onPress={() => navigation.navigate("AdvancedSearch")}
-        style={{ marginTop: 8, alignSelf: "flex-end", color: colors.primary }}
-      >
-        Tìm kiếm nâng cao →
-      </Text>
+        {/* Tags Section */}
+        <Text style={{ fontWeight: "800", marginBottom: 8 }}>Tags phổ biến</Text>
+        {tagsLoading ? (
+          <ActivityIndicator style={{ marginVertical: 10 }} />
+        ) : (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 16 }}>
+            {tags.slice(0, 8).map((tag) => (
+              <TouchableOpacity key={tag.tagId} onPress={() => handleTagPress(tag.name)}>
+                <Tag label={tag.name} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
+        {/* Search Results */}
+        {searchQuery.trim() ? (
+          <>
+            <Text style={{ marginTop: 8, fontWeight: "800", marginBottom: 8 }}>
+              Kết quả tìm kiếm ({searchResults.length})
+            </Text>
+            {loading ? (
+              <View style={{ padding: 20, alignItems: "center" }}>
+                <ActivityIndicator size="large" color={colors.primary} />
+              </View>
+            ) : searchResults.length > 0 ? (
+              searchResults.map((group) => (
+                <ProjectCard
+                  key={group.groupId}
+                  data={group}
+                  onPress={() =>
+                    navigation.navigate("GroupInfo", { groupId: group.groupId })
+                  }
+                />
+              ))
+            ) : (
+              <View style={{ padding: 24, alignItems: "center" }}>
+                <Text style={{ color: colors.subtext, fontSize: 16 }}>
+                  Không tìm thấy kết quả phù hợp
+                </Text>
+              </View>
+            )}
+          </>
+        ) : (
+          <>
+            <Text style={{ marginTop: 16, fontWeight: "800", marginBottom: 8 }}>
+              Gợi ý cho bạn
+            </Text>
+            <Text style={{ color: colors.subtext, fontSize: 14, marginBottom: 12 }}>
+              Nhập từ khóa để tìm kiếm nhóm
+            </Text>
+          </>
+        )}
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AdvancedSearch")}
+          style={{ marginTop: 16, marginBottom: 20, alignSelf: "flex-end" }}
+        >
+          <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            Tìm kiếm nâng cao →
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </Screen>
   );
 }

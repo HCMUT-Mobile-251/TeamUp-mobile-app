@@ -159,19 +159,35 @@ export default function App() {
   const authContext = useMemo(
     () => ({
       signIn: async (tkn) => {
-        await SecureStore.setItemAsync("auth_token", tkn);
+        if (Platform.OS === 'web') {
+          localStorage.setItem("auth_token", tkn);
+        } else {
+          await SecureStore.setItemAsync("auth_token", tkn);
+        }
         setToken(tkn);
       },
       signOut: async () => {
-        await SecureStore.deleteItemAsync("auth_token");
+        if (Platform.OS === 'web') {
+          localStorage.removeItem("auth_token");
+        } else {
+          await SecureStore.deleteItemAsync("auth_token");
+        }
         setToken(null);
       },
       markOnboardingSeen: async () => {
-        await SecureStore.setItemAsync("onboarding_seen", "true");
+        if (Platform.OS === 'web') {
+          localStorage.setItem("onboarding_seen", "true");
+        } else {
+          await SecureStore.setItemAsync("onboarding_seen", "true");
+        }
         setHasSeenOnboarding(true);
       },
       resetOnboarding: async () => {
-        await SecureStore.deleteItemAsync("onboarding_seen");
+        if (Platform.OS === 'web') {
+          localStorage.removeItem("onboarding_seen");
+        } else {
+          await SecureStore.deleteItemAsync("onboarding_seen");
+        }
         setHasSeenOnboarding(false);
       },
       token,
