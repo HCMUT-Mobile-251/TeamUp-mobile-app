@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof:*)",
+      "Bash(mvn:*)",
+      "Bash(test:*)",
+      "Bash(node --version:*)",
+      "Bash(cp:*)",
+      "Bash(./mvnw spring-boot:run:*)",
+      "Bash(pnpm start)",
+      "Bash(npx expo start:*)",
+      "Bash(git log:*)",
+      "Bash(npm start)",
+      "Bash(kill:*)",
+      "Bash(xargs kill:*)",
+      "Bash(npm --version:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(git stash pop:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

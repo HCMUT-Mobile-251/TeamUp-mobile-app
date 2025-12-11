@@ -1,0 +1,272 @@
+import React, { useContext, useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+  RefreshControl,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
+import Tag from "../src/components/Tag";
+import { AuthContext } from "../App";
+import { colors, radii, shadow } from "../src/ui/theme";
+import { getUserById } from "../src/api/userService";
+
+export default function ProfileScreen() {
+  const { signOut, resetOnboarding } = useContext(AuthContext);
+  const navigation = useNavigation();
+
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
+
+  // TODO: Replace with actual userId from auth context
+  // This is the UUID userId, NOT studentId
+  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
+
+  const loadUserData = async (isRefreshing = false) => {
+    if (!isRefreshing) setLoading(true);
+    setError(null);
+
+    try {
+      const response = await getUserById(userId);
+      if (response.code === 200) {
+        setUserData(response.result);
+      } else {
+        setError(response.message || "Không thể tải thông tin người dùng");
+      }
+    } catch (error) {
+      console.error("Load user error:", error);
+      setError(error.response?.data?.message || "Có lỗi xảy ra");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    loadUserData(true);
+  };
+
+  const handleViewOnboarding = async () => {
+    navigation.navigate("Onboarding1");
+  };
+
+  const handleEditProfile = () => {
+    Alert.alert(
+      "Chức năng đang phát triển",
+      "Tính năng chỉnh sửa thông tin cá nhân sẽ được thêm trong phiên bản tiếp theo!"
+    );
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" color={colors.primary} />
+          <Text style={{ marginTop: 12, color: colors.subtext }}>
+            Đang tải thông tin...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (error) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 24 }}>
+          <Text style={{ color: colors.subtext, fontSize: 16, marginBottom: 12, textAlign: "center" }}>
+            {error}
+          </Text>
+          <TouchableOpacity
+            onPress={() => loadUserData()}
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: radii.md,
+            }}
+          >
+            <Text style={{ color: colors.white, fontWeight: "700" }}>Thử lại</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+      <ScrollView
+        contentContainerStyle={{ padding: 16 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Text style={{ fontSize: 24, fontWeight: "900", color: colors.text }}>
+            Thông tin cá nhân
+          </Text>
+          <TouchableOpacity onPress={handleEditProfile}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>Chỉnh sửa</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Card thông tin */}
+        <View
+          style={[
+            {
+              backgroundColor: colors.white,
+              borderRadius: radii.lg,
+              padding: 20,
+              marginTop: 16,
+            },
+            shadow.card,
+          ]}
+        >
+          <Row label="Tên" value={userData?.fullName || "Chưa cập nhật"} />
+          <Row label="MSSV" value={userData?.studentId || "Chưa cập nhật"} />
+          <Row label="Khoa" value={userData?.faculty || "Chưa cập nhật"} />
+          <Row label="Số điện thoại" value={userData?.phoneNumber || "Chưa cập nhật"} />
+          <Row label="Email" value={userData?.email || "Chưa cập nhật"} />
+        </View>
+
+        {/* Tags quan tâm */}
+        <Text
+          style={{
+            fontWeight: "800",
+            fontSize: 18,
+            marginTop: 24,
+            marginBottom: 8,
+            color: colors.text,
+          }}
+        >
+          Tags quan tâm
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            backgroundColor: colors.white,
+            borderRadius: radii.lg,
+            padding: 16,
+            ...shadow.card,
+          }}
+        >
+          {userData?.userTags && userData.userTags.length > 0 ? (
+            userData.userTags.map((tag) => (
+              <Tag key={tag.tagId} label={tag.name} />
+            ))
+          ) : (
+            <Text style={{ color: colors.subtext, fontSize: 14 }}>
+              Chưa có tags quan tâm
+            </Text>
+          )}
+        </View>
+
+        {/* Stats */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            backgroundColor: colors.white,
+            borderRadius: radii.lg,
+            padding: 20,
+            marginTop: 16,
+            ...shadow.card,
+          }}
+        >
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", color: colors.primary }}>
+              {userData?.groups?.length || 0}
+            </Text>
+            <Text style={{ color: colors.subtext, marginTop: 4 }}>Nhóm tham gia</Text>
+          </View>
+          <View style={{ width: 1, backgroundColor: colors.subtext, opacity: 0.2 }} />
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", color: colors.pink }}>
+              {userData?.userTags?.length || 0}
+            </Text>
+            <Text style={{ color: colors.subtext, marginTop: 4 }}>Tags quan tâm</Text>
+          </View>
+        </View>
+
+        {/* Nút xem onboarding */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={handleViewOnboarding}
+          style={{ marginTop: 32, borderRadius: radii.lg, ...shadow.card }}
+        >
+          <LinearGradient
+            colors={[colors.pink, "#FF6BA9"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              borderRadius: radii.lg,
+              paddingVertical: 16,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: colors.white,
+                fontWeight: "800",
+                fontSize: 16,
+              }}
+            >
+              Xem giới thiệu app
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+
+        {/* Nút đăng xuất */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={signOut}
+          style={{ marginTop: 16, marginBottom: 20, borderRadius: radii.lg, ...shadow.card }}
+        >
+          <LinearGradient
+            colors={[colors.primary, colors.primary2]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{
+              borderRadius: radii.lg,
+              paddingVertical: 16,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: colors.white,
+                fontWeight: "800",
+                fontSize: 16,
+              }}
+            >
+              Đăng xuất
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+/* Component nhỏ để render từng dòng */
+const Row = ({ label, value }) => (
+  <View style={{ marginBottom: 12 }}>
+    <Text style={{ fontWeight: "700", color: colors.subtext }}>{label}</Text>
+    <Text style={{ color: colors.text, marginTop: 2 }}>{value}</Text>
+  </View>
+);
