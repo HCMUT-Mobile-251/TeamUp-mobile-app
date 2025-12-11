@@ -5,10 +5,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Platform,
 } from "react-native";
 import Constants from "expo-constants";
 import { AuthContext } from "../App";
 import * as Linking from "expo-linking";
+import * as SecureStore from "expo-secure-store";
 
 export default function LoginScreen() {
   const { signIn } = useContext(AuthContext);
@@ -17,7 +19,7 @@ export default function LoginScreen() {
   const OAUTH_URL =
     Constants?.expoConfig?.extra?.GOOGLE_OAUTH_URL ||
     process.env.GOOGLE_OAUTH_URL ||
-    "https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/auth/login&response_type=code&client_id=67346913521-0bql06om6o8kj610ferhl52le2uqh3jr.apps.googleusercontent.com&approval_prompt=force";
+    "https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/auth-redirect.html&response_type=code&client_id=67346913521-0bql06om6o8kj610ferhl52le2uqh3jr.apps.googleusercontent.com&approval_prompt=force";
 
   const handleGoogle = async () => {
     try {
@@ -31,12 +33,24 @@ export default function LoginScreen() {
     }
   };
 
-  // Deep link handler (teamup://auth?token=...)
+  // Deep link handler (teamup://auth?token=...&userId=...)
   React.useEffect(() => {
-    const sub = Linking.addEventListener("url", ({ url }) => {
+    const sub = Linking.addEventListener("url", async ({ url }) => {
       const parsed = Linking.parse(url);
       if (parsed?.queryParams?.token) {
-        signIn(parsed.queryParams.token);
+        const token = parsed.queryParams.token;
+        const userId = parsed.queryParams.userId;
+
+        // Lưu userId vào storage
+        if (userId) {
+          if (Platform.OS === 'web') {
+            localStorage.setItem("user_id", userId);
+          } else {
+            await SecureStore.setItemAsync("user_id", userId);
+          }
+        }
+
+        signIn(token);
       }
     });
     return () => sub.remove();
@@ -77,7 +91,7 @@ export default function LoginScreen() {
         {loading ? <ActivityIndicator /> : <Text>Sign in with Google</Text>}
       </TouchableOpacity>
       <Text style={{ marginTop: 16, color: "#666", textAlign: "center" }}>
-        Sau khi đăng nhập, BE hãy redirect về teamup://auth?token=JWT
+        Đăng nhập bằng tài khoản HCMUT
       </Text>
     </View>
   );
