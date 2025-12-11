@@ -1,16 +1,46 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, Platform } from "react-native";
+import * as SecureStore from "expo-secure-store";
 import Screen from "../src/ui/Screen";
 import ProjectCard from "../src/components/ProjectCard";
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import ErrorMessage from "../src/components/ErrorMessage";
-import { colors, radii, shadow } from "../src/ui/theme";
-import { useAllGroups } from "../src/hooks";
-import { AuthContext } from "../App";
+import { colors, radii } from "../src/ui/theme";
+import { useUser } from "../src/hooks";
 
 export default function HomeScreen({ navigation }) {
-  const { token } = useContext(AuthContext);
-  const { data: groups, loading, error, refetch } = useAllGroups(0, 20);
+  const [userId, setUserId] = useState(null);
+
+  // Load userId from storage
+  useEffect(() => {
+    (async () => {
+      try {
+        let id;
+        if (Platform.OS === 'web') {
+          id = localStorage.getItem("user_id");
+        } else {
+          id = await SecureStore.getItemAsync("user_id");
+        }
+        if (!id) {
+          // Fallback to hardcoded UUID if not found
+          id = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
+        }
+        setUserId(id);
+      } catch (error) {
+        console.error("Error loading userId:", error);
+        setUserId("af4937ad-0d3b-4bfe-ba61-ba984f266c48");
+      }
+    })();
+  }, []);
+
+  const { data: user, loading, error, refetch } = useUser(userId);
+
+  // Extract groups from user data
+  const groups = user?.groups?.map(gm => ({
+    ...gm.group,
+    memberStatus: gm.status,
+    joinTime: gm.time
+  })) || [];
 
   // Loading state
   if (loading) {
@@ -29,7 +59,7 @@ export default function HomeScreen({ navigation }) {
     <Screen>
       <View style={{ marginBottom: 16 }}>
         <Text style={{ fontSize: 22, fontWeight: "900", color: colors.text }}>
-          Hello! Tam Hoàng
+          Hello! {user?.firstName || "User"}
         </Text>
         <View
           style={[
