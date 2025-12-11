@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**") // chặn tất cả
                 .excludePathPatterns(
                         "/auth/**", // mấy API login, callback Google
+                        "/auth-redirect.html", // OAuth redirect page
                         "/public/**", // file tĩnh hay API công khai
                         "/error", // tránh vòng lặp lỗi
                         "/favicon.ico", // khỏi intercept mấy request linh tinh
