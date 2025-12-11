@@ -12,7 +12,7 @@ import {
   getGroupById,
   joinGroup,
   leaveGroup,
-  approveJoinRequest,
+  acceptJoinRequest,
   rejectJoinRequest,
 } from "../src/api/groupService";
 
@@ -108,7 +108,7 @@ export default function GroupInfoScreen({ route, navigation }) {
   const handleApproveRequest = async (userId) => {
     setActionLoading(true);
     try {
-      const response = await approveJoinRequest(groupId, userId);
+      const response = await acceptJoinRequest(groupId, userId);
       if (response.code === 200) {
         Alert.alert("Thành công", "Đã duyệt yêu cầu!");
         loadGroupInfo();
