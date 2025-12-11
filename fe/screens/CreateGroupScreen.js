@@ -77,10 +77,6 @@ export default function CreateGroupScreen({ navigation }) {
       Alert.alert("Lỗi", "Số lượng thành viên phải lớn hơn 0");
       return false;
     }
-    if (!formData.semester.trim()) {
-      Alert.alert("Lỗi", "Vui lòng nhập học kỳ (VD: 251)");
-      return false;
-    }
     return true;
   };
 
@@ -89,17 +85,22 @@ export default function CreateGroupScreen({ navigation }) {
 
     setLoading(true);
     try {
+      // TODO: Replace with actual userId from auth context
+      const currentUserId = "2211093";
+
       const groupData = {
         courseId: formData.courseId,
         name: formData.name,
         topicName: formData.topicName,
         description: formData.description || "",
         maxMembers: parseInt(formData.maxMembers),
-        semester: parseInt(formData.semester),
         groupClass: formData.groupClass || "",
+        leaderId: currentUserId, // User hiện tại sẽ là leader
       };
 
+      console.log("Creating group with data:", groupData);
       const response = await createGroup(groupData);
+      console.log("Create group response:", response);
 
       if (response.code === 200 || response.code === 201) {
         Alert.alert(
@@ -108,7 +109,10 @@ export default function CreateGroupScreen({ navigation }) {
           [
             {
               text: "OK",
-              onPress: () => navigation.goBack(),
+              onPress: () => {
+                // Navigate to home and reset the stack
+                navigation.navigate("Main", { screen: "Home" });
+              },
             },
           ]
         );
@@ -129,7 +133,7 @@ export default function CreateGroupScreen({ navigation }) {
   const renderInput = (label, field, placeholder, keyboardType = "default") => (
     <View style={{ marginBottom: 12 }}>
       <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
-        {label} {["courseId", "name", "topicName", "maxMembers", "semester"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
+        {label} {["courseId", "name", "topicName", "maxMembers"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
       </Text>
       <View
         style={{
