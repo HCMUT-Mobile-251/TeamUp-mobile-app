@@ -25,7 +25,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/course/**", // dev: tạm thời cho phép truy cập course API
                         "/group/**", // dev: tạm thời cho phép truy cập group API
                         "/tag/**", // dev: tạm thời cho phép truy cập tag API
-                        "/search/**" // dev: tạm thời cho phép truy cập search API
+                        "/search/**", // dev: tạm thời cho phép truy cập search API
+                        "/notification/**", // dev: tạm thời cho phép truy cập notification API
+                        "/user/**" // dev: tạm thời cho phép truy cập user API
                 );
     }
 
