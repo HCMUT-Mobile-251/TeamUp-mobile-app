@@ -86,7 +86,8 @@ export default function CreateGroupScreen({ navigation }) {
     setLoading(true);
     try {
       // TODO: Replace with actual userId from auth context
-      const currentUserId = "2211093";
+      // This is the UUID userId, NOT studentId
+      const currentUserId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
       const groupData = {
         courseId: formData.courseId,

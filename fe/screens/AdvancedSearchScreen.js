@@ -35,7 +35,8 @@ export default function AdvancedSearchScreen({ navigation }) {
   const [courseSearching, setCourseSearching] = useState(false);
 
   // TODO: Replace with actual userId from auth context
-  const userId = "2211093";
+  // This is the UUID userId, NOT studentId
+  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
   // Load tags on mount
   useEffect(() => {

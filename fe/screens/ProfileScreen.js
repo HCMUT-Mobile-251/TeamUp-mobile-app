@@ -26,7 +26,8 @@ export default function ProfileScreen() {
   const [error, setError] = useState(null);
 
   // TODO: Replace with actual userId from auth context
-  const userId = "2211093"; // Hardcoded for now
+  // This is the UUID userId, NOT studentId
+  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
   const loadUserData = async (isRefreshing = false) => {
     if (!isRefreshing) setLoading(true);
