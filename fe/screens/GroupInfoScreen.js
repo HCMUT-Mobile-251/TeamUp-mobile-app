@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -10,14 +10,16 @@ import {
 import { colors, radii } from "../src/ui/theme";
 import {
   getGroupById,
-  joinGroup,
+  sendJoinRequest,
   leaveGroup,
   acceptJoinRequest,
   rejectJoinRequest,
 } from "../src/api/groupService";
+import { AuthContext } from "../App";
 
 export default function GroupInfoScreen({ route, navigation }) {
   const { groupId } = route.params;
+  const { userId } = useContext(AuthContext);
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
@@ -44,6 +46,11 @@ export default function GroupInfoScreen({ route, navigation }) {
   };
 
   const handleJoinGroup = async () => {
+    if (!userId) {
+      Alert.alert("Lỗi", "Không tìm thấy thông tin người dùng");
+      return;
+    }
+
     Alert.alert(
       "Tham gia nhóm",
       "Bạn có muốn gửi yêu cầu tham gia nhóm này?",
@@ -54,7 +61,10 @@ export default function GroupInfoScreen({ route, navigation }) {
           onPress: async () => {
             setActionLoading(true);
             try {
-              const response = await joinGroup(groupId);
+              const response = await sendJoinRequest(groupId, {
+                userId: userId,
+                message: "Xin chào, tôi muốn tham gia nhóm này!"
+              });
               if (response.code === 200) {
                 Alert.alert("Thành công", "Đã gửi yêu cầu tham gia nhóm!");
                 loadGroupInfo(); // Reload to see updated status
@@ -74,6 +84,11 @@ export default function GroupInfoScreen({ route, navigation }) {
   };
 
   const handleLeaveGroup = async () => {
+    if (!userId) {
+      Alert.alert("Lỗi", "Không tìm thấy thông tin người dùng");
+      return;
+    }
+
     Alert.alert(
       "Rời nhóm",
       "Bạn có chắc muốn rời khỏi nhóm này?",
@@ -85,7 +100,7 @@ export default function GroupInfoScreen({ route, navigation }) {
           onPress: async () => {
             setActionLoading(true);
             try {
-              const response = await leaveGroup(groupId);
+              const response = await leaveGroup(groupId, userId);
               if (response.code === 200) {
                 Alert.alert("Thành công", "Đã rời khỏi nhóm!", [
                   { text: "OK", onPress: () => navigation.goBack() },
@@ -185,50 +200,66 @@ export default function GroupInfoScreen({ route, navigation }) {
     </View>
   );
 
-  const MemberItem = ({ member }) => (
-    <View
-      style={{
-        backgroundColor: "#fff",
-        borderRadius: radii.md,
-        padding: 12,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: "#E2E8F0",
-      }}
-    >
-      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "600", fontSize: 15 }}>
-            {member.user?.firstName} {member.user?.lastName}
-          </Text>
-          <Text style={{ color: colors.subtext, fontSize: 13, marginTop: 2 }}>
-            {member.user?.email}
-          </Text>
-          <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 2 }}>
-            Trạng thái: {member.status}
-          </Text>
-        </View>
-        {member.status === "Đang chờ duyệt" && (
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity
-              onPress={() => handleApproveRequest(member.user?.userId)}
-              style={{ padding: 8, backgroundColor: "#10B981", borderRadius: radii.sm, marginRight: 8 }}
-              disabled={actionLoading}
-            >
-              <Text style={{ color: "#fff", fontSize: 12, fontWeight: "600" }}>Duyệt</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleRejectRequest(member.user?.userId)}
-              style={{ padding: 8, backgroundColor: "#EF4444", borderRadius: radii.sm }}
-              disabled={actionLoading}
-            >
-              <Text style={{ color: "#fff", fontSize: 12, fontWeight: "600" }}>Từ chối</Text>
-            </TouchableOpacity>
+  const MemberItem = ({ member }) => {
+    // Translate status to Vietnamese
+    const getStatusText = (status) => {
+      switch (status) {
+        case "PENDING":
+          return "Đang chờ duyệt";
+        case "ACCEPTED":
+          return "Đã được chấp nhận";
+        case "REJECTED":
+          return "Đã bị từ chối";
+        default:
+          return status || "N/A";
+      }
+    };
+
+    return (
+      <View
+        style={{
+          backgroundColor: "#fff",
+          borderRadius: radii.md,
+          padding: 12,
+          marginBottom: 8,
+          borderWidth: 1,
+          borderColor: "#E2E8F0",
+        }}
+      >
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontWeight: "600", fontSize: 15 }}>
+              {member.user?.firstName} {member.user?.lastName}
+            </Text>
+            <Text style={{ color: colors.subtext, fontSize: 13, marginTop: 2 }}>
+              {member.user?.email}
+            </Text>
+            <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 2 }}>
+              Trạng thái: {getStatusText(member.status)}
+            </Text>
           </View>
-        )}
+          {member.status === "PENDING" && (
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => handleApproveRequest(member.user?.userId)}
+                style={{ padding: 8, backgroundColor: "#10B981", borderRadius: radii.sm, marginRight: 8 }}
+                disabled={actionLoading}
+              >
+                <Text style={{ color: "#fff", fontSize: 12, fontWeight: "600" }}>Duyệt</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleRejectRequest(member.user?.userId)}
+                style={{ padding: 8, backgroundColor: "#EF4444", borderRadius: radii.sm }}
+                disabled={actionLoading}
+              >
+                <Text style={{ color: "#fff", fontSize: 12, fontWeight: "600" }}>Từ chối</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }} showsVerticalScrollIndicator={false}>

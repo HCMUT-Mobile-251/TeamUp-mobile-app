@@ -16,6 +16,7 @@ import com.teamup.main.service.SearchService;
 import jakarta.validation.Valid;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/search")
@@ -34,7 +35,7 @@ public class SearchController {
                 .build();
     }
 
-    @GetMapping("/advance")
+    @PostMapping("/advance")
     public ApiResponse<List<GroupResponse>> advanceSearchGroups(@RequestBody @Valid SearchRequest request) {
         return ApiResponse.<List<GroupResponse>>builder()
                 .code(200)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,8 +11,10 @@ import {
 import { colors, radii } from "../src/ui/theme";
 import { createGroup } from "../src/api/groupService";
 import { searchCourses } from "../src/api/courseService";
+import { AuthContext } from "../App";
 
 export default function CreateGroupScreen({ navigation }) {
+  const { userId } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     courseId: "",
@@ -85,10 +87,6 @@ export default function CreateGroupScreen({ navigation }) {
 
     setLoading(true);
     try {
-      // TODO: Replace with actual userId from auth context
-      // This is the UUID userId, NOT studentId
-      const currentUserId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
-
       const groupData = {
         courseId: formData.courseId,
         name: formData.name,
@@ -96,7 +94,7 @@ export default function CreateGroupScreen({ navigation }) {
         description: formData.description || "",
         maxMembers: parseInt(formData.maxMembers),
         groupClass: formData.groupClass || "",
-        leaderId: currentUserId, // User hiện tại sẽ là leader
+        leaderId: userId, // User hiện tại sẽ là leader
       };
 
       console.log("Creating group with data:", groupData);

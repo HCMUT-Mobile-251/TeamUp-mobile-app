@@ -17,17 +17,13 @@ import { colors, radii, shadow } from "../src/ui/theme";
 import { getUserById } from "../src/api/userService";
 
 export default function ProfileScreen() {
-  const { signOut, resetOnboarding } = useContext(AuthContext);
+  const { userId, signOut, resetOnboarding } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
-
-  // TODO: Replace with actual userId from auth context
-  // This is the UUID userId, NOT studentId
-  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
   const loadUserData = async (isRefreshing = false) => {
     if (!isRefreshing) setLoading(true);

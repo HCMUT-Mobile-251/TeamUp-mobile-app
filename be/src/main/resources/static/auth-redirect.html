@@ -104,20 +104,39 @@
 
                 statusEl.textContent = 'Đang mở ứng dụng...';
 
-                // Tạo deep link với token
-                const deepLink = `teamup://auth?token=${encodeURIComponent(token)}&userId=${encodeURIComponent(userId)}`;
+                // Lưu token và userId vào localStorage cho web
+                localStorage.setItem('auth_token', token);
+                localStorage.setItem('user_id', userId);
 
-                // Cập nhật manual link
-                manualLinkEl.href = deepLink;
-                manualLinkEl.style.display = 'inline-block';
+                // Kiểm tra xem đang chạy trên web hay mobile
+                const isWeb = window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1');
 
-                // Thử redirect tự động
-                window.location.href = deepLink;
+                if (isWeb) {
+                    // Nếu là web, redirect với token trong URL hash để tránh vấn đề Same-Origin Policy
+                    statusEl.textContent = 'Đang chuyển về trang chủ...';
 
-                // Hiển thị link thủ công sau 2 giây nếu không tự động redirect
-                setTimeout(() => {
-                    statusEl.textContent = 'Nếu ứng dụng không tự động mở, hãy nhấn nút bên dưới:';
-                }, 2000);
+                    console.log('Token:', token);
+                    console.log('UserId:', userId);
+
+                    // Sử dụng URL hash để truyền token (không gửi lên server)
+                    const redirectUrl = `http://localhost:8081/#auth?token=${encodeURIComponent(token)}&userId=${encodeURIComponent(userId)}`;
+                    window.location.href = redirectUrl;
+                } else {
+                    // Nếu là mobile, dùng deep link
+                    const deepLink = `teamup://auth?token=${encodeURIComponent(token)}&userId=${encodeURIComponent(userId)}`;
+
+                    // Cập nhật manual link
+                    manualLinkEl.href = deepLink;
+                    manualLinkEl.style.display = 'inline-block';
+
+                    // Thử redirect tự động
+                    window.location.href = deepLink;
+
+                    // Hiển thị link thủ công sau 2 giây nếu không tự động redirect
+                    setTimeout(() => {
+                        statusEl.textContent = 'Nếu ứng dụng không tự động mở, hãy nhấn nút bên dưới:';
+                    }, 2000);
+                }
 
             } catch (error) {
                 console.error('Auth redirect error:', error);
