@@ -1,16 +1,23 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { useContext } from "react";
+import { View, Text } from "react-native";
 import Screen from "../src/ui/Screen";
 import ProjectCard from "../src/components/ProjectCard";
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import ErrorMessage from "../src/components/ErrorMessage";
-import { colors, radii, shadow } from "../src/ui/theme";
-import { useAllGroups } from "../src/hooks";
+import { colors, radii } from "../src/ui/theme";
+import { useUser } from "../src/hooks";
 import { AuthContext } from "../App";
 
 export default function HomeScreen({ navigation }) {
-  const { token } = useContext(AuthContext);
-  const { data: groups, loading, error, refetch } = useAllGroups(0, 20);
+  const { userId } = useContext(AuthContext);
+  const { data: user, loading, error, refetch } = useUser(userId);
+
+  // Extract groups from user data
+  const groups = user?.groups?.map(gm => ({
+    ...gm.group,
+    memberStatus: gm.status,
+    joinTime: gm.time
+  })) || [];
 
   // Loading state
   if (loading) {
@@ -29,7 +36,7 @@ export default function HomeScreen({ navigation }) {
     <Screen>
       <View style={{ marginBottom: 16 }}>
         <Text style={{ fontSize: 22, fontWeight: "900", color: colors.text }}>
-          Hello! Tam Hoàng
+          Hello! {user?.firstName || "User"}
         </Text>
         <View
           style={[

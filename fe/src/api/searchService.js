@@ -34,8 +34,6 @@ export const searchNormal = async (query, userId) => {
  * @returns {Promise} - Advanced search results
  */
 export const searchAdvanced = async (criteria) => {
-  const response = await client.get("/search/advance", {
-    data: criteria,
-  });
+  const response = await client.post("/search/advance", criteria);
   return response.data;
 };

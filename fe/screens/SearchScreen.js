@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import Screen from "../src/ui/Screen";
 import Tag from "../src/components/Tag";
 import ProjectCard from "../src/components/ProjectCard";
 import { colors, radii } from "../src/ui/theme";
-import { searchGroups } from "../src/api/searchService";
+import { searchNormal } from "../src/api/searchService";
 import { getAllTags } from "../src/api/tagService";
+import { AuthContext } from "../App";
 
 export default function SearchScreen({ navigation }) {
+  const { userId } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [tags, setTags] = useState([]);
@@ -49,7 +51,7 @@ export default function SearchScreen({ navigation }) {
 
     setLoading(true);
     try {
-      const response = await searchGroups(query);
+      const response = await searchNormal(query, userId);
       if (response.code === 200) {
         setSearchResults(response.result || []);
       }

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
 import Screen from "../src/ui/Screen";
 import Tag from "../src/components/Tag";
 import { colors, radii, shadow } from "../src/ui/theme";
 import { getNotificationsByUserId, deleteNotification } from "../src/api/notificationService";
 import { acceptJoinRequest, rejectJoinRequest } from "../src/api/groupService";
+import { AuthContext } from "../App";
 
 function NotificationCard({ notification, onAction }) {
   const [actionLoading, setActionLoading] = useState(false);
@@ -227,14 +228,11 @@ function NotificationCard({ notification, onAction }) {
 }
 
 export default function NotificationsScreen({ navigation }) {
+  const { userId } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
-
-  // TODO: Replace with actual userId from auth context
-  // This is the UUID userId, NOT studentId
-  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
   const loadNotifications = async (isRefreshing = false) => {
     if (!isRefreshing) setLoading(true);

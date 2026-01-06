@@ -135,6 +135,7 @@ function Tabs({ navigation }) {
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
 
   // 👉 đọc flag SKIP_AUTH từ app.json
@@ -142,14 +143,33 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      if (SKIP_AUTH || Platform.OS === 'web') {
-        // Bỏ qua đăng nhập – gán token giả để app vào thẳng Home (hoặc chạy trên web)
+      if (SKIP_AUTH) {
+        // Bỏ qua đăng nhập – gán token giả để app vào thẳng Home
         setToken("debug-token");
+        setUserId("af4937ad-0d3b-4bfe-ba61-ba984f266c48"); // Valid userId from deployed DB
+        setLoading(false);
+      } else if (Platform.OS === 'web') {
+        // Đọc token thật từ localStorage cho web
+        const t = localStorage.getItem("auth_token");
+        const uid = localStorage.getItem("user_id");
+        const onboardingSeen = localStorage.getItem("onboarding_seen");
+        console.log('[App.js] Reading from localStorage:', {
+          token: t ? `${t.substring(0, 20)}...` : 'null',
+          userId: uid,
+          onboardingSeen,
+          allKeys: Object.keys(localStorage)
+        });
+        setToken(t);
+        setUserId(uid);
+        setHasSeenOnboarding(onboardingSeen === "true");
         setLoading(false);
       } else {
+        // Đọc token từ SecureStore cho mobile
         const t = await SecureStore.getItemAsync("auth_token");
+        const uid = await SecureStore.getItemAsync("user_id");
         const onboardingSeen = await SecureStore.getItemAsync("onboarding_seen");
         setToken(t);
+        setUserId(uid);
         setHasSeenOnboarding(onboardingSeen === "true");
         setLoading(false);
       }
@@ -169,10 +189,21 @@ export default function App() {
       signOut: async () => {
         if (Platform.OS === 'web') {
           localStorage.removeItem("auth_token");
+          localStorage.removeItem("user_id");
         } else {
           await SecureStore.deleteItemAsync("auth_token");
+          await SecureStore.deleteItemAsync("user_id");
         }
         setToken(null);
+        setUserId(null);
+      },
+      setUserId: async (uid) => {
+        if (Platform.OS === 'web') {
+          localStorage.setItem("user_id", uid);
+        } else {
+          await SecureStore.setItemAsync("user_id", uid);
+        }
+        setUserId(uid);
       },
       markOnboardingSeen: async () => {
         if (Platform.OS === 'web') {
@@ -191,9 +222,10 @@ export default function App() {
         setHasSeenOnboarding(false);
       },
       token,
+      userId,
       hasSeenOnboarding,
     }),
-    [token, hasSeenOnboarding]
+    [token, userId, hasSeenOnboarding]
   );
 
   if (loading) {

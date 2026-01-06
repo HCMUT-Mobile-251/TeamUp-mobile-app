@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,10 @@ import Tag from "../src/components/Tag";
 import { searchAdvanced } from "../src/api/searchService";
 import { getAllTags } from "../src/api/tagService";
 import { searchCourses } from "../src/api/courseService";
+import { AuthContext } from "../App";
 
 export default function AdvancedSearchScreen({ navigation }) {
+  const { userId } = useContext(AuthContext);
   const [searchCriteria, setSearchCriteria] = useState({
     name: "",
     groupClass: "",
@@ -33,10 +35,6 @@ export default function AdvancedSearchScreen({ navigation }) {
   const [tagsLoading, setTagsLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [courseSearching, setCourseSearching] = useState(false);
-
-  // TODO: Replace with actual userId from auth context
-  // This is the UUID userId, NOT studentId
-  const userId = "af4937ad-0d3b-4bfe-ba61-ba984f266c48";
 
   // Load tags on mount
   useEffect(() => {
