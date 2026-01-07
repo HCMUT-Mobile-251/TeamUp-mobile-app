@@ -313,12 +313,17 @@ public class GroupService {
                     .filter(member -> member.getStatus() == GroupStatus.JOINED)
                     .count();
 
+            System.out.println("Leader rời nhóm - Số thành viên JOINED: " + acceptedMemberCount);
+            System.out.println("Tổng số groupMembers: " + group.getGroupMembers().size());
+
             // Nếu leader là người duy nhất (không có thành viên nào khác), xóa nhóm
             if (acceptedMemberCount == 0) {
+                System.out.println("Xóa nhóm " + groupId + " vì leader là thành viên duy nhất");
                 deleteGroup(groupId);
                 return group;
             } else {
                 // Nếu có thành viên khác, yêu cầu chuyển quyền leader trước
+                System.out.println("Không thể xóa nhóm - còn " + acceptedMemberCount + " thành viên JOINED");
                 throw new AppException(ErrorCode.NO_LEADER);
             }
         }

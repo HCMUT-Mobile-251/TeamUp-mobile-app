@@ -91,7 +91,13 @@ export default function GroupInfoScreen({ route, navigation }) {
 
     // Check if user is leader
     if (isLeader) {
-      const acceptedMembers = group.groupMembers?.filter(m => m.status === "JOINED") || [];
+      // Count JOINED members excluding leader (if leader is also in groupMembers)
+      const acceptedMembers = group.groupMembers?.filter(
+        m => m.status === "JOINED" && m.user?.userId !== userId
+      ) || [];
+
+      console.log("Leader checking leave - JOINED members (excluding leader):", acceptedMembers.length);
+      console.log("Total groupMembers:", group.groupMembers?.length);
 
       if (acceptedMembers.length > 0) {
         Alert.alert(
@@ -112,7 +118,9 @@ export default function GroupInfoScreen({ route, navigation }) {
               onPress: async () => {
                 setActionLoading(true);
                 try {
+                  console.log("Attempting to delete group:", groupId, "by leader:", userId);
                   const response = await leaveGroup(groupId, userId);
+                  console.log("Delete group response:", response);
                   if (response.code === 200) {
                     Alert.alert("Thành công", "Đã xóa nhóm!", [
                       {
@@ -242,7 +250,11 @@ export default function GroupInfoScreen({ route, navigation }) {
   const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
   const isUserInGroup = !!userMember && userMember.status === "JOINED";
   const isLeader = group.leaderId?.userId === userId;
-  const memberCount = (group.groupMembers?.filter(m => m.status === "JOINED")?.length || 0) + (isLeader ? 1 : 0);
+
+  // Count members: JOINED members + leader (if leader is not in groupMembers)
+  const joinedMembers = group.groupMembers?.filter(m => m.status === "JOINED") || [];
+  const leaderInMembers = joinedMembers.some(m => m.user?.userId === group.leaderId?.userId);
+  const memberCount = joinedMembers.length + (leaderInMembers ? 0 : 1);
 
   const InfoRow = ({ label, value }) => (
     <View style={{ marginBottom: 12 }}>
