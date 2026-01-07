@@ -51,11 +51,18 @@ export default function AdvancedSearchScreen({ navigation }) {
   const loadTags = async () => {
     try {
       const response = await getAllTags();
+      console.log("[AdvancedSearchScreen] getAllTags response:", response);
       if (response.code === 200) {
+        console.log("[AdvancedSearchScreen] Tags loaded:", response.result?.length || 0, "tags");
         setTags(response.result || []);
+      } else {
+        console.log("[AdvancedSearchScreen] Unexpected response code:", response.code);
+        setTags([]);
       }
     } catch (error) {
-      console.error("Error loading tags:", error);
+      console.error("[AdvancedSearchScreen] Error loading tags:", error);
+      console.error("[AdvancedSearchScreen] Error details:", error.response?.data);
+      setTags([]);
     } finally {
       setTagsLoading(false);
     }

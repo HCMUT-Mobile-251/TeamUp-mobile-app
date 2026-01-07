@@ -24,20 +24,18 @@ export default function SearchScreen({ navigation }) {
   const loadTags = async () => {
     try {
       const response = await getAllTags();
+      console.log("[SearchScreen] getAllTags response:", response);
       if (response.code === 200) {
+        console.log("[SearchScreen] Tags loaded:", response.result?.length || 0, "tags");
         setTags(response.result || []);
+      } else {
+        console.log("[SearchScreen] Unexpected response code:", response.code);
+        setTags([]);
       }
     } catch (error) {
-      console.error("Error loading tags:", error);
-      // Fallback to default tags
-      setTags([
-        { tagId: "1", name: "Machine learning" },
-        { tagId: "2", name: "Web Development" },
-        { tagId: "3", name: "Mobile app" },
-        { tagId: "4", name: "IoT" },
-        { tagId: "5", name: "UX/UI" },
-        { tagId: "6", name: "Data Science" },
-      ]);
+      console.error("[SearchScreen] Error loading tags:", error);
+      console.error("[SearchScreen] Error details:", error.response?.data);
+      setTags([]);
     } finally {
       setTagsLoading(false);
     }
