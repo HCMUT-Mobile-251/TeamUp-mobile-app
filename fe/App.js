@@ -17,6 +17,8 @@ import SearchScreen from "./screens/SearchScreen";
 import AdvancedSearchScreen from "./screens/AdvancedSearchScreen";
 import NotificationsScreen from "./screens/NotificationsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import EditProfileScreen from "./screens/EditProfileScreen";
+import CompleteProfileScreen from "./screens/CompleteProfileScreen";
 import JoinGroupScreen from "./screens/JoinGroupScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
@@ -266,6 +268,20 @@ export default function App() {
                 name="AdvancedSearch"
                 component={AdvancedSearchScreen}
                 options={{ title: "Tìm kiếm nâng cao" }}
+              />
+              <Stack.Screen
+                name="EditProfile"
+                component={EditProfileScreen}
+                options={{ title: "Chỉnh sửa thông tin" }}
+              />
+              <Stack.Screen
+                name="CompleteProfile"
+                component={CompleteProfileScreen}
+                options={{
+                  title: "Hoàn thiện thông tin",
+                  headerLeft: () => null,
+                  gestureEnabled: false,
+                }}
               />
               {/* Onboarding screens cho user đã đăng nhập muốn xem lại */}
               <Stack.Screen

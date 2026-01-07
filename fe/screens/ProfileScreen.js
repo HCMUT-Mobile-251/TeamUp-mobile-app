@@ -87,10 +87,7 @@ export default function ProfileScreen() {
   };
 
   const handleEditProfile = () => {
-    Alert.alert(
-      "Chức năng đang phát triển",
-      "Tính năng chỉnh sửa thông tin cá nhân sẽ được thêm trong phiên bản tiếp theo!"
-    );
+    navigation.navigate("EditProfile");
   };
 
   if (loading) {

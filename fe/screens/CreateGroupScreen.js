@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   View,
   Text,
@@ -7,11 +7,37 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { colors, radii } from "../src/ui/theme";
 import { createGroup } from "../src/api/groupService";
 import { searchCourses } from "../src/api/courseService";
 import { AuthContext } from "../App";
+
+// Hàm tính học kỳ hiện tại
+const getCurrentSemester = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // 0-indexed
+
+  // Học kỳ 1: tháng 9-12 (năm trước) -> 231, 241, 251
+  // Học kỳ 2: tháng 1-5 (năm này) -> 232, 242, 252
+  // Học kỳ hè: tháng 6-8 (năm này) -> 233, 243, 253
+
+  const lastTwoDigits = year % 100; // 2024 -> 24
+
+  if (month >= 9 && month <= 12) {
+    // Học kỳ 1
+    return `${lastTwoDigits}1`;
+  } else if (month >= 1 && month <= 5) {
+    // Học kỳ 2
+    return `${lastTwoDigits}2`;
+  } else {
+    // Học kỳ hè (6-8)
+    return `${lastTwoDigits}3`;
+  }
+};
 
 export default function CreateGroupScreen({ navigation }) {
   const { userId } = useContext(AuthContext);
@@ -20,7 +46,7 @@ export default function CreateGroupScreen({ navigation }) {
     courseId: "",
     courseName: "",
     groupClass: "",
-    semester: "",
+    semester: getCurrentSemester(), // Tự động tính học kỳ
     name: "",
     topicName: "",
     maxMembers: "",
@@ -29,6 +55,10 @@ export default function CreateGroupScreen({ navigation }) {
 
   const [courses, setCourses] = useState([]);
   const [courseSearching, setCourseSearching] = useState(false);
+
+  // Refs cho scroll và inputs
+  const scrollViewRef = useRef(null);
+  const inputRefs = useRef({});
 
   // Search course when courseId changes
   useEffect(() => {
@@ -110,7 +140,7 @@ export default function CreateGroupScreen({ navigation }) {
               text: "OK",
               onPress: () => {
                 // Navigate to home and reset the stack
-                navigation.navigate("Main", { screen: "Home" });
+                navigation.navigate("Tabs", { screen: "Home" });
               },
             },
           ]
@@ -129,57 +159,110 @@ export default function CreateGroupScreen({ navigation }) {
     }
   };
 
-  const renderInput = (label, field, placeholder, keyboardType = "default") => (
-    <View style={{ marginBottom: 12 }}>
-      <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
-        {label} {["courseId", "name", "topicName", "maxMembers"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
-      </Text>
+  const renderInput = (label, field, placeholder, keyboardType = "default", options = {}) => {
+    const isDisabled = options.disabled || false;
+    const isEditable = !loading && !isDisabled;
+    const autoFocus = options.autoFocus || false;
+
+    return (
       <View
-        style={{
-          borderWidth: 1,
-          borderColor: "#E2E8F0",
-          borderRadius: radii.md,
-          paddingHorizontal: 12,
-          paddingVertical: 12,
-          backgroundColor: colors.white,
+        style={{ marginBottom: 12 }}
+        onLayout={(event) => {
+          const layout = event.nativeEvent.layout;
+          inputRefs.current[field] = layout.y;
         }}
       >
+        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+          {label} {["courseId", "name", "topicName", "maxMembers"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
+        </Text>
         <TextInput
           placeholder={placeholder}
           value={formData[field]}
           onChangeText={(value) => handleInputChange(field, value)}
           keyboardType={keyboardType}
-          editable={!loading}
+          editable={isEditable}
+          autoFocus={autoFocus}
+          onFocus={() => {
+            // Scroll đến vị trí của input khi focus
+            if (scrollViewRef.current && inputRefs.current[field]) {
+              scrollViewRef.current.scrollTo({
+                y: inputRefs.current[field] - 100,
+                animated: true,
+              });
+            }
+          }}
+          style={{
+            borderWidth: 1,
+            borderColor: isDisabled ? "#F1F5F9" : "#E2E8F0",
+            borderRadius: radii.md,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            backgroundColor: isDisabled ? "#F8FAFC" : colors.white,
+            color: isDisabled ? "#94A3B8" : "#000",
+          }}
         />
+        {field === "courseId" && courseSearching && (
+          <ActivityIndicator style={{ marginTop: 4 }} size="small" />
+        )}
       </View>
-      {field === "courseId" && courseSearching && (
-        <ActivityIndicator style={{ marginTop: 4 }} size="small" />
-      )}
-    </View>
-  );
+    );
+  };
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 16 }} showsVerticalScrollIndicator={false}>
-      <Text style={{ fontSize: 22, fontWeight: "800", marginBottom: 4 }}>
-        Tạo nhóm mới
-      </Text>
-      <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 16 }}>
-        Điền thông tin để tạo nhóm cho đề tài của bạn
-      </Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={{ padding: 16, paddingBottom: 200 }}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+      >
+        <Text style={{ fontSize: 22, fontWeight: "800", marginBottom: 4 }}>
+          Tạo nhóm mới
+        </Text>
+        <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 16 }}>
+          Điền thông tin để tạo nhóm cho đề tài của bạn
+        </Text>
 
-      {renderInput("Mã môn học", "courseId", "VD: CO3001", "default")}
-      {renderInput("Tên môn học", "courseName", "Sẽ tự động điền khi nhập mã môn", "default")}
-      {renderInput("Mã lớp", "groupClass", "VD: L01 (không bắt buộc)", "default")}
-      {renderInput("Học kỳ", "semester", "VD: 251", "numeric")}
-      {renderInput("Tên nhóm", "name", "VD: Nhóm 1", "default")}
-      {renderInput("Tên đề tài", "topicName", "VD: Xây dựng ứng dụng...", "default")}
+        {renderInput("Mã môn học", "courseId", "VD: CO3001", "default", { autoFocus: true })}
+        {renderInput("Tên môn học", "courseName", "Tự động lấy từ mã môn học", "default", { disabled: true })}
+        {renderInput("Mã lớp", "groupClass", "VD: L01 (không bắt buộc)", "default")}
+        {renderInput("Học kỳ", "semester", "Tự động theo thời gian hiện tại", "numeric", { disabled: true })}
+        {renderInput("Tên nhóm", "name", "VD: Nhóm 1", "default")}
+        {renderInput("Tên đề tài", "topicName", "VD: Xây dựng ứng dụng...", "default")}
       {renderInput("Số lượng thành viên", "maxMembers", "VD: 5", "numeric")}
 
-      <View style={{ marginBottom: 12 }}>
+      <View
+        style={{ marginBottom: 12 }}
+        onLayout={(event) => {
+          const layout = event.nativeEvent.layout;
+          inputRefs.current["description"] = layout.y;
+        }}
+      >
         <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
           Miêu tả đề tài
         </Text>
-        <View
+        <TextInput
+          placeholder="Mô tả chi tiết về đề tài..."
+          value={formData.description}
+          onChangeText={(value) => handleInputChange("description", value)}
+          multiline
+          numberOfLines={4}
+          textAlignVertical="top"
+          editable={!loading}
+          onFocus={() => {
+            // Scroll đến vị trí của input khi focus
+            if (scrollViewRef.current && inputRefs.current["description"]) {
+              scrollViewRef.current.scrollTo({
+                y: inputRefs.current["description"] - 100,
+                animated: true,
+              });
+            }
+          }}
           style={{
             borderWidth: 1,
             borderColor: "#E2E8F0",
@@ -187,38 +270,30 @@ export default function CreateGroupScreen({ navigation }) {
             paddingHorizontal: 12,
             paddingVertical: 12,
             backgroundColor: colors.white,
+            minHeight: 100,
           }}
-        >
-          <TextInput
-            placeholder="Mô tả chi tiết về đề tài..."
-            value={formData.description}
-            onChangeText={(value) => handleInputChange("description", value)}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-            editable={!loading}
-          />
-        </View>
+        />
       </View>
 
-      <TouchableOpacity
-        style={{
-          marginTop: 8,
-          backgroundColor: loading ? colors.subtext : colors.primary,
-          paddingVertical: 16,
-          borderRadius: radii.md,
-        }}
-        onPress={handleCreateGroup}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-            Tạo nhóm
-          </Text>
-        )}
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity
+          style={{
+            marginTop: 8,
+            backgroundColor: loading ? colors.subtext : colors.primary,
+            paddingVertical: 16,
+            borderRadius: radii.md,
+          }}
+          onPress={handleCreateGroup}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+              Tạo nhóm
+            </Text>
+          )}
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

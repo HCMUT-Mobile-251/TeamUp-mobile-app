@@ -30,6 +30,7 @@ public class Users {
     String studentId;
     String firstName;
     String lastName;
+    String fullName;
     String email;
     String phoneNumber;
     String faculty;
@@ -65,5 +66,22 @@ public class Users {
     public void removeGroupMember(GroupMember groupMember) {
         groups.remove(groupMember);
         groupMember.setUser(null);
+    }
+
+    // Getter method to return full name from firstName + lastName
+    public String getFullName() {
+        if (fullName != null && !fullName.isEmpty()) {
+            return fullName;
+        }
+        if (firstName != null && lastName != null) {
+            return lastName + " " + firstName;
+        }
+        if (firstName != null) {
+            return firstName;
+        }
+        if (lastName != null) {
+            return lastName;
+        }
+        return null;
     }
 }

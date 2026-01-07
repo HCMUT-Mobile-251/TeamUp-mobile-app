@@ -25,7 +25,13 @@
       "Bash(npx expo install:*)",
       "Bash(watchman watch-del:*)",
       "Bash(watchman watch-project:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(./mvnw clean:*)",
+      "Bash(java -jar:*)",
+      "Bash(jar tf:*)",
+      "Bash(jar xf:*)",
+      "Bash(javap:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []
