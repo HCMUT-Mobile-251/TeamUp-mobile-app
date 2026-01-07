@@ -5,11 +5,11 @@ import client from "./client";
  */
 
 /**
- * Get all tags (admin)
+ * Get all tags (public endpoint for all users)
  * @returns {Promise} - List of all tags
  */
 export const getAllTags = async () => {
-  const response = await client.get("/tag/admin/all");
+  const response = await client.get("/tag/all");
   return response.data;
 };
 

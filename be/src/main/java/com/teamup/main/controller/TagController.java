@@ -47,6 +47,15 @@ public class TagController {
                 .build();
     }
 
+    @GetMapping("/all")
+    public ApiResponse<List<Tags>> getAllTags() {
+        return ApiResponse.<List<Tags>>builder()
+                .code(200)
+                .message("Lấy tất cả tag thành công")
+                .result(tagService.getTags())
+                .build();
+    }
+
     @PostMapping
     public ApiResponse<Tags> createTagByUser(@RequestBody @Valid TagRequest request) {
         return ApiResponse.<Tags>builder()
