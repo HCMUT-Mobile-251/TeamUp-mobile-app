@@ -49,11 +49,23 @@ public class TagController {
 
     @GetMapping("/all")
     public ApiResponse<List<Tags>> getAllTags() {
-        return ApiResponse.<List<Tags>>builder()
-                .code(200)
-                .message("Lấy tất cả tag thành công")
-                .result(tagService.getTags())
-                .build();
+        try {
+            System.out.println("=== Getting all tags ===");
+            List<Tags> tags = tagService.getTags();
+            System.out.println("Found " + tags.size() + " tags");
+            return ApiResponse.<List<Tags>>builder()
+                    .code(200)
+                    .message("Lấy tất cả tag thành công")
+                    .result(tags)
+                    .build();
+        } catch (Exception e) {
+            System.err.println("Error getting all tags: " + e.getMessage());
+            e.printStackTrace();
+            return ApiResponse.<List<Tags>>builder()
+                    .code(500)
+                    .message("Lỗi khi lấy danh sách tags: " + e.getMessage())
+                    .build();
+        }
     }
 
     @PostMapping
