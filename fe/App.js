@@ -22,6 +22,7 @@ import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
 import Onboarding1Screen from "./screens/Onboarding1Screen";
 import Onboarding2Screen from "./screens/Onboarding2Screen";
+import SelectTagsScreen from "./screens/SelectTagsScreen";
 
 export const AuthContext = React.createContext();
 
@@ -266,6 +267,11 @@ export default function App() {
                 name="AdvancedSearch"
                 component={AdvancedSearchScreen}
                 options={{ title: "Tìm kiếm nâng cao" }}
+              />
+              <Stack.Screen
+                name="SelectTags"
+                component={SelectTagsScreen}
+                options={{ headerShown: false }}
               />
               {/* Onboarding screens cho user đã đăng nhập muốn xem lại */}
               <Stack.Screen

@@ -166,17 +166,20 @@ export default function ProfileScreen() {
         </View>
 
         {/* Tags quan tâm */}
-        <Text
-          style={{
-            fontWeight: "800",
-            fontSize: 18,
-            marginTop: 24,
-            marginBottom: 8,
-            color: colors.text,
-          }}
-        >
-          Tags quan tâm
-        </Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 24, marginBottom: 8 }}>
+          <Text
+            style={{
+              fontWeight: "800",
+              fontSize: 18,
+              color: colors.text,
+            }}
+          >
+            Tags quan tâm
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SelectTags")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>Chỉnh sửa</Text>
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flexDirection: "row",
