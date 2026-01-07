@@ -193,22 +193,36 @@ export default function AdvancedSearchScreen({ navigation }) {
       {renderInput("Mã lớp", "groupClass", "VD: L01")}
       {renderInput("Tên đề tài", "topicName", "VD: Xây dựng ứng dụng...")}
 
-      <Text style={{ marginBottom: 6, fontWeight: "600", color: colors.text, marginTop: 4 }}>
-        Tags quan tâm
-      </Text>
-      {tagsLoading ? (
-        <View style={{ padding: 20, alignItems: "center" }}>
-          <ActivityIndicator size="small" />
-        </View>
-      ) : (
-        <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 16 }}>
-          {tags.slice(0, 12).map((tag) => (
-            <TouchableOpacity key={tag.tagId} onPress={() => toggleTag(tag.tagId)}>
-              <Tag label={tag.name} selected={searchCriteria.tagId && searchCriteria.tagId.includes(tag.tagId)} />
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      <View style={{ marginBottom: 16 }}>
+        <Text style={{ marginBottom: 4, fontWeight: "600", color: colors.text, marginTop: 4 }}>
+          Tags phổ biến
+        </Text>
+        <Text style={{ fontSize: 12, color: colors.subtext, marginBottom: 8 }}>
+          Chọn một hoặc nhiều tags để tìm nhóm phù hợp
+        </Text>
+        {tagsLoading ? (
+          <View style={{ padding: 20, alignItems: "center" }}>
+            <ActivityIndicator size="small" />
+          </View>
+        ) : tags.length > 0 ? (
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {tags.slice(0, 20).map((tag) => (
+              <TouchableOpacity key={tag.tagId} onPress={() => toggleTag(tag.tagId)}>
+                <Tag label={tag.name} selected={searchCriteria.tagId && searchCriteria.tagId.includes(tag.tagId)} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        ) : (
+          <Text style={{ fontSize: 13, color: colors.subtext, fontStyle: "italic" }}>
+            Chưa có tags phổ biến
+          </Text>
+        )}
+        {searchCriteria.tagId && searchCriteria.tagId.length > 0 && (
+          <Text style={{ fontSize: 12, color: colors.primary, marginTop: 8, fontWeight: "600" }}>
+            Đã chọn {searchCriteria.tagId.length} tag(s)
+          </Text>
+        )}
+      </View>
 
       <View style={{ flexDirection: "row", gap: 12, marginTop: 8 }}>
         <TouchableOpacity
