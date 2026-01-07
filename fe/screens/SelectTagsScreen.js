@@ -126,7 +126,13 @@ export default function SelectTagsScreen() {
       const response = await updateUserTags(userId, selectedTags);
       if (response?.code === 200) {
         Alert.alert("Thành công", "Đã cập nhật tags quan tâm!", [
-          { text: "OK", onPress: () => navigation.goBack() },
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Tabs", {
+              screen: "Profile",
+              params: { refresh: true }
+            })
+          },
         ]);
       }
     } catch (error) {

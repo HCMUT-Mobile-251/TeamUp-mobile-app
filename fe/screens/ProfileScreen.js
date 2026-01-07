@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,13 +10,13 @@ import {
   RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Tag from "../src/components/Tag";
 import { AuthContext } from "../App";
 import { colors, radii, shadow } from "../src/ui/theme";
 import { getUserById } from "../src/api/userService";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route }) {
   const { userId, signOut, resetOnboarding } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -75,6 +75,16 @@ export default function ProfileScreen() {
     loadUserData();
   }, [userId]);
 
+  // Auto refresh when returning from SelectTags screen
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params?.refresh) {
+        loadUserData(true);
+        navigation.setParams({ refresh: undefined });
+      }
+    }, [route.params?.refresh, navigation])
+  );
+
   const handleRefresh = () => {
     setRefreshing(true);
     loadUserData(true);
@@ -87,10 +97,8 @@ export default function ProfileScreen() {
   };
 
   const handleEditProfile = () => {
-    Alert.alert(
-      "Chức năng đang phát triển",
-      "Tính năng chỉnh sửa thông tin cá nhân sẽ được thêm trong phiên bản tiếp theo!"
-    );
+    // Navigate from Tab Navigator to Stack screen
+    navigation.getParent().navigate("EditProfile", { user: userData });
   };
 
   if (loading) {
@@ -158,7 +166,10 @@ export default function ProfileScreen() {
             shadow.card,
           ]}
         >
-          <Row label="Tên" value={userData?.fullName || "Chưa cập nhật"} />
+          <Row
+            label="Họ và tên"
+            value={`${userData?.firstName || ""} ${userData?.lastName || ""}`.trim() || "Chưa cập nhật"}
+          />
           <Row label="MSSV" value={userData?.studentId || "Chưa cập nhật"} />
           <Row label="Khoa" value={userData?.faculty || "Chưa cập nhật"} />
           <Row label="Số điện thoại" value={userData?.phoneNumber || "Chưa cập nhật"} />

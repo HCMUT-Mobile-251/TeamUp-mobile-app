@@ -20,6 +20,9 @@ import ProfileScreen from "./screens/ProfileScreen";
 import JoinGroupScreen from "./screens/JoinGroupScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
+import EditGroupScreen from "./screens/EditGroupScreen";
+import EditProfileScreen from "./screens/EditProfileScreen";
+import MemberInfoScreen from "./screens/MemberInfoScreen";
 import Onboarding1Screen from "./screens/Onboarding1Screen";
 import Onboarding2Screen from "./screens/Onboarding2Screen";
 import SelectTagsScreen from "./screens/SelectTagsScreen";
@@ -262,6 +265,21 @@ export default function App() {
                 name="GroupInfo"
                 component={GroupInfoScreen}
                 options={{ title: "Thông tin nhóm" }}
+              />
+              <Stack.Screen
+                name="EditGroup"
+                component={EditGroupScreen}
+                options={{ title: "Chỉnh sửa nhóm" }}
+              />
+              <Stack.Screen
+                name="EditProfile"
+                component={EditProfileScreen}
+                options={{ title: "Chỉnh sửa thông tin" }}
+              />
+              <Stack.Screen
+                name="MemberInfo"
+                component={MemberInfoScreen}
+                options={{ title: "Thông tin thành viên" }}
               />
               <Stack.Screen
                 name="AdvancedSearch"

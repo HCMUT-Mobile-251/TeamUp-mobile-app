@@ -19,7 +19,8 @@ export default function ProjectCard({
                       tags || [];
 
   // Calculate member count (groupMembers + leader)
-  const memberCount = (data?.groupMembers?.length || 0) + (data?.leaderId ? 1 : 0);
+  // leaderId is an object {userId: "..."}, so check if it exists
+  const memberCount = (data?.groupMembers?.length || 0) + (data?.leaderId?.userId || data?.leaderId ? 1 : 0);
   const displayMembers = data?.currentMembers || memberCount || members || 0;
   const maxMembers = data?.maxMembers || null;
 

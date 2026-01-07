@@ -89,6 +89,58 @@ export default function GroupInfoScreen({ route, navigation }) {
       return;
     }
 
+    // Check if user is leader
+    if (isLeader) {
+      const acceptedMembers = group.groupMembers?.filter(m => m.status === "JOINED") || [];
+
+      if (acceptedMembers.length > 0) {
+        Alert.alert(
+          "Không thể rời nhóm",
+          "Bạn là trưởng nhóm. Vui lòng chuyển quyền trưởng nhóm cho thành viên khác trước khi rời nhóm."
+        );
+        return;
+      } else {
+        // Leader is the only member, confirm delete group
+        Alert.alert(
+          "Xóa nhóm",
+          "Bạn là thành viên duy nhất trong nhóm. Rời nhóm sẽ xóa nhóm này. Bạn có chắc chắn?",
+          [
+            { text: "Hủy", style: "cancel" },
+            {
+              text: "Xóa nhóm",
+              style: "destructive",
+              onPress: async () => {
+                setActionLoading(true);
+                try {
+                  const response = await leaveGroup(groupId, userId);
+                  if (response.code === 200) {
+                    Alert.alert("Thành công", "Đã xóa nhóm!", [
+                      {
+                        text: "OK",
+                        onPress: () => navigation.navigate("Tabs", {
+                          screen: "Home",
+                          params: { refresh: true }
+                        })
+                      },
+                    ]);
+                  } else {
+                    Alert.alert("Lỗi", response.message || "Không thể xóa nhóm");
+                  }
+                } catch (error) {
+                  console.error("Delete group error:", error);
+                  Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
+                } finally {
+                  setActionLoading(false);
+                }
+              },
+            },
+          ]
+        );
+      }
+      return;
+    }
+
+    // Normal member leaving
     Alert.alert(
       "Rời nhóm",
       "Bạn có chắc muốn rời khỏi nhóm này?",
@@ -103,7 +155,13 @@ export default function GroupInfoScreen({ route, navigation }) {
               const response = await leaveGroup(groupId, userId);
               if (response.code === 200) {
                 Alert.alert("Thành công", "Đã rời khỏi nhóm!", [
-                  { text: "OK", onPress: () => navigation.goBack() },
+                  {
+                    text: "OK",
+                    onPress: () => navigation.navigate("Tabs", {
+                      screen: "Home",
+                      params: { refresh: true }
+                    })
+                  },
                 ]);
               } else {
                 Alert.alert("Lỗi", response.message || "Không thể rời nhóm");
@@ -180,6 +238,12 @@ export default function GroupInfoScreen({ route, navigation }) {
     );
   }
 
+  // Check if user is in the group
+  const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
+  const isUserInGroup = !!userMember && userMember.status === "JOINED";
+  const isLeader = group.leaderId?.userId === userId;
+  const memberCount = (group.groupMembers?.filter(m => m.status === "JOINED")?.length || 0) + (isLeader ? 1 : 0);
+
   const InfoRow = ({ label, value }) => (
     <View style={{ marginBottom: 12 }}>
       <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600", fontSize: 13 }}>
@@ -210,13 +274,25 @@ export default function GroupInfoScreen({ route, navigation }) {
           return "Đã được chấp nhận";
         case "REJECTED":
           return "Đã bị từ chối";
+        case "JOINED":
+          return "Đã tham gia";
         default:
           return status || "N/A";
       }
     };
 
+    const handleMemberPress = () => {
+      // Only navigate if member is JOINED (accepted member)
+      if (member.status === "JOINED") {
+        navigation.navigate("MemberInfo", { userId: member.user?.userId });
+      }
+    };
+
     return (
-      <View
+      <TouchableOpacity
+        onPress={handleMemberPress}
+        disabled={member.status !== "JOINED"}
+        activeOpacity={member.status === "JOINED" ? 0.7 : 1}
         style={{
           backgroundColor: "#fff",
           borderRadius: radii.md,
@@ -237,8 +313,13 @@ export default function GroupInfoScreen({ route, navigation }) {
             <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 2 }}>
               Trạng thái: {getStatusText(member.status)}
             </Text>
+            {member.status === "JOINED" && (
+              <Text style={{ color: colors.primary, fontSize: 11, marginTop: 2, fontStyle: "italic" }}>
+                Nhấn để xem thông tin liên lạc
+              </Text>
+            )}
           </View>
-          {member.status === "PENDING" && (
+          {member.status === "PENDING" && isLeader && (
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => handleApproveRequest(member.user?.userId)}
@@ -257,7 +338,7 @@ export default function GroupInfoScreen({ route, navigation }) {
             </View>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -273,7 +354,7 @@ export default function GroupInfoScreen({ route, navigation }) {
       <InfoRow label="Mã lớp" value={group.groupClass} />
       <InfoRow label="Học kỳ" value={group.semester?.toString()} />
       <InfoRow label="Tên đề tài" value={group.topicName} />
-      <InfoRow label="Số lượng thành viên" value={`${group.groupMembers?.length || 0}/${group.maxMembers}`} />
+      <InfoRow label="Số lượng thành viên" value={`${memberCount}/${group.maxMembers}`} />
 
       <View style={{ marginBottom: 16 }}>
         <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600", fontSize: 13 }}>
@@ -303,23 +384,27 @@ export default function GroupInfoScreen({ route, navigation }) {
             Tags
           </Text>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {group.groupTags.map((tag, index) => (
-              <View
-                key={index}
-                style={{
-                  backgroundColor: colors.primary + "20",
-                  paddingHorizontal: 12,
-                  paddingVertical: 6,
-                  borderRadius: radii.sm,
-                  marginRight: 8,
-                  marginBottom: 8,
-                }}
-              >
-                <Text style={{ color: colors.primary, fontSize: 13 }}>
-                  {tag.name || tag}
-                </Text>
-              </View>
-            ))}
+            {group.groupTags.map((groupTag, index) => {
+              // Handle both nested {tag: {...}} and direct tag object
+              const tagData = groupTag.tag || groupTag;
+              return (
+                <View
+                  key={tagData.tagId || index}
+                  style={{
+                    backgroundColor: colors.primary + "20",
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    borderRadius: radii.sm,
+                    marginRight: 8,
+                    marginBottom: 8,
+                  }}
+                >
+                  <Text style={{ color: colors.primary, fontSize: 13 }}>
+                    {tagData.name || "N/A"}
+                  </Text>
+                </View>
+              );
+            })}
           </View>
         </View>
       )}
@@ -340,38 +425,62 @@ export default function GroupInfoScreen({ route, navigation }) {
 
       {/* Action Buttons */}
       <View style={{ marginTop: 20, marginBottom: 20 }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primary,
-            paddingVertical: 16,
-            borderRadius: radii.md,
-            marginBottom: 12,
-          }}
-          onPress={handleJoinGroup}
-          disabled={actionLoading}
-        >
-          {actionLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
+        {/* Chỉnh sửa nhóm - Only for leader */}
+        {isLeader && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingVertical: 16,
+              borderRadius: radii.md,
+              marginBottom: 12,
+            }}
+            onPress={() => navigation.navigate("EditGroup", { groupId, group })}
+            disabled={actionLoading}
+          >
             <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-              Tham gia nhóm
+              Chỉnh sửa nhóm
             </Text>
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#EF4444",
-            paddingVertical: 16,
-            borderRadius: radii.md,
-          }}
-          onPress={handleLeaveGroup}
-          disabled={actionLoading}
-        >
-          <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-            Rời nhóm
-          </Text>
-        </TouchableOpacity>
+        {/* Tham gia nhóm - Only if user is NOT in group and NOT leader */}
+        {!isUserInGroup && !isLeader && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingVertical: 16,
+              borderRadius: radii.md,
+              marginBottom: 12,
+            }}
+            onPress={handleJoinGroup}
+            disabled={actionLoading}
+          >
+            {actionLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+                Tham gia nhóm
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
+
+        {/* Rời nhóm - Only if user is in group OR is leader */}
+        {(isUserInGroup || isLeader) && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#EF4444",
+              paddingVertical: 16,
+              borderRadius: radii.md,
+            }}
+            onPress={handleLeaveGroup}
+            disabled={actionLoading}
+          >
+            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+              Rời nhóm
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
