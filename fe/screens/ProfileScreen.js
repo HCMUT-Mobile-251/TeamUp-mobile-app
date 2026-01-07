@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Tag from "../src/components/Tag";
 import { AuthContext } from "../App";
 import { colors, radii, shadow } from "../src/ui/theme";
@@ -74,6 +74,15 @@ export default function ProfileScreen() {
   useEffect(() => {
     loadUserData();
   }, [userId]);
+
+  // Reload data when screen comes into focus (e.g., returning from SelectTags)
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userId) {
+        loadUserData(true);
+      }
+    }, [userId])
+  );
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -191,8 +200,8 @@ export default function ProfileScreen() {
           }}
         >
           {userData?.userTags && userData.userTags.length > 0 ? (
-            userData.userTags.map((tag) => (
-              <Tag key={tag.tagId} label={tag.name} />
+            userData.userTags.map((userTag) => (
+              <Tag key={userTag.tag?.tagId || userTag.tagId} label={userTag.tag?.name || userTag.name} />
             ))
           ) : (
             <Text style={{ color: colors.subtext, fontSize: 14 }}>

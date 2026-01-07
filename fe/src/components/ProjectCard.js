@@ -12,8 +12,15 @@ export default function ProjectCard({
 }) {
   // Use data from API if available, otherwise use props
   const displayTitle = data?.name || data?.topicName || title || "Đồ án";
-  const displayTags = data?.tags?.map(t => t.name) || tags || [];
-  const displayMembers = data?.currentMembers || data?.memberCount || members || 0;
+
+  // Extract tags from groupTags array
+  const displayTags = data?.groupTags?.map(gt => gt.tag?.name).filter(Boolean) ||
+                      data?.tags?.map(t => t.name) ||
+                      tags || [];
+
+  // Calculate member count (groupMembers + leader)
+  const memberCount = (data?.groupMembers?.length || 0) + (data?.leaderId ? 1 : 0);
+  const displayMembers = data?.currentMembers || memberCount || members || 0;
   const maxMembers = data?.maxMembers || null;
 
   return (
