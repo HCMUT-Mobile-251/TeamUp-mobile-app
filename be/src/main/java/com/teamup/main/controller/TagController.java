@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamup.main.dto.request.TagRequest;
 import com.teamup.main.dto.response.ApiResponse;
+import com.teamup.main.dto.response.TagResponse;
 import com.teamup.main.model.Tags;
 import com.teamup.main.service.TagService;
 
@@ -39,8 +40,8 @@ public class TagController {
     }
     
     @GetMapping("/suggest/{userId}")
-    public ApiResponse<List<Tags>> getIndividualTags(@PathVariable String userId) {
-        return ApiResponse.<List<Tags>>builder()
+    public ApiResponse<List<TagResponse>> getIndividualTags(@PathVariable String userId) {
+        return ApiResponse.<List<TagResponse>>builder()
                 .code(200)
                 .message("Lấy gợi ý tag thành công")
                 .result(tagService.getIndividualTags(userId))

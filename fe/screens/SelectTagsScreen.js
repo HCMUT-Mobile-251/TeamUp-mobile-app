@@ -123,7 +123,10 @@ export default function SelectTagsScreen() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      console.log("[SelectTagsScreen] Saving tags:", selectedTags);
+      console.log("[SelectTagsScreen] Number of tags:", selectedTags.length);
       const response = await updateUserTags(userId, selectedTags);
+      console.log("[SelectTagsScreen] Save response:", response);
       if (response?.code === 200) {
         Alert.alert("Thành công", "Đã cập nhật tags quan tâm!", [
           {
@@ -136,7 +139,8 @@ export default function SelectTagsScreen() {
         ]);
       }
     } catch (error) {
-      console.error("Update tags error:", error);
+      console.error("[SelectTagsScreen] Update tags error:", error);
+      console.error("[SelectTagsScreen] Error details:", error.response?.data);
       Alert.alert("Lỗi", "Không thể cập nhật tags");
     } finally {
       setSaving(false);

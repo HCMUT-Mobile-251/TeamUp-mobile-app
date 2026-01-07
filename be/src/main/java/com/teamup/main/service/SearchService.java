@@ -69,18 +69,14 @@ public class SearchService {
                     .toList();
         }
 
-        // filter theo tags nếu mọi thông tin khác không null hoặc rỗng
-        if (request.getCourse() != null
-                && request.getCourse().getCourseId().isBlank()
-                && request.getCourse().getName().isBlank()
-                && request.getName().isBlank()
-                && request.getTopicName().isBlank()
-                && request.getGroupClass().isBlank()) {
+        // filter theo tags
+        if (request.getTagId() != null && !request.getTagId().isEmpty()) {
             groups = groups.stream()
                     .filter(g -> {
-                        for (String tag : request.getTagId()) {
+                        // Group phải có ít nhất 1 tag khớp với danh sách tag tìm kiếm
+                        for (String tagId : request.getTagId()) {
                             if (g.getGroupTags().stream()
-                                    .anyMatch(t -> t.getTag().getTagId().equalsIgnoreCase(tag.trim()))) {
+                                    .anyMatch(gt -> gt.getTag().getTagId().equalsIgnoreCase(tagId.trim()))) {
                                 return true;
                             }
                         }
@@ -99,13 +95,24 @@ public class SearchService {
     }
 
     // 1 ô tìm kiếm bình thường
-    public List<GroupResponse> normalSearchGroup(String group, String userId) {
+    public List<GroupResponse> normalSearchGroup(String query, String userId) {
         // tránh trùng
         Set<Groups> results = new HashSet<>();
-        results.addAll(groupRepository.findByTopicNameContainingIgnoreCase(group));
-        results.addAll(groupRepository.findByNameContainingIgnoreCase(group));
-        results.addAll(groupRepository.findByGroupClassContainingIgnoreCase(group));
-        results.addAll(groupRepository.findByCourse_CourseIdOrCourse_NameContainingIgnoreCase(group, group));
+        results.addAll(groupRepository.findByTopicNameContainingIgnoreCase(query));
+        results.addAll(groupRepository.findByNameContainingIgnoreCase(query));
+        results.addAll(groupRepository.findByGroupClassContainingIgnoreCase(query));
+        results.addAll(groupRepository.findByCourse_CourseIdOrCourse_NameContainingIgnoreCase(query, query));
+
+        // Tìm kiếm theo tag name
+        List<Groups> allGroups = groupRepository.findBySemester(groupService.getCurrentSemester());
+        for (Groups g : allGroups) {
+            // Kiểm tra xem group có tag nào khớp với query không
+            boolean hasMatchingTag = g.getGroupTags().stream()
+                    .anyMatch(gt -> gt.getTag().getName().toLowerCase().contains(query.toLowerCase()));
+            if (hasMatchingTag) {
+                results.add(g);
+            }
+        }
 
         // lấy semester hiện tại và map về response
         int currentSemester = groupService.getCurrentSemester();

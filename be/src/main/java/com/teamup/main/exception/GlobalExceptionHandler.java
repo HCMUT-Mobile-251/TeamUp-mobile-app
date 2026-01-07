@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
     // bắt các error khác
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ApiResponse<?>> handleGenericException(Exception exception) {
+        // Log chi tiết exception để debug
+        System.err.println("=== Global Exception Handler ===");
+        System.err.println("Exception type: " + exception.getClass().getName());
+        System.err.println("Exception message: " + exception.getMessage());
+        exception.printStackTrace();
+
         ErrorCode errorCode = ErrorCode.UNKNOWN_ERROR;
         ApiResponse<?> response = new ApiResponse<>();
         response.setMessage(errorCode.getMessage());
