@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teamup.main.dto.request.TagRequest;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.enums.ErrorCode;
 import com.teamup.main.model.Tags;
@@ -43,6 +44,23 @@ public class TagService {
         }
 
         return new java.util.ArrayList<>(tags);
+    }
+
+    public Tags createTagByUser(TagRequest request) {
+        // Kiểm tra xem tag đã tồn tại chưa (case-insensitive)
+        List<Tags> existingTags = tagRepository.findByNameContainingIgnoreCase(request.getName());
+
+        // Nếu đã có tag trùng tên chính xác thì trả về tag đó
+        for (Tags existingTag : existingTags) {
+            if (existingTag.getName().equalsIgnoreCase(request.getName())) {
+                return existingTag;
+            }
+        }
+
+        // Nếu chưa có thì tạo mới
+        Tags newTag = new Tags();
+        newTag.setName(request.getName());
+        return tagRepository.save(newTag);
     }
 
     /*

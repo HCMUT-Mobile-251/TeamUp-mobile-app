@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teamup.main.dto.request.TagRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.model.Tags;
 import com.teamup.main.service.TagService;
@@ -46,6 +47,14 @@ public class TagController {
                 .build();
     }
 
+    @PostMapping
+    public ApiResponse<Tags> createTagByUser(@RequestBody @Valid TagRequest request) {
+        return ApiResponse.<Tags>builder()
+                .code(200)
+                .message("Tạo tag thành công")
+                .result(tagService.createTagByUser(request))
+                .build();
+    }
 
     /*
      * Admin only
