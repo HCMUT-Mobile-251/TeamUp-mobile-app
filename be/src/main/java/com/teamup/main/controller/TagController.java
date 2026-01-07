@@ -36,6 +36,16 @@ public class TagController {
                 .result(tagService.getTagByName(search))
                 .build();
     }
+    
+    @GetMapping("/suggest/{userId}")
+    public ApiResponse<List<Tags>> getIndividualTags(@PathVariable String userId) {
+        return ApiResponse.<List<Tags>>builder()
+                .code(200)
+                .message("Lấy gợi ý tag thành công")
+                .result(tagService.getIndividualTags(userId))
+                .build();
+    }
+
 
     /*
      * Admin only

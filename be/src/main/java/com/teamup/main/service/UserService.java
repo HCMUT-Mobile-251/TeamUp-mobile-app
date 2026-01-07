@@ -15,6 +15,7 @@ import com.teamup.main.model.PairId;
 import com.teamup.main.model.Tags;
 import com.teamup.main.model.UserTag;
 import com.teamup.main.model.Users;
+import com.teamup.main.repository.TagRepository;
 import com.teamup.main.repository.UserRepository;
 
 import lombok.experimental.FieldDefaults;
@@ -29,7 +30,7 @@ public class UserService {
     UserMapper userMapper;
 
     @Autowired
-    TagService tagService;
+    TagRepository tagRepository;
 
     /*
      * User only
@@ -55,7 +56,8 @@ public class UserService {
         user.getUserTags().clear();
         for (Tags tag : listTag) {
             // check tag exist
-            Tags existingTag = tagService.findTag(tag.getTagId());
+            Tags existingTag = tagRepository.findById(tag.getTagId())
+                .orElseThrow(() -> new AppException(ErrorCode.TAG_NOT_FOUND));
             PairId id = new PairId(userId, existingTag.getTagId());
             UserTag userTag = new UserTag(id, user, existingTag);
             user.getUserTags().add(userTag);
