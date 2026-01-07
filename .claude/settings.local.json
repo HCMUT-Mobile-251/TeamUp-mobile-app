@@ -21,7 +21,11 @@
       "Bash(git stash:*)",
       "Bash(git stash pop:*)",
       "Bash(curl:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(npx expo install:*)",
+      "Bash(watchman watch-del:*)",
+      "Bash(watchman watch-project:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

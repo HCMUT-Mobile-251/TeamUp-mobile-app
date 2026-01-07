@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,95 +10,145 @@ import {
 import Constants from "expo-constants";
 import { AuthContext } from "../App";
 import * as WebBrowser from "expo-web-browser";
-import * as AuthSession from "expo-auth-session";
+import * as Linking from "expo-linking";
 import axios from "axios";
 
 // Cần thiết để đóng browser window sau khi auth hoàn thành
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
-  const { signIn, setUserId } = useContext(AuthContext);
+  const { signIn, setUserId, markOnboardingSeen } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   // Lấy config từ .env
   const API_BASE_URL = Constants?.expoConfig?.extra?.API_BASE_URL || "http://localhost:8080";
   const GOOGLE_CLIENT_ID = Constants?.expoConfig?.extra?.GOOGLE_CLIENT_ID;
 
-  // Tạo redirect URI cho Expo AuthSession
-  const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'teamup',
-    path: 'auth'
-  });
+  // Lắng nghe deep link từ auth-redirect.html
+  useEffect(() => {
+    const handleDeepLink = async (event) => {
+      const url = event.url;
+      console.log('[LoginScreen] Received deep link:', url);
 
-  console.log('[LoginScreen] Redirect URI:', redirectUri);
+      try {
+        // Parse URL để lấy token và userId
+        const { path, queryParams } = Linking.parse(url);
+
+        console.log('[LoginScreen] Path:', path);
+        console.log('[LoginScreen] Query params:', queryParams);
+
+        // Kiểm tra xem có phải là auth callback không
+        if (path === 'auth' || url.includes('auth')) {
+          const { token, userId } = queryParams || {};
+
+          console.log('[LoginScreen] Token from deep link:', token ? token.substring(0, 20) + '...' : 'null');
+          console.log('[LoginScreen] UserId from deep link:', userId);
+
+          if (token && userId) {
+            setLoading(true);
+
+            // Lưu userId và token
+            await setUserId(userId);
+
+            // Đánh dấu đã xem onboarding
+            await markOnboardingSeen();
+
+            // Sign in cuối cùng
+            await signIn(token);
+
+            console.log('[LoginScreen] Login successful via deep link');
+          }
+        }
+      } catch (error) {
+        console.error('[LoginScreen] Deep link error:', error);
+        Alert.alert('Lỗi', 'Không thể xử lý đăng nhập');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Đăng ký listener cho deep link
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+
+    // Kiểm tra xem có deep link nào khi app mở lần đầu không
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        console.log('[LoginScreen] Initial URL:', url);
+        handleDeepLink({ url });
+      }
+    });
+
+    // Cleanup
+    return () => {
+      subscription.remove();
+    };
+  }, [signIn, setUserId, markOnboardingSeen]);
 
   const handleGoogle = async () => {
     try {
       setLoading(true);
 
-      // Build Google OAuth URL
-      const authUrl = `https://accounts.google.com/o/oauth2/auth?${new URLSearchParams({
-        client_id: GOOGLE_CLIENT_ID,
-        redirect_uri: redirectUri,
-        response_type: 'code',
-        scope: 'email profile openid',
-        access_type: 'offline',
-        prompt: 'consent'
-      })}`;
+      // Tạo Expo redirect URI
+      const redirectUri = Linking.createURL('auth');
+      console.log('[LoginScreen] Expo redirect URI:', redirectUri);
+
+      // Build Google OAuth URL với redirect URI được inject vào
+      // Thêm state parameter để truyền redirectUri cho backend
+      const state = encodeURIComponent(JSON.stringify({ redirectUri }));
+      const authUrl = `https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=${API_BASE_URL}/auth/login&response_type=code&client_id=${GOOGLE_CLIENT_ID}&state=${state}&approval_prompt=force`;
 
       console.log('[LoginScreen] Opening auth URL:', authUrl);
 
-      // Mở Google OAuth trong in-app browser
+      // Mở Google OAuth trong in-app browser với auth session
+      // Backend sẽ xử lý và redirect về auth-redirect.html
+      // auth-redirect.html sẽ deep link về app với token và userId
       const result = await WebBrowser.openAuthSessionAsync(
         authUrl,
         redirectUri
       );
 
-      console.log('[LoginScreen] Auth result:', result);
+      console.log('[LoginScreen] Browser result:', result);
 
+      // Xử lý kết quả
       if (result.type === 'success') {
-        // Parse URL để lấy code
-        const url = result.url;
-        const params = new URL(url).searchParams;
-        const code = params.get('code');
+        // Parse URL để lấy token và userId
+        const { queryParams } = Linking.parse(result.url);
+        const { token, userId } = queryParams || {};
 
-        console.log('[LoginScreen] Received code:', code ? code.substring(0, 20) + '...' : 'null');
+        console.log('[LoginScreen] Token from result:', token ? token.substring(0, 20) + '...' : 'null');
+        console.log('[LoginScreen] UserId from result:', userId);
 
-        if (!code) {
-          throw new Error('Không nhận được authorization code từ Google');
-        }
-
-        // Gửi code cho backend để lấy token
-        console.log('[LoginScreen] Sending code to backend:', `${API_BASE_URL}/auth/login`);
-        const response = await axios.get(`${API_BASE_URL}/auth/login`, {
-          params: { code }
-        });
-
-        console.log('[LoginScreen] Backend response:', response.data);
-
-        if (response.data.code === 200) {
-          const token = response.data.result.accessToken;
-          const userId = response.data.result.user.userId;
-
-          console.log('[LoginScreen] Login successful, userId:', userId);
-
+        if (token && userId) {
           // Lưu userId và token
           await setUserId(userId);
+
+          // Đánh dấu đã xem onboarding để tránh lỗi navigation
+          await markOnboardingSeen();
+
+          // Sign in cuối cùng để trigger re-render với authenticated state
           await signIn(token);
+
+          console.log('[LoginScreen] Login successful');
         } else {
-          throw new Error(response.data.message || 'Đăng nhập thất bại');
+          throw new Error('Không nhận được token hoặc userId từ callback');
         }
       } else if (result.type === 'cancel') {
-        console.log('[LoginScreen] User cancelled login');
-        Alert.alert('Thông báo', 'Bạn đã hủy đăng nhập');
+        console.log('[LoginScreen] User cancelled');
+        setLoading(false);
+      } else if (result.type === 'dismiss' || result.type === 'locked') {
+        console.log('[LoginScreen] Browser dismissed or locked');
+        setLoading(false);
       }
+
     } catch (error) {
       console.error('[LoginScreen] Login error:', error);
       Alert.alert('Lỗi', error.message || 'Đã xảy ra lỗi khi đăng nhập');
-    } finally {
       setLoading(false);
     }
   };
+
+  // Debug: hiển thị redirect URI
+  const redirectUri = Linking.createURL('auth');
 
   return (
     <View
@@ -136,6 +186,9 @@ export default function LoginScreen() {
       </TouchableOpacity>
       <Text style={{ marginTop: 16, color: "#666", textAlign: "center" }}>
         Đăng nhập bằng tài khoản HCMUT
+      </Text>
+      <Text style={{ marginTop: 8, fontSize: 10, color: "#999", textAlign: "center" }}>
+        Redirect: {redirectUri}
       </Text>
     </View>
   );
