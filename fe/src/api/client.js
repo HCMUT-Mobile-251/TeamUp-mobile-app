@@ -26,4 +26,18 @@ client.interceptors.request.use(async (config) => {
   return config;
 });
 
+// Thêm response interceptor để xử lý lỗi
+client.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Log chi tiết lỗi
+    console.error("API Error:", {
+      status: error.response?.status,
+      message: error.response?.data?.message,
+      data: error.response?.data,
+    });
+    return Promise.reject(error);
+  }
+);
+
 export default client;

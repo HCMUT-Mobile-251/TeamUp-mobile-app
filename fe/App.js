@@ -267,6 +267,17 @@ export default function App() {
                 component={AdvancedSearchScreen}
                 options={{ title: "Tìm kiếm nâng cao" }}
               />
+              {/* Onboarding screens cho user đã đăng nhập muốn xem lại */}
+              <Stack.Screen
+                name="Onboarding1"
+                component={Onboarding1Screen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Onboarding2"
+                component={Onboarding2Screen}
+                options={{ headerShown: false }}
+              />
             </>
           ) : !hasSeenOnboarding ? (
             <>

@@ -26,19 +26,45 @@ export default function ProfileScreen() {
   const [error, setError] = useState(null);
 
   const loadUserData = async (isRefreshing = false) => {
+    console.log("[ProfileScreen] loadUserData called, userId:", userId);
+    
+    if (!userId) {
+      setError("Không có userId. Vui lòng đăng nhập lại.");
+      setLoading(false);
+      return;
+    }
+    
     if (!isRefreshing) setLoading(true);
     setError(null);
 
     try {
       const response = await getUserById(userId);
-      if (response.code === 200) {
+      console.log("[ProfileScreen] User Data Response:", response);
+      
+      if (response?.code === 200 && response?.result) {
         setUserData(response.result);
+      } else if (response?.message) {
+        setError(response.message);
       } else {
-        setError(response.message || "Không thể tải thông tin người dùng");
+        setError("Không thể tải thông tin người dùng");
       }
     } catch (error) {
       console.error("Load user error:", error);
-      setError(error.response?.data?.message || "Có lỗi xảy ra");
+      
+      // Xử lý các loại lỗi khác nhau
+      if (error.response?.status === 401) {
+        setError("Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.");
+      } else if (error.response?.status === 403) {
+        setError("Bạn không có quyền xem thông tin này.");
+      } else if (error.response?.status === 404) {
+        setError("Không tìm thấy người dùng.");
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.message === "Network Error") {
+        setError("Không thể kết nối tới máy chủ. Kiểm tra kết nối internet.");
+      } else {
+        setError("Có lỗi xảy ra khi tải dữ liệu.");
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -47,14 +73,16 @@ export default function ProfileScreen() {
 
   useEffect(() => {
     loadUserData();
-  }, []);
+  }, [userId]);
 
   const handleRefresh = () => {
     setRefreshing(true);
     loadUserData(true);
   };
 
-  const handleViewOnboarding = async () => {
+  const handleViewOnboarding = () => {
+    // Navigate đến Onboarding1 để user xem lại giới thiệu
+    // Không cần reset flag vì sau khi xem xong sẽ quay về app
     navigation.navigate("Onboarding1");
   };
 

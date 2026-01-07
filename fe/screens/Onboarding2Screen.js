@@ -7,16 +7,28 @@ import Button from "../src/ui/Button";
 import { AuthContext } from "../App";
 
 export default function Onboarding2Screen({ navigation }) {
-  const { markOnboardingSeen } = useContext(AuthContext);
+  const { markOnboardingSeen, token } = useContext(AuthContext);
 
   const handleSkip = async () => {
     await markOnboardingSeen();
-    navigation.navigate("Login");
+
+    // Nếu đã đăng nhập, quay về Tabs, nếu chưa thì đến Login
+    if (token) {
+      navigation.navigate("Tabs");
+    } else {
+      navigation.navigate("Login");
+    }
   };
 
   const handleGetStarted = async () => {
     await markOnboardingSeen();
-    navigation.navigate("Login");
+
+    // Nếu đã đăng nhập, quay về Tabs, nếu chưa thì đến Login
+    if (token) {
+      navigation.navigate("Tabs");
+    } else {
+      navigation.navigate("Login");
+    }
   };
 
   return (
