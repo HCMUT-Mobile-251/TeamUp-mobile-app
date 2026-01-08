@@ -2,12 +2,11 @@ package com.teamup.main.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Form;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.teamup.main.dto.request.GoogleAccount;
@@ -40,20 +39,20 @@ public class AuthService {
     @Value("${google.ADMIN_EMAIL}")
     String googleAdminEmail;
 
+    @Autowired
+    GoogleHttpClient googleHttpClient;
+
     final Gson gson = new Gson();
 
     // fe gửi code và be gửi cho GG
-    public String getToken(String code) throws IOException {
-        String response = Request.Post(this.googleLinkGetToken)
-                .bodyForm(
-                        Form.form()
-                                .add("client_id", this.googleClientId)
-                                .add("client_secret", this.googleClientSecret)
-                                .add("redirect_uri", this.googleRedirectUri)
-                                .add("code", code)
-                                .add("grant_type", this.googleGrantType)
-                                .build())
-                .execute().returnContent().asString();
+    public String getToken(String code) throws Exception {
+        String response = googleHttpClient.postTokenRequest(
+                this.googleLinkGetToken,
+                this.googleClientId,
+                this.googleClientSecret,
+                this.googleRedirectUri,
+                code,
+                this.googleGrantType);
 
         JsonObject jobj = gson.fromJson(response, JsonObject.class);
         return jobj.has("access_token") ? jobj.get("access_token").getAsString() : null;
@@ -63,11 +62,10 @@ public class AuthService {
     public GoogleAccount getUserInfo(final String accessToken) {
         try {
             String uri = this.googleLinkGetUserInfo + accessToken;
-
-            String response = Request.Get(uri).execute().returnContent().asString();
+            String response = googleHttpClient.getUserInfo(uri);
             GoogleAccount googlePojo = gson.fromJson(response, GoogleAccount.class);
             return googlePojo;
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new AppException(ErrorCode.INVALID_CREDENTIALS);
         }
     }
@@ -75,7 +73,7 @@ public class AuthService {
     public ApiResponse<Boolean> verifyAccessToken(String accessToken) {
         try {
             String uri = this.googleLinkGetUserInfo + accessToken;
-            String response = Request.Get(uri).execute().returnContent().asString();
+            String response = googleHttpClient.getUserInfo(uri);
 
             GoogleAccount json = gson.fromJson(response, GoogleAccount.class);
             if (!json.isVerified_email()) {
@@ -93,7 +91,7 @@ public class AuthService {
                     .build();
         } catch (ClientProtocolException e) {
             throw new AppException(ErrorCode.INTERNET_ERROR);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new AppException(ErrorCode.BAD_GATEWAY);
         }
     }
