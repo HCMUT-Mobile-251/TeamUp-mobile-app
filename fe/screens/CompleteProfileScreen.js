@@ -106,6 +106,8 @@ export default function CompleteProfileScreen({ navigation }) {
           onChangeText={(value) => handleInputChange(field, value)}
           keyboardType={keyboardType}
           editable={!saving}
+          autoCorrect={false}
+          autoCapitalize={keyboardType === "numeric" || keyboardType === "phone-pad" ? "none" : "sentences"}
           onFocus={() => {
             // Scroll đến vị trí của input khi focus
             if (scrollViewRef.current && inputRefs.current[field]) {
@@ -131,7 +133,7 @@ export default function CompleteProfileScreen({ navigation }) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       style={{ flex: 1, backgroundColor: colors.bg }}
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
     >

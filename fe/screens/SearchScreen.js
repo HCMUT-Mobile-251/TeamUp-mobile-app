@@ -6,20 +6,24 @@ import ProjectCard from "../src/components/ProjectCard";
 import { colors, radii } from "../src/ui/theme";
 import { searchNormal } from "../src/api/searchService";
 import { getAllTags } from "../src/api/tagService";
+import { getSuggestedGroups } from "../src/api/groupService";
 import { AuthContext } from "../App";
 
 export default function SearchScreen({ navigation }) {
   const { userId } = useContext(AuthContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [suggestedGroups, setSuggestedGroups] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tagsLoading, setTagsLoading] = useState(true);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(true);
 
-  // Load popular tags on mount
+  // Load popular tags and suggested groups on mount
   useEffect(() => {
     loadTags();
-  }, []);
+    loadSuggestedGroups();
+  }, [userId]);
 
   const loadTags = async () => {
     try {
@@ -38,6 +42,28 @@ export default function SearchScreen({ navigation }) {
       setTags([]);
     } finally {
       setTagsLoading(false);
+    }
+  };
+
+  const loadSuggestedGroups = async () => {
+    if (!userId) return;
+
+    try {
+      const response = await getSuggestedGroups(userId, 0, 10);
+      console.log("[SearchScreen] getSuggestedGroups response:", response);
+      if (response.code === 200) {
+        console.log("[SearchScreen] Suggested groups loaded:", response.result?.content?.length || 0, "groups");
+        setSuggestedGroups(response.result?.content || []);
+      } else {
+        console.log("[SearchScreen] Unexpected response code:", response.code);
+        setSuggestedGroups([]);
+      }
+    } catch (error) {
+      console.error("[SearchScreen] Error loading suggested groups:", error);
+      console.error("[SearchScreen] Error details:", error.response?.data);
+      setSuggestedGroups([]);
+    } finally {
+      setSuggestionsLoading(false);
     }
   };
 
@@ -101,6 +127,16 @@ export default function SearchScreen({ navigation }) {
           />
         </View>
 
+        {/* Advanced Search Button */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AdvancedSearch")}
+          style={{ marginBottom: 20, alignSelf: "flex-end" }}
+        >
+          <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            Tìm kiếm nâng cao →
+          </Text>
+        </TouchableOpacity>
+
         {/* Tags Section */}
         <View style={{ marginBottom: 20 }}>
           <Text style={{ fontWeight: "800", marginBottom: 4 }}>Tags phổ biến</Text>
@@ -157,20 +193,32 @@ export default function SearchScreen({ navigation }) {
             <Text style={{ marginTop: 16, fontWeight: "800", marginBottom: 8 }}>
               Gợi ý cho bạn
             </Text>
-            <Text style={{ color: colors.subtext, fontSize: 14, marginBottom: 12 }}>
-              Nhập từ khóa để tìm kiếm nhóm
-            </Text>
+            {suggestionsLoading ? (
+              <View style={{ padding: 20, alignItems: "center" }}>
+                <ActivityIndicator size="large" color={colors.primary} />
+              </View>
+            ) : suggestedGroups.length > 0 ? (
+              suggestedGroups.map((group) => (
+                <ProjectCard
+                  key={group.groupId}
+                  data={group}
+                  onPress={() =>
+                    navigation.navigate("GroupInfo", { groupId: group.groupId })
+                  }
+                />
+              ))
+            ) : (
+              <View style={{ padding: 24, alignItems: "center" }}>
+                <Text style={{ color: colors.subtext, fontSize: 16 }}>
+                  Chưa có gợi ý phù hợp
+                </Text>
+                <Text style={{ color: colors.subtext, fontSize: 14, marginTop: 8, textAlign: "center" }}>
+                  Nhập từ khóa để tìm kiếm nhóm
+                </Text>
+              </View>
+            )}
           </>
         )}
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AdvancedSearch")}
-          style={{ marginTop: 16, marginBottom: 20, alignSelf: "flex-end" }}
-        >
-          <Text style={{ color: colors.primary, fontWeight: "600" }}>
-            Tìm kiếm nâng cao →
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
     </Screen>
   );

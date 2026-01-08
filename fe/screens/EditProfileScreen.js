@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,35 @@ import {
 import { colors, radii } from "../src/ui/theme";
 import { updateUser } from "../src/api/userService";
 
+// Define InputField outside component to prevent re-renders
+const InputField = React.memo(({ label, value, onChangeText, placeholder, keyboardType = "default", editable = true, loading = false }) => (
+  <View style={{ marginBottom: 16 }}>
+    <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: "600", color: "#333" }}>
+      {label}
+    </Text>
+    <TextInput
+      style={{
+        borderWidth: 1,
+        borderColor: "#E2E8F0",
+        borderRadius: radii.md,
+        paddingHorizontal: 12,
+        paddingVertical: 14,
+        fontSize: 15,
+        backgroundColor: editable ? "#fff" : "#F8FAFC",
+        color: editable ? colors.text : "#64748B",
+      }}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      placeholderTextColor="#94A3B8"
+      keyboardType={keyboardType}
+      editable={editable && !loading}
+      autoCorrect={false}
+      autoCapitalize={keyboardType === "numeric" || keyboardType === "phone-pad" ? "none" : "sentences"}
+    />
+  </View>
+));
+
 export default function EditProfileScreen({ route, navigation }) {
   const { user } = route.params;
 
@@ -28,9 +57,9 @@ export default function EditProfileScreen({ route, navigation }) {
   // Full name from Google (not editable)
   const fullName = `${user?.firstName || ""} ${user?.lastName || ""}`.trim();
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
   const handleSave = async () => {
     setLoading(true);
@@ -60,36 +89,10 @@ export default function EditProfileScreen({ route, navigation }) {
     }
   };
 
-  const InputField = ({ label, value, onChangeText, placeholder, keyboardType = "default", editable = true }) => (
-    <View style={{ marginBottom: 16 }}>
-      <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: "600", color: "#333" }}>
-        {label}
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#E2E8F0",
-          borderRadius: radii.md,
-          paddingHorizontal: 12,
-          paddingVertical: 14,
-          fontSize: 15,
-          backgroundColor: editable ? "#fff" : "#F8FAFC",
-          color: editable ? colors.text : "#64748B",
-        }}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor="#94A3B8"
-        keyboardType={keyboardType}
-        editable={editable && !loading}
-      />
-    </View>
-  );
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         style={{ flex: 1 }}
       >
         <ScrollView
@@ -110,6 +113,7 @@ export default function EditProfileScreen({ route, navigation }) {
             value={fullName}
             editable={false}
             placeholder="Tên từ Google"
+            loading={loading}
           />
 
           {/* Email - Not Editable */}
@@ -118,6 +122,7 @@ export default function EditProfileScreen({ route, navigation }) {
             value={user?.email || ""}
             editable={false}
             placeholder="Email từ Google"
+            loading={loading}
           />
 
           {/* Editable fields */}
@@ -127,6 +132,7 @@ export default function EditProfileScreen({ route, navigation }) {
             onChangeText={(value) => handleInputChange("studentId", value)}
             placeholder="Nhập mã số sinh viên"
             keyboardType="numeric"
+            loading={loading}
           />
 
           <InputField
@@ -135,6 +141,7 @@ export default function EditProfileScreen({ route, navigation }) {
             onChangeText={(value) => handleInputChange("phoneNumber", value)}
             placeholder="Nhập số điện thoại"
             keyboardType="phone-pad"
+            loading={loading}
           />
 
           <InputField
@@ -142,6 +149,7 @@ export default function EditProfileScreen({ route, navigation }) {
             value={formData.faculty}
             onChangeText={(value) => handleInputChange("faculty", value)}
             placeholder="VD: Khoa Khoa học và Kỹ thuật Máy tính"
+            loading={loading}
           />
 
           <View style={{ marginTop: 20, marginBottom: 40 }}>

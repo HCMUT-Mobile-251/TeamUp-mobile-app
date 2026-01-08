@@ -41,9 +41,11 @@ export default function HomeScreen({ navigation, route }) {
     }
   }, [userData]);
 const normalizeStatus = (status) => {
-  if (status === "Đã tham gia!") return "JOINED";
-  if (status === "Chờ được chấp nhận!") return "PENDING";
-  return "UNKNOWN";
+  // Handle both Vietnamese and English status
+  if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
+  if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL" || status === "PENDING_APPROVAL") return "PENDING";
+  if (status === "LEFT") return "LEFT";
+  return status; // Return original status if not matched
 };
 const groups = userData?.groups
   ?.filter(gm => normalizeStatus(gm.status) === "JOINED")
