@@ -97,4 +97,12 @@ public class UserService {
     public List<Users> findAllById(List<String> listUserId) {
         return userRepository.findAllById(listUserId);
     }
+
+    public Users findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public List<Users> findByStudentId(String studentId) {
+        return userRepository.findByStudentId(studentId);
+    }
 }

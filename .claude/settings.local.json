@@ -29,7 +29,15 @@
       "Bash(/tmp/TagService.java)",
       "Bash(/tmp/TagRepository.java)",
       "Bash(/tmp/UserService.java)",
-      "Bash(/tmp/HomeScreen_backup.js)"
+      "Bash(/tmp/HomeScreen_backup.js)",
+      "Bash(./mvnw clean:*)",
+      "Bash(xcrun simctl:*)",
+      "Bash(./mvnw compile:*)",
+      "Bash(pkill:*)",
+      "Bash(./mvnw package:*)",
+      "Bash(git restore:*)",
+      "Bash(timeout 30 ./mvnw spring-boot:run:*)",
+      "Bash(java:*)"
     ],
     "deny": [],
     "ask": []

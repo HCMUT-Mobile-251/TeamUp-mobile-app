@@ -175,3 +175,16 @@ export const updateGroupTags = async (groupId, tags) => {
   const response = await client.patch(`/group/${groupId}/tags`, tags);
   return response.data;
 };
+
+/**
+ * Invite member to group by MSSV or Email
+ * @param {string} groupId - Group ID
+ * @param {string} identifier - MSSV or Email
+ * @returns {Promise} - Invite response
+ */
+export const inviteMemberByIdentifier = async (groupId, identifier) => {
+  const response = await client.patch(`/group/${groupId}/invite`, {
+    identifier,
+  });
+  return response.data;
+};

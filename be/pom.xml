@@ -45,14 +45,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- restart app when modify -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-
 		<!-- DATA BASE -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

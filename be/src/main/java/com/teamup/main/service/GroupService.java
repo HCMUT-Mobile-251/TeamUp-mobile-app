@@ -217,6 +217,79 @@ public class GroupService {
         throw new AppException(ErrorCode.USER_NOT_FOUND);
     }
 
+    public Groups inviteMemberByIdentifier(String groupId, String identifier) {
+        Groups group = findGroup(groupId);
+
+        // check group đã đầy chưa
+        if (getSize(groupId) >= (int) group.getMaxMembers()) {
+            throw new AppException(ErrorCode.GROUP_FULL);
+        }
+
+        // Tìm user theo MSSV hoặc Email
+        Users foundUser = null;
+
+        // Kiểm tra xem identifier có phải là email không (chứa @)
+        if (identifier.contains("@")) {
+            // Tìm theo email
+            foundUser = userService.findByEmail(identifier);
+        } else {
+            // Tìm theo studentId
+            List<Users> usersByStudentId = userService.findByStudentId(identifier);
+            if (!usersByStudentId.isEmpty()) {
+                foundUser = usersByStudentId.get(0);
+            }
+        }
+
+        if (foundUser == null) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        final Users user = foundUser;
+
+        // Kiểm tra user đã trong nhóm chưa (check trong collection hiện tại)
+        boolean isAlreadyJoined = group.getGroupMembers().stream()
+                .anyMatch(member -> member.getUser().getUserId().equals(user.getUserId())
+                        && member.getStatus() == GroupStatus.JOINED);
+
+        if (isAlreadyJoined) {
+            throw new AppException(ErrorCode.USER_ALREADY_IN_GROUP);
+        }
+
+        // check user đã trong group khác với môn học tương tự trong kỳ này chưa
+        if (isJoinAnotherGroupWithSameCourse(user.getUserId(), group.getCourse().getCourseId())) {
+            throw new AppException(ErrorCode.USER_JOINED_ANOTHER_GROUP_SAME_COURSE);
+        }
+
+        // tìm xem user đã từng gửi yêu cầu chưa
+        // đang send request thì join luôn
+        Optional<GroupMember> existing = group.getGroupMembers().stream()
+                .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                        && member.getStatus() == GroupStatus.WAITING_APPROVAL)
+                .findFirst();
+        if (existing.isPresent()) {
+            GroupMember member = existing.get();
+            group.addMember(member);
+            member.setStatus(GroupStatus.JOINED);
+            return groupRepository.save(group);
+        }
+
+        // filter theo PairId, tồn tại thì xóa cái cũ
+        group.getGroupMembers().stream()
+                .filter(member -> member.getUser().getUserId().equals(user.getUserId())
+                        && (member.getStatus() != GroupStatus.JOINED))
+                .findFirst()
+                .ifPresent(member -> group.removeMember(member));
+
+        PairId id = new PairId(user.getUserId(), group.getGroupId());
+        Instant now = Instant.now();
+        // thêm vào group với trạng thái chờ đối phương phê duyệt
+        GroupMember groupMember = new GroupMember(id, GroupStatus.PENDING_APPROVAL,
+                GroupStatus.ADD_MEMBER.getDescription(), now, false, user, group);
+        group.addMember(groupMember);
+
+        return groupRepository.save(group);
+    }
+
     public void joinRequest(String groupId, String userId, String message) {
         Groups group = findGroup(groupId);
         Users user = userService.findById(userId);

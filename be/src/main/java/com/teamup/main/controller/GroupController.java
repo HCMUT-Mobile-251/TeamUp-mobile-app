@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.teamup.main.dto.request.GroupRequest;
+import com.teamup.main.dto.request.InviteMemberRequest;
 import com.teamup.main.dto.request.JoinRequest;
 import com.teamup.main.dto.response.ApiResponse;
 import com.teamup.main.dto.response.GroupResponse;
@@ -110,6 +111,15 @@ public class GroupController {
     @PatchMapping("/{groupId}/increase")
     public ApiResponse<Void> addMember(@PathVariable String groupId, @RequestBody @Valid List<String> listUserId) {
         groupService.addMember(groupId, listUserId);
+        return ApiResponse.<Void>builder()
+                .code(200)
+                .message("Invite member to group successfully")
+                .build();
+    }
+
+    @PatchMapping("/{groupId}/invite")
+    public ApiResponse<Void> inviteMemberByIdentifier(@PathVariable String groupId, @RequestBody @Valid InviteMemberRequest request) {
+        groupService.inviteMemberByIdentifier(groupId, request.getIdentifier());
         return ApiResponse.<Void>builder()
                 .code(200)
                 .message("Invite member to group successfully")

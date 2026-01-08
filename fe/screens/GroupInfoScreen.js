@@ -455,6 +455,24 @@ export default function GroupInfoScreen({ route, navigation }) {
           </TouchableOpacity>
         )}
 
+        {/* Mời thành viên - Only for leader and when group is not full */}
+        {isLeader && memberCount < group.maxMembers && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary2,
+              paddingVertical: 16,
+              borderRadius: radii.md,
+              marginBottom: 12,
+            }}
+            onPress={() => navigation.navigate("InviteMember", { groupId })}
+            disabled={actionLoading}
+          >
+            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+              Mời thành viên
+            </Text>
+          </TouchableOpacity>
+        )}
+
         {/* Tham gia nhóm - Only if user is NOT in group and NOT leader */}
         {!isUserInGroup && !isLeader && (
           <TouchableOpacity

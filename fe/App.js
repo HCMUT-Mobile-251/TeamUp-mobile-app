@@ -21,6 +21,7 @@ import JoinGroupScreen from "./screens/JoinGroupScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
 import EditGroupScreen from "./screens/EditGroupScreen";
+import InviteMemberScreen from "./screens/InviteMemberScreen";
 import EditProfileScreen from "./screens/EditProfileScreen";
 import MemberInfoScreen from "./screens/MemberInfoScreen";
 import Onboarding1Screen from "./screens/Onboarding1Screen";
@@ -270,6 +271,11 @@ export default function App() {
                 name="EditGroup"
                 component={EditGroupScreen}
                 options={{ title: "Chỉnh sửa nhóm" }}
+              />
+              <Stack.Screen
+                name="InviteMember"
+                component={InviteMemberScreen}
+                options={{ title: "Mời thành viên" }}
               />
               <Stack.Screen
                 name="EditProfile"
