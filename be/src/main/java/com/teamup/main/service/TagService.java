@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.teamup.main.dto.request.TagRequest;
@@ -13,7 +14,6 @@ import com.teamup.main.dto.response.TagResponse;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.enums.ErrorCode;
 import com.teamup.main.model.Tags;
-import com.teamup.main.model.UserTag;
 import com.teamup.main.repository.TagRepository;
 
 @Service
@@ -44,7 +44,8 @@ public class TagService {
 
         // nếu user chưa có tag thì trả về random 10 tag với isUserTag = false
         if (userTagIds.isEmpty()) {
-            List<Tags> randomTags = tagRepository.findRandomTags(10);
+            List<Tags> randomTags = tagRepository.findRandomTags(PageRequest.of(0, 10));
+
             for (Tags tag : randomTags) {
                 result.add(TagResponse.builder()
                         .tagId(tag.getTagId())
