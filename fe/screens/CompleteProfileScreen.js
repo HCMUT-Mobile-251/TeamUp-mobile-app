@@ -62,19 +62,12 @@ export default function CompleteProfileScreen({ navigation }) {
       if (response.code === 200) {
         Alert.alert(
           "Hoàn tất!",
-          "Bạn có muốn chọn tag quan tâm để tìm nhóm phù hợp hơn?",
+          "Thông tin của bạn đã được cập nhật.",
           [
             {
-              text: "Bỏ qua",
+              text: "OK",
               onPress: () => {
                 navigation.navigate("Tabs", { screen: "Home" });
-              },
-              style: "cancel",
-            },
-            {
-              text: "Chọn tag",
-              onPress: () => {
-                navigation.navigate("SelectInterestTags", { fromOnboarding: true });
               },
             },
           ]

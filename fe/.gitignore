@@ -42,3 +42,4 @@ app-example
 /android
 
 pnpm-lock.yaml
+.idea/

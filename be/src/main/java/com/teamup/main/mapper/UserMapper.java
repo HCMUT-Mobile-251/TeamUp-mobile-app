@@ -19,6 +19,7 @@ public interface UserMapper {
     @Mapping(target = "phoneNumber", ignore = true)
     @Mapping(target = "userTags", ignore = true)
     @Mapping(target = "groups", ignore = true)
+    @Mapping(source = "name", target = "fullName")
     @Mapping(source = "given_name", target = "firstName")
     @Mapping(source = "family_name", target = "lastName")
     Users toUser(GoogleAccount request);
@@ -27,6 +28,7 @@ public interface UserMapper {
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
+    @Mapping(target = "fullName", ignore = true)
     @Mapping(target = "userTags", ignore = true)
     @Mapping(target = "groups", ignore = true)
     void updateUser(@MappingTarget Users user, UserUpdateRequest request);

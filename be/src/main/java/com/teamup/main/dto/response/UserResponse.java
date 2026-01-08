@@ -10,6 +10,7 @@ public class UserResponse {
     String studentId;
     String firstName;
     String lastName;
+    String fullName;
     String email;
     String phoneNumber;
     String faculty;

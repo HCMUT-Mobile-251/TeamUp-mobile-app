@@ -13,45 +13,48 @@ import com.teamup.main.model.Groups;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Groups, String> {
-        // Custom query methods can be defined here if needed
-        List<Groups> findByTopicNameContainingIgnoreCase(String topicName);
+  // Custom query methods can be defined here if needed
+  List<Groups> findByTopicNameContainingIgnoreCase(String topicName);
 
-        List<Groups> findByNameContainingIgnoreCase(String name);
+  List<Groups> findByNameContainingIgnoreCase(String name);
 
-        List<Groups> findByGroupClassContainingIgnoreCase(String groupClass);
+  List<Groups> findByGroupClassContainingIgnoreCase(String groupClass);
 
-        Page<Groups> findBySemesterAndGroupTags_Id_SecondIdIn(
-                        int semester,
-                        List<String> tagIds,
-                        Pageable pageable);
+  Page<Groups> findBySemesterAndGroupTags_Id_SecondIdIn(
+      int semester,
+      List<String> tagIds,
+      Pageable pageable);
 
-        boolean existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(
-                        String userId,
-                        String groupId,
-                        GroupStatus status);
+  boolean existsByGroupMembers_Id_SecondIdAndGroupIdAndGroupMembers_Status(
+      String userId,
+      String groupId,
+      GroupStatus status);
 
-        List<Groups> findBySemester(int semester);
+  List<Groups> findBySemester(int semester);
 
-        Page<Groups> findBySemester(int semester, Pageable pageable);
+  Page<Groups> findBySemester(int semester, Pageable pageable);
 
-        // Tìm group theo cả id hoặc name của course
-        List<Groups> findByCourse_CourseIdOrCourse_NameContainingIgnoreCase(String courseId, String courseName);
+  // Tìm group theo cả id hoặc name của course
+  List<Groups> findByCourse_CourseIdOrCourse_NameContainingIgnoreCase(String courseId, String courseName);
 
-        // Tìm groups mà user là member, theo semester và course
-        @Query("""
-                            SELECT g
-                            FROM Groups g
-                            WHERE g.semester = :semester
-                              AND g.course.courseId = :courseId
-                              AND EXISTS (
-                                    SELECT gm
-                                    FROM g.groupMembers gm
-                                    WHERE gm.id.secondId = :userId
-                                      AND gm.status = com.teamup.main.enums.GroupStatus.JOINED
-                              )
-                        """)
-        Groups findGroupWithJoinedMember(
-                        int semester,
-                        String courseId,
-                        String userId);
+  // Tìm groups mà user là member, theo semester và course
+  @Query("""
+          SELECT g
+          FROM Groups g
+          WHERE g.semester = :semester
+            AND g.course.courseId = :courseId
+            AND EXISTS (
+                  SELECT gm
+                  FROM g.groupMembers gm
+                  WHERE gm.id.secondId = :userId
+                    AND gm.status = com.teamup.main.enums.GroupStatus.JOINED
+            )
+      """)
+  Groups findGroupWithJoinedMember(
+      int semester,
+      String courseId,
+      String userId);
+
+  // Tìm groups do userId=leaderid tạo
+  List<Groups> findByLeaderId_UserId(String userId);
 }
