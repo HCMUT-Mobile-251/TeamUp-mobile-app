@@ -25,7 +25,7 @@ public class TagService {
      * User only
      */
     public List<Tags> getTagByName(String tag) {
-        List<Tags> byName = tagRepository.findByNameContainingIgnoreCase(tag);
+        List<Tags> byName = tagRepository.findByTagNameContainingIgnoreCase(tag);
         return byName;
     }
 
