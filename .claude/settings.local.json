@@ -26,12 +26,10 @@
       "Bash(watchman watch-del:*)",
       "Bash(watchman watch-project:*)",
       "Bash(cat:*)",
-      "Bash(./mvnw clean:*)",
-      "Bash(java -jar:*)",
-      "Bash(jar tf:*)",
-      "Bash(jar xf:*)",
-      "Bash(javap:*)",
-      "Bash(pkill:*)"
+      "Bash(/tmp/TagService.java)",
+      "Bash(/tmp/TagRepository.java)",
+      "Bash(/tmp/UserService.java)",
+      "Bash(/tmp/HomeScreen_backup.js)"
     ],
     "deny": [],
     "ask": []

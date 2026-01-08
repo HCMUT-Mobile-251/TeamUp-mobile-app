@@ -147,9 +147,6 @@ export default function LoginScreen() {
     }
   };
 
-  // Debug: hiển thị redirect URI
-  const redirectUri = Linking.createURL('auth');
-
   return (
     <View
       style={{
@@ -186,9 +183,6 @@ export default function LoginScreen() {
       </TouchableOpacity>
       <Text style={{ marginTop: 16, color: "#666", textAlign: "center" }}>
         Đăng nhập bằng tài khoản HCMUT
-      </Text>
-      <Text style={{ marginTop: 8, fontSize: 10, color: "#999", textAlign: "center" }}>
-        Redirect: {redirectUri}
       </Text>
     </View>
   );

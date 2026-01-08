@@ -51,6 +51,13 @@ public class UserService {
     }
 
     public void updateUserTag(String userId, List<Tags> listTag) {
+        System.out.println("=== Updating user tags ===");
+        System.out.println("User ID: " + userId);
+        System.out.println("Number of tags received: " + (listTag != null ? listTag.size() : 0));
+        if (listTag != null) {
+            listTag.forEach(tag -> System.out.println("Tag: " + tag.getTagId() + " - " + tag.getName()));
+        }
+
         Users user = findById(userId);
 
         user.getUserTags().clear();
@@ -63,6 +70,7 @@ public class UserService {
             user.getUserTags().add(userTag);
         }
         userRepository.save(user);
+        System.out.println("User tags updated successfully. Total: " + user.getUserTags().size());
     }
 
     /**

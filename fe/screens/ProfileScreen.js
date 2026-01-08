@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -10,13 +10,13 @@ import {
   RefreshControl,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Tag from "../src/components/Tag";
 import { AuthContext } from "../App";
 import { colors, radii, shadow } from "../src/ui/theme";
 import { getUserById } from "../src/api/userService";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ route }) {
   const { userId, signOut, resetOnboarding } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -75,6 +75,16 @@ export default function ProfileScreen() {
     loadUserData();
   }, [userId]);
 
+  // Auto refresh when returning from SelectTags screen
+  useFocusEffect(
+    useCallback(() => {
+      if (route.params?.refresh) {
+        loadUserData(true);
+        navigation.setParams({ refresh: undefined });
+      }
+    }, [route.params?.refresh, navigation])
+  );
+
   const handleRefresh = () => {
     setRefreshing(true);
     loadUserData(true);
@@ -87,7 +97,8 @@ export default function ProfileScreen() {
   };
 
   const handleEditProfile = () => {
-    navigation.navigate("EditProfile");
+    // Navigate from Tab Navigator to Stack screen
+    navigation.getParent().navigate("EditProfile", { user: userData });
   };
 
   if (loading) {
@@ -155,7 +166,10 @@ export default function ProfileScreen() {
             shadow.card,
           ]}
         >
-          <Row label="Tên" value={userData?.fullName || "Chưa cập nhật"} />
+          <Row
+            label="Họ và tên"
+            value={`${userData?.firstName || ""} ${userData?.lastName || ""}`.trim() || "Chưa cập nhật"}
+          />
           <Row label="MSSV" value={userData?.studentId || "Chưa cập nhật"} />
           <Row label="Khoa" value={userData?.faculty || "Chưa cập nhật"} />
           <Row label="Số điện thoại" value={userData?.phoneNumber || "Chưa cập nhật"} />
@@ -163,17 +177,20 @@ export default function ProfileScreen() {
         </View>
 
         {/* Tags quan tâm */}
-        <Text
-          style={{
-            fontWeight: "800",
-            fontSize: 18,
-            marginTop: 24,
-            marginBottom: 8,
-            color: colors.text,
-          }}
-        >
-          Tags quan tâm
-        </Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 24, marginBottom: 8 }}>
+          <Text
+            style={{
+              fontWeight: "800",
+              fontSize: 18,
+              color: colors.text,
+            }}
+          >
+            Tags quan tâm
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SelectTags")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>Chỉnh sửa</Text>
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -185,8 +202,8 @@ export default function ProfileScreen() {
           }}
         >
           {userData?.userTags && userData.userTags.length > 0 ? (
-            userData.userTags.map((tag) => (
-              <Tag key={tag.tagId} label={tag.name} />
+            userData.userTags.map((userTag) => (
+              <Tag key={userTag.tag?.tagId || userTag.tagId} label={userTag.tag?.name || userTag.name} />
             ))
           ) : (
             <Text style={{ color: colors.subtext, fontSize: 14 }}>

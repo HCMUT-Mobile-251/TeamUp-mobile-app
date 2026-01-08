@@ -308,7 +308,24 @@ public class GroupService {
 
         // check user có phải leader
         if (group.getLeaderId().getUserId().equals(userId)) {
-            throw new AppException(ErrorCode.NO_LEADER);
+            // Đếm số thành viên đã được accept (JOINED)
+            long acceptedMemberCount = group.getGroupMembers().stream()
+                    .filter(member -> member.getStatus() == GroupStatus.JOINED)
+                    .count();
+
+            System.out.println("Leader rời nhóm - Số thành viên JOINED: " + acceptedMemberCount);
+            System.out.println("Tổng số groupMembers: " + group.getGroupMembers().size());
+
+            // Nếu leader là người duy nhất (không có thành viên nào khác), xóa nhóm
+            if (acceptedMemberCount == 0) {
+                System.out.println("Xóa nhóm " + groupId + " vì leader là thành viên duy nhất");
+                deleteGroup(groupId);
+                return group;
+            } else {
+                // Nếu có thành viên khác, yêu cầu chuyển quyền leader trước
+                System.out.println("Không thể xóa nhóm - còn " + acceptedMemberCount + " thành viên JOINED");
+                throw new AppException(ErrorCode.NO_LEADER);
+            }
         }
 
         // check user có trong group

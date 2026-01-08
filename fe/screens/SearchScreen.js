@@ -24,20 +24,18 @@ export default function SearchScreen({ navigation }) {
   const loadTags = async () => {
     try {
       const response = await getAllTags();
+      console.log("[SearchScreen] getAllTags response:", response);
       if (response.code === 200) {
+        console.log("[SearchScreen] Tags loaded:", response.result?.length || 0, "tags");
         setTags(response.result || []);
+      } else {
+        console.log("[SearchScreen] Unexpected response code:", response.code);
+        setTags([]);
       }
     } catch (error) {
-      console.error("Error loading tags:", error);
-      // Fallback to default tags
-      setTags([
-        { tagId: "1", name: "Machine learning" },
-        { tagId: "2", name: "Web Development" },
-        { tagId: "3", name: "Mobile app" },
-        { tagId: "4", name: "IoT" },
-        { tagId: "5", name: "UX/UI" },
-        { tagId: "6", name: "Data Science" },
-      ]);
+      console.error("[SearchScreen] Error loading tags:", error);
+      console.error("[SearchScreen] Error details:", error.response?.data);
+      setTags([]);
     } finally {
       setTagsLoading(false);
     }
@@ -96,7 +94,7 @@ export default function SearchScreen({ navigation }) {
           }}
         >
           <TextInput
-            placeholder="Tìm đề tài, môn học, thành viên..."
+            placeholder="Tìm theo tên nhóm, tên đề tài, hoặc tag..."
             value={searchQuery}
             onChangeText={handleSearchChange}
             style={{ fontSize: 16 }}
@@ -104,18 +102,27 @@ export default function SearchScreen({ navigation }) {
         </View>
 
         {/* Tags Section */}
-        <Text style={{ fontWeight: "800", marginBottom: 8 }}>Tags phổ biến</Text>
-        {tagsLoading ? (
-          <ActivityIndicator style={{ marginVertical: 10 }} />
-        ) : (
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 16 }}>
-            {tags.slice(0, 8).map((tag) => (
-              <TouchableOpacity key={tag.tagId} onPress={() => handleTagPress(tag.name)}>
-                <Tag label={tag.name} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
+        <View style={{ marginBottom: 20 }}>
+          <Text style={{ fontWeight: "800", marginBottom: 4 }}>Tags phổ biến</Text>
+          <Text style={{ fontSize: 12, color: colors.subtext, marginBottom: 8 }}>
+            Nhấn vào tag để tìm kiếm nhanh
+          </Text>
+          {tagsLoading ? (
+            <ActivityIndicator style={{ marginVertical: 10 }} />
+          ) : tags.length > 0 ? (
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              {tags.slice(0, 12).map((tag) => (
+                <TouchableOpacity key={tag.tagId} onPress={() => handleTagPress(tag.name)}>
+                  <Tag label={tag.name} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <Text style={{ fontSize: 13, color: colors.subtext, fontStyle: "italic" }}>
+              Chưa có tags phổ biến
+            </Text>
+          )}
+        </View>
 
         {/* Search Results */}
         {searchQuery.trim() ? (

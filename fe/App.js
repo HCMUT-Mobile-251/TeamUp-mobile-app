@@ -22,8 +22,11 @@ import CompleteProfileScreen from "./screens/CompleteProfileScreen";
 import JoinGroupScreen from "./screens/JoinGroupScreen";
 import CreateGroupScreen from "./screens/CreateGroupScreen";
 import GroupInfoScreen from "./screens/GroupInfoScreen";
+import EditGroupScreen from "./screens/EditGroupScreen";
+import MemberInfoScreen from "./screens/MemberInfoScreen";
 import Onboarding1Screen from "./screens/Onboarding1Screen";
 import Onboarding2Screen from "./screens/Onboarding2Screen";
+import SelectTagsScreen from "./screens/SelectTagsScreen";
 
 export const AuthContext = React.createContext();
 
@@ -265,9 +268,9 @@ export default function App() {
                 options={{ title: "Thông tin nhóm" }}
               />
               <Stack.Screen
-                name="AdvancedSearch"
-                component={AdvancedSearchScreen}
-                options={{ title: "Tìm kiếm nâng cao" }}
+                name="EditGroup"
+                component={EditGroupScreen}
+                options={{ title: "Chỉnh sửa nhóm" }}
               />
               <Stack.Screen
                 name="EditProfile"
@@ -275,13 +278,19 @@ export default function App() {
                 options={{ title: "Chỉnh sửa thông tin" }}
               />
               <Stack.Screen
-                name="CompleteProfile"
-                component={CompleteProfileScreen}
-                options={{
-                  title: "Hoàn thiện thông tin",
-                  headerLeft: () => null,
-                  gestureEnabled: false,
-                }}
+                name="MemberInfo"
+                component={MemberInfoScreen}
+                options={{ title: "Thông tin thành viên" }}
+              />
+              <Stack.Screen
+                name="AdvancedSearch"
+                component={AdvancedSearchScreen}
+                options={{ title: "Tìm kiếm nâng cao" }}
+              />
+              <Stack.Screen
+                name="SelectTags"
+                component={SelectTagsScreen}
+                options={{ headerShown: false }}
               />
               {/* Onboarding screens cho user đã đăng nhập muốn xem lại */}
               <Stack.Screen

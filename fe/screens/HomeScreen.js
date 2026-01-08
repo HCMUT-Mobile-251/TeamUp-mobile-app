@@ -1,5 +1,6 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState, useCallback, useEffect } from "react";
 import { View, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import Screen from "../src/ui/Screen";
 import ProjectCard from "../src/components/ProjectCard";
 import LoadingSpinner from "../src/components/LoadingSpinner";
@@ -8,31 +9,32 @@ import { colors, radii } from "../src/ui/theme";
 import { useUser } from "../src/hooks";
 import { AuthContext } from "../App";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   const { userId } = useContext(AuthContext);
-  const { data: response, loading, error, refetch } = useUser(userId);
+  const { data: user, loading, error, refetch } = useUser(userId);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // Extract user data from API response
-  const user = response?.result;
+  // Auto refresh when navigating back from other screens
+  useFocusEffect(
+    useCallback(() => {
+      // Only refetch if there's a refresh param or if coming from create/edit group
+      if (route.params?.refresh) {
+        refetch();
+        // Clear the param to avoid repeated refetches
+        navigation.setParams({ refresh: undefined });
+      }
+    }, [route.params?.refresh, refetch, navigation])
+  );
 
-  // Check if user needs to complete profile
-  useEffect(() => {
-    if (user && (!user.studentId || !user.faculty)) {
-      // User chưa hoàn thiện thông tin
-      navigation.navigate("CompleteProfile");
-    }
-  }, [user, navigation]);
-
-  // Debug: Log user data
-  useEffect(() => {
-    if (user) {
-      console.log("User data:", JSON.stringify(user, null, 2));
-      console.log("User groups:", user.groups);
-    }
-  }, [user]);
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  }, [refetch]);
 
   // Extract groups from user data
-  const groups = user?.groups?.map(gm => ({
+  const userData = user?.result;
+  const groups = userData?.groups?.map(gm => ({
     ...gm.group,
     memberStatus: gm.status,
     joinTime: gm.time
@@ -52,10 +54,10 @@ export default function HomeScreen({ navigation }) {
   const userGroupCount = groups?.length || 0;
 
   return (
-    <Screen>
+    <Screen refreshing={refreshing} onRefresh={handleRefresh}>
       <View style={{ marginBottom: 16 }}>
         <Text style={{ fontSize: 22, fontWeight: "900", color: colors.text }}>
-          Hello! {user?.firstName || "User"}
+          Hello! {userData?.firstName || "User"}
         </Text>
         <View
           style={[

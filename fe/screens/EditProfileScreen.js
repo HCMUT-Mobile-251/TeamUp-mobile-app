@@ -1,212 +1,186 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  ScrollView,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  ScrollView,
+  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 import { colors, radii } from "../src/ui/theme";
-import { getUserById, updateUser } from "../src/api/userService";
-import { AuthContext } from "../App";
+import { updateUser } from "../src/api/userService";
 
-export default function EditProfileScreen({ navigation }) {
-  const { userId } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+export default function EditProfileScreen({ route, navigation }) {
+  const { user } = route.params;
+
   const [formData, setFormData] = useState({
-    studentId: "",
-    faculty: "",
-    phoneNumber: "",
+    studentId: user?.studentId || "",
+    phoneNumber: user?.phoneNumber || "",
+    faculty: user?.faculty || "",
   });
 
-  // Refs cho scroll và inputs
-  const scrollViewRef = useRef(null);
-  const inputRefs = useRef({});
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    loadUserData();
-  }, []);
-
-  const loadUserData = async () => {
-    setLoading(true);
-    try {
-      const response = await getUserById(userId);
-      if (response?.code === 200 && response?.result) {
-        const user = response.result;
-        setFormData({
-          studentId: user.studentId || "",
-          faculty: user.faculty || "",
-          phoneNumber: user.phoneNumber || "",
-        });
-      }
-    } catch (error) {
-      console.error("Load user error:", error);
-      Alert.alert("Lỗi", "Không thể tải thông tin người dùng");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Full name from Google (not editable)
+  const fullName = `${user?.firstName || ""} ${user?.lastName || ""}`.trim();
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const validateForm = () => {
-    if (!formData.studentId.trim()) {
-      Alert.alert("Lỗi", "Vui lòng nhập MSSV");
-      return false;
-    }
-    if (!formData.faculty.trim()) {
-      Alert.alert("Lỗi", "Vui lòng nhập khoa");
-      return false;
-    }
-    // Phone number is optional
-    return true;
-  };
-
   const handleSave = async () => {
-    if (!validateForm()) return;
-
-    setSaving(true);
+    setLoading(true);
     try {
-      const updateData = {
-        studentId: formData.studentId,
-        faculty: formData.faculty,
-        phoneNumber: formData.phoneNumber || "",
-      };
-
-      console.log("Updating user with data:", updateData);
-      const response = await updateUser(userId, updateData);
-      console.log("Update response:", response);
-
+      const response = await updateUser(user.userId, formData);
       if (response.code === 200) {
-        Alert.alert(
-          "Thành công",
-          "Cập nhật thông tin thành công!",
-          [
-            {
-              text: "OK",
-              onPress: () => navigation.goBack(),
+        Alert.alert("Thành công", "Đã cập nhật thông tin cá nhân!", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Navigate back to profile and trigger refresh
+              navigation.navigate("Tabs", {
+                screen: "Profile",
+                params: { refresh: true }
+              });
             },
-          ]
-        );
+          },
+        ]);
       } else {
         Alert.alert("Lỗi", response.message || "Không thể cập nhật thông tin");
       }
     } catch (error) {
-      console.error("Update user error:", error);
-      Alert.alert(
-        "Lỗi",
-        error.response?.data?.message || "Có lỗi xảy ra khi cập nhật thông tin"
-      );
+      console.error("Update profile error:", error);
+      Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
     } finally {
-      setSaving(false);
+      setLoading(false);
     }
   };
 
-  const renderInput = (label, field, placeholder, keyboardType = "default", options = {}) => {
-    const required = options.required || false;
-    const editable = options.editable !== false; // Default to true
-
-    return (
-      <View
-        style={{ marginBottom: 12 }}
-        onLayout={(event) => {
-          const layout = event.nativeEvent.layout;
-          inputRefs.current[field] = layout.y;
+  const InputField = ({ label, value, onChangeText, placeholder, keyboardType = "default", editable = true }) => (
+    <View style={{ marginBottom: 16 }}>
+      <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: "600", color: "#333" }}>
+        {label}
+      </Text>
+      <TextInput
+        style={{
+          borderWidth: 1,
+          borderColor: "#E2E8F0",
+          borderRadius: radii.md,
+          paddingHorizontal: 12,
+          paddingVertical: 14,
+          fontSize: 15,
+          backgroundColor: editable ? "#fff" : "#F8FAFC",
+          color: editable ? colors.text : "#64748B",
         }}
-      >
-        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
-          {label} {required && <Text style={{ color: "red" }}>*</Text>}
-        </Text>
-        <TextInput
-          placeholder={placeholder}
-          value={formData[field]}
-          onChangeText={(value) => handleInputChange(field, value)}
-          keyboardType={keyboardType}
-          editable={!saving && editable}
-          onFocus={() => {
-            // Scroll đến vị trí của input khi focus
-            if (scrollViewRef.current && inputRefs.current[field]) {
-              scrollViewRef.current.scrollTo({
-                y: inputRefs.current[field] - 100,
-                animated: true,
-              });
-            }
-          }}
-          style={{
-            borderWidth: 1,
-            borderColor: editable ? "#E2E8F0" : "#F1F5F9",
-            borderRadius: radii.md,
-            paddingHorizontal: 12,
-            paddingVertical: 12,
-            backgroundColor: editable ? colors.white : "#F8FAFC",
-            color: editable ? "#000" : "#94A3B8",
-          }}
-        />
-      </View>
-    );
-  };
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.bg }}>
-        <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={{ marginTop: 12, color: colors.subtext }}>
-          Đang tải thông tin...
-        </Text>
-      </View>
-    );
-  }
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor="#94A3B8"
+        keyboardType={keyboardType}
+        editable={editable && !loading}
+      />
+    </View>
+  );
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, backgroundColor: colors.bg }}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-    >
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={{ padding: 16, paddingBottom: 200 }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="interactive"
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
       >
-        <Text style={{ fontSize: 22, fontWeight: "800", marginBottom: 4 }}>
-          Chỉnh sửa thông tin
-        </Text>
-        <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 16 }}>
-          Cập nhật thông tin cá nhân của bạn
-        </Text>
-
-        {renderInput("MSSV", "studentId", "VD: 2211234", "numeric", { required: true })}
-        {renderInput("Khoa", "faculty", "VD: Khoa Khoa học và Kỹ thuật Máy tính", "default", { required: true })}
-        {renderInput("Số điện thoại", "phoneNumber", "VD: 0123456789 (không bắt buộc)", "phone-pad")}
-
-        <TouchableOpacity
-          style={{
-            marginTop: 8,
-            backgroundColor: saving ? colors.subtext : colors.primary,
-            paddingVertical: 16,
-            borderRadius: radii.md,
-          }}
-          onPress={handleSave}
-          disabled={saving}
+        <ScrollView
+          contentContainerStyle={{ padding: 16 }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          {saving ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-              Lưu thông tin
-            </Text>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <Text style={{ fontSize: 24, fontWeight: "900", marginBottom: 8, color: colors.text }}>
+            Chỉnh sửa thông tin
+          </Text>
+          <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 20 }}>
+            Cập nhật thông tin cá nhân của bạn
+          </Text>
+
+          {/* Full Name - Not Editable */}
+          <InputField
+            label="Họ và tên (từ Google)"
+            value={fullName}
+            editable={false}
+            placeholder="Tên từ Google"
+          />
+
+          {/* Email - Not Editable */}
+          <InputField
+            label="Email (từ Google)"
+            value={user?.email || ""}
+            editable={false}
+            placeholder="Email từ Google"
+          />
+
+          {/* Editable fields */}
+          <InputField
+            label="MSSV"
+            value={formData.studentId}
+            onChangeText={(value) => handleInputChange("studentId", value)}
+            placeholder="Nhập mã số sinh viên"
+            keyboardType="numeric"
+          />
+
+          <InputField
+            label="Số điện thoại"
+            value={formData.phoneNumber}
+            onChangeText={(value) => handleInputChange("phoneNumber", value)}
+            placeholder="Nhập số điện thoại"
+            keyboardType="phone-pad"
+          />
+
+          <InputField
+            label="Khoa"
+            value={formData.faculty}
+            onChangeText={(value) => handleInputChange("faculty", value)}
+            placeholder="VD: Khoa Khoa học và Kỹ thuật Máy tính"
+          />
+
+          <View style={{ marginTop: 20, marginBottom: 40 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colors.primary,
+                paddingVertical: 16,
+                borderRadius: radii.md,
+                marginBottom: 12,
+              }}
+              onPress={handleSave}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+                  Lưu thay đổi
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderColor: colors.subtext,
+                paddingVertical: 16,
+                borderRadius: radii.md,
+              }}
+              onPress={() => navigation.goBack()}
+              disabled={loading}
+            >
+              <Text style={{ color: colors.subtext, textAlign: "center", fontWeight: "600", fontSize: 16 }}>
+                Hủy
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -7,37 +7,12 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { colors, radii } from "../src/ui/theme";
-import { createGroup } from "../src/api/groupService";
+import { createGroup, updateGroupTags } from "../src/api/groupService";
 import { searchCourses } from "../src/api/courseService";
+import { searchTags, createTag } from "../src/api/tagService";
 import { AuthContext } from "../App";
-
-// Hàm tính học kỳ hiện tại
-const getCurrentSemester = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1; // 0-indexed
-
-  // Học kỳ 1: tháng 9-12 (năm trước) -> 231, 241, 251
-  // Học kỳ 2: tháng 1-5 (năm này) -> 232, 242, 252
-  // Học kỳ hè: tháng 6-8 (năm này) -> 233, 243, 253
-
-  const lastTwoDigits = year % 100; // 2024 -> 24
-
-  if (month >= 9 && month <= 12) {
-    // Học kỳ 1
-    return `${lastTwoDigits}1`;
-  } else if (month >= 1 && month <= 5) {
-    // Học kỳ 2
-    return `${lastTwoDigits}2`;
-  } else {
-    // Học kỳ hè (6-8)
-    return `${lastTwoDigits}3`;
-  }
-};
 
 export default function CreateGroupScreen({ navigation }) {
   const { userId } = useContext(AuthContext);
@@ -45,8 +20,8 @@ export default function CreateGroupScreen({ navigation }) {
   const [formData, setFormData] = useState({
     courseId: "",
     courseName: "",
+    semester: "",
     groupClass: "",
-    semester: getCurrentSemester(), // Tự động tính học kỳ
     name: "",
     topicName: "",
     maxMembers: "",
@@ -55,15 +30,22 @@ export default function CreateGroupScreen({ navigation }) {
 
   const [courses, setCourses] = useState([]);
   const [courseSearching, setCourseSearching] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showCourseDropdown, setShowCourseDropdown] = useState(false);
 
-  // Refs cho scroll và inputs
-  const scrollViewRef = useRef(null);
-  const inputRefs = useRef({});
+  // Tag selection states
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [tagSearchQuery, setTagSearchQuery] = useState("");
+  const [tagSearchResults, setTagSearchResults] = useState([]);
+  const [tagSearching, setTagSearching] = useState(false);
 
   // Search course when courseId changes
   useEffect(() => {
-    if (formData.courseId.length >= 3) {
+    if (formData.courseId.length >= 2) {
       searchCourse(formData.courseId);
+    } else {
+      setCourses([]);
+      setShowCourseDropdown(false);
     }
   }, [formData.courseId]);
 
@@ -73,13 +55,7 @@ export default function CreateGroupScreen({ navigation }) {
       const response = await searchCourses(query);
       if (response.code === 200 && response.result) {
         setCourses(response.result);
-        // Auto-fill if exact match
-        const exactMatch = response.result.find(
-          (c) => c.courseId.toLowerCase() === query.toLowerCase()
-        );
-        if (exactMatch) {
-          setFormData((prev) => ({ ...prev, courseName: exactMatch.name }));
-        }
+        setShowCourseDropdown(response.result.length > 0);
       }
     } catch (error) {
       console.error("Course search error:", error);
@@ -88,8 +64,84 @@ export default function CreateGroupScreen({ navigation }) {
     }
   };
 
+  const handleSelectCourse = (course) => {
+    // Calculate current semester
+    const today = new Date();
+    const year = parseInt(String(today.getFullYear()).substring(1));
+    const month = today.getMonth() + 1;
+    const semester = month > 8 ? 1 : month > 4 ? 3 : 2;
+    const currentSemester = year * 10 + semester;
+
+    setFormData((prev) => ({
+      ...prev,
+      courseId: course.courseId,
+      courseName: course.name,
+      semester: currentSemester.toString()
+    }));
+    setSelectedCourse(course);
+    setShowCourseDropdown(false);
+  };
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Tag search and selection handlers
+  useEffect(() => {
+    if (tagSearchQuery.trim().length >= 2) {
+      handleTagSearch();
+    } else {
+      setTagSearchResults([]);
+    }
+  }, [tagSearchQuery]);
+
+  const handleTagSearch = async () => {
+    setTagSearching(true);
+    try {
+      const response = await searchTags(tagSearchQuery);
+      if (response.code === 200 && response.result) {
+        setTagSearchResults(response.result);
+      }
+    } catch (error) {
+      console.error("Tag search error:", error);
+    } finally {
+      setTagSearching(false);
+    }
+  };
+
+  const handleCreateNewTag = async () => {
+    if (!tagSearchQuery.trim()) {
+      Alert.alert("Thông báo", "Vui lòng nhập tên tag");
+      return;
+    }
+
+    try {
+      const response = await createTag(tagSearchQuery.trim());
+      if (response?.code === 200 && response?.result) {
+        const newTag = response.result;
+        if (!selectedTags.some((tag) => tag.tagId === newTag.tagId)) {
+          setSelectedTags([...selectedTags, newTag]);
+        }
+        setTagSearchQuery("");
+        setTagSearchResults([]);
+        Alert.alert("Thành công", "Đã tạo tag mới!");
+      }
+    } catch (error) {
+      console.error("Create tag error:", error);
+      Alert.alert("Lỗi", "Không thể tạo tag mới");
+    }
+  };
+
+  const handleSelectTag = (tag) => {
+    if (!selectedTags.some((t) => t.tagId === tag.tagId)) {
+      setSelectedTags([...selectedTags, tag]);
+    }
+    setTagSearchQuery("");
+    setTagSearchResults([]);
+  };
+
+  const handleRemoveTag = (tagId) => {
+    setSelectedTags(selectedTags.filter((tag) => tag.tagId !== tagId));
   };
 
   const validateForm = () => {
@@ -132,6 +184,19 @@ export default function CreateGroupScreen({ navigation }) {
       console.log("Create group response:", response);
 
       if (response.code === 200 || response.code === 201) {
+        const createdGroup = response.result;
+
+        // Update group tags if any tags selected
+        if (selectedTags.length > 0) {
+          try {
+            await updateGroupTags(createdGroup.groupId, selectedTags);
+            console.log("Group tags updated successfully");
+          } catch (tagError) {
+            console.error("Error updating group tags:", tagError);
+            // Continue even if tag update fails
+          }
+        }
+
         Alert.alert(
           "Thành công",
           "Tạo nhóm thành công!",
@@ -139,8 +204,11 @@ export default function CreateGroupScreen({ navigation }) {
             {
               text: "OK",
               onPress: () => {
-                // Navigate to home and reset the stack
-                navigation.navigate("Tabs", { screen: "Home" });
+                // Navigate back to home tab and refresh
+                navigation.navigate("Tabs", {
+                  screen: "Home",
+                  params: { refresh: true }
+                });
               },
             },
           ]
@@ -159,110 +227,50 @@ export default function CreateGroupScreen({ navigation }) {
     }
   };
 
-  const renderInput = (label, field, placeholder, keyboardType = "default", options = {}) => {
-    const isDisabled = options.disabled || false;
-    const isEditable = !loading && !isDisabled;
-    const autoFocus = options.autoFocus || false;
-
-    return (
+  const renderInput = (label, field, placeholder, keyboardType = "default") => (
+    <View style={{ marginBottom: 12 }}>
+      <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+        {label} {["courseId", "name", "topicName", "maxMembers"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
+      </Text>
       <View
-        style={{ marginBottom: 12 }}
-        onLayout={(event) => {
-          const layout = event.nativeEvent.layout;
-          inputRefs.current[field] = layout.y;
+        style={{
+          borderWidth: 1,
+          borderColor: "#E2E8F0",
+          borderRadius: radii.md,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          backgroundColor: colors.white,
         }}
       >
-        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
-          {label} {["courseId", "name", "topicName", "maxMembers"].includes(field) && <Text style={{ color: "red" }}>*</Text>}
-        </Text>
         <TextInput
           placeholder={placeholder}
           value={formData[field]}
           onChangeText={(value) => handleInputChange(field, value)}
           keyboardType={keyboardType}
-          editable={isEditable}
-          autoFocus={autoFocus}
-          onFocus={() => {
-            // Scroll đến vị trí của input khi focus
-            if (scrollViewRef.current && inputRefs.current[field]) {
-              scrollViewRef.current.scrollTo({
-                y: inputRefs.current[field] - 100,
-                animated: true,
-              });
-            }
-          }}
-          style={{
-            borderWidth: 1,
-            borderColor: isDisabled ? "#F1F5F9" : "#E2E8F0",
-            borderRadius: radii.md,
-            paddingHorizontal: 12,
-            paddingVertical: 12,
-            backgroundColor: isDisabled ? "#F8FAFC" : colors.white,
-            color: isDisabled ? "#94A3B8" : "#000",
-          }}
+          editable={!loading}
         />
-        {field === "courseId" && courseSearching && (
-          <ActivityIndicator style={{ marginTop: 4 }} size="small" />
-        )}
       </View>
-    );
-  };
+      {field === "courseId" && courseSearching && (
+        <ActivityIndicator style={{ marginTop: 4 }} size="small" />
+      )}
+    </View>
+  );
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-    >
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={{ padding: 16, paddingBottom: 200 }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="interactive"
-      >
-        <Text style={{ fontSize: 22, fontWeight: "800", marginBottom: 4 }}>
-          Tạo nhóm mới
-        </Text>
-        <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 16 }}>
-          Điền thông tin để tạo nhóm cho đề tài của bạn
-        </Text>
+    <ScrollView contentContainerStyle={{ padding: 16 }} showsVerticalScrollIndicator={false}>
+      <Text style={{ fontSize: 22, fontWeight: "800", marginBottom: 4 }}>
+        Tạo nhóm mới
+      </Text>
+      <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 16 }}>
+        Điền thông tin để tạo nhóm cho đề tài của bạn
+      </Text>
 
-        {renderInput("Mã môn học", "courseId", "VD: CO3001", "default", { autoFocus: true })}
-        {renderInput("Tên môn học", "courseName", "Tự động lấy từ mã môn học", "default", { disabled: true })}
-        {renderInput("Mã lớp", "groupClass", "VD: L01 (không bắt buộc)", "default")}
-        {renderInput("Học kỳ", "semester", "Tự động theo thời gian hiện tại", "numeric", { disabled: true })}
-        {renderInput("Tên nhóm", "name", "VD: Nhóm 1", "default")}
-        {renderInput("Tên đề tài", "topicName", "VD: Xây dựng ứng dụng...", "default")}
-      {renderInput("Số lượng thành viên", "maxMembers", "VD: 5", "numeric")}
-
-      <View
-        style={{ marginBottom: 12 }}
-        onLayout={(event) => {
-          const layout = event.nativeEvent.layout;
-          inputRefs.current["description"] = layout.y;
-        }}
-      >
+      {/* Course selection with dropdown */}
+      <View style={{ marginBottom: 12 }}>
         <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
-          Miêu tả đề tài
+          Mã môn học <Text style={{ color: "red" }}>*</Text>
         </Text>
-        <TextInput
-          placeholder="Mô tả chi tiết về đề tài..."
-          value={formData.description}
-          onChangeText={(value) => handleInputChange("description", value)}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-          editable={!loading}
-          onFocus={() => {
-            // Scroll đến vị trí của input khi focus
-            if (scrollViewRef.current && inputRefs.current["description"]) {
-              scrollViewRef.current.scrollTo({
-                y: inputRefs.current["description"] - 100,
-                animated: true,
-              });
-            }
-          }}
+        <View
           style={{
             borderWidth: 1,
             borderColor: "#E2E8F0",
@@ -270,30 +278,263 @@ export default function CreateGroupScreen({ navigation }) {
             paddingHorizontal: 12,
             paddingVertical: 12,
             backgroundColor: colors.white,
-            minHeight: 100,
           }}
-        />
+        >
+          <TextInput
+            placeholder="Nhập mã môn học (VD: CO3001)"
+            value={formData.courseId}
+            onChangeText={(value) => handleInputChange("courseId", value)}
+            editable={!loading}
+          />
+        </View>
+        {courseSearching && (
+          <ActivityIndicator style={{ marginTop: 4 }} size="small" />
+        )}
+        {selectedCourse && (
+          <Text style={{ marginTop: 4, fontSize: 13, color: colors.primary }}>
+            ✓ {selectedCourse.name}
+          </Text>
+        )}
+        {showCourseDropdown && courses.length > 0 && (
+          <View
+            style={{
+              marginTop: 4,
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              borderRadius: radii.md,
+              backgroundColor: colors.white,
+              maxHeight: 200,
+            }}
+          >
+            <ScrollView>
+              {courses.map((course) => (
+                <TouchableOpacity
+                  key={course.courseId}
+                  style={{
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#F1F5F9",
+                  }}
+                  onPress={() => handleSelectCourse(course)}
+                >
+                  <Text style={{ fontWeight: "600", fontSize: 14 }}>
+                    {course.courseId}
+                  </Text>
+                  <Text style={{ fontSize: 12, color: colors.subtext, marginTop: 2 }}>
+                    {course.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
       </View>
 
-        <TouchableOpacity
+      {/* Course Name - Disabled */}
+      <View style={{ marginBottom: 12 }}>
+        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+          Tên môn học
+        </Text>
+        <View
           style={{
-            marginTop: 8,
-            backgroundColor: loading ? colors.subtext : colors.primary,
-            paddingVertical: 16,
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
             borderRadius: radii.md,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            backgroundColor: "#F8FAFC",
           }}
-          onPress={handleCreateGroup}
-          disabled={loading}
         >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-              Tạo nhóm
+          <TextInput
+            placeholder="Sẽ tự động điền khi chọn môn học"
+            value={formData.courseName}
+            editable={false}
+            style={{ color: "#64748B" }}
+          />
+        </View>
+      </View>
+
+      {/* Semester - Disabled */}
+      <View style={{ marginBottom: 12 }}>
+        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+          Học kỳ
+        </Text>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            borderRadius: radii.md,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            backgroundColor: "#F8FAFC",
+          }}
+        >
+          <TextInput
+            placeholder="Tự động tính theo học kỳ hiện tại"
+            value={formData.semester}
+            editable={false}
+            style={{ color: "#64748B" }}
+          />
+        </View>
+      </View>
+
+      {renderInput("Mã lớp", "groupClass", "VD: L01 (không bắt buộc)", "default")}
+      {renderInput("Tên nhóm", "name", "VD: Nhóm 1", "default")}
+      {renderInput("Tên đề tài", "topicName", "VD: Xây dựng ứng dụng...", "default")}
+      {renderInput("Số lượng thành viên", "maxMembers", "VD: 5", "numeric")}
+
+      <View style={{ marginBottom: 12 }}>
+        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+          Miêu tả đề tài
+        </Text>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            borderRadius: radii.md,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            backgroundColor: colors.white,
+          }}
+        >
+          <TextInput
+            placeholder="Mô tả chi tiết về đề tài..."
+            value={formData.description}
+            onChangeText={(value) => handleInputChange("description", value)}
+            multiline
+            numberOfLines={4}
+            textAlignVertical="top"
+            editable={!loading}
+          />
+        </View>
+      </View>
+
+      {/* Tag Selection */}
+      <View style={{ marginBottom: 12 }}>
+        <Text style={{ marginBottom: 6, color: "#666", fontWeight: "600" }}>
+          Tags liên quan (không bắt buộc)
+        </Text>
+
+        {/* Selected Tags */}
+        {selectedTags.length > 0 && (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 8 }}>
+            {selectedTags.map((tag) => (
+              <View
+                key={tag.tagId}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  backgroundColor: colors.primary,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 16,
+                  marginRight: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <Text style={{ color: "#fff", fontSize: 13, marginRight: 6 }}>
+                  {tag.name}
+                </Text>
+                <TouchableOpacity onPress={() => handleRemoveTag(tag.tagId)}>
+                  <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>×</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Search Tags */}
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "#E2E8F0",
+            borderRadius: radii.md,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            backgroundColor: colors.white,
+            marginBottom: 8,
+          }}
+        >
+          <TextInput
+            placeholder="Tìm kiếm hoặc tạo tag mới..."
+            value={tagSearchQuery}
+            onChangeText={setTagSearchQuery}
+            editable={!loading}
+          />
+        </View>
+
+        {tagSearching && (
+          <ActivityIndicator style={{ marginBottom: 8 }} size="small" />
+        )}
+
+        {/* Tag Search Results */}
+        {tagSearchResults.length > 0 && (
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "#E2E8F0",
+              borderRadius: radii.md,
+              backgroundColor: colors.white,
+              marginBottom: 8,
+              maxHeight: 150,
+            }}
+          >
+            <ScrollView>
+              {tagSearchResults.map((tag) => (
+                <TouchableOpacity
+                  key={tag.tagId}
+                  style={{
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#F1F5F9",
+                  }}
+                  onPress={() => handleSelectTag(tag)}
+                >
+                  <Text style={{ fontSize: 14 }}>{tag.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* Create New Tag Button */}
+        {tagSearchQuery.trim() && (
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: colors.primary,
+              borderRadius: radii.md,
+              paddingVertical: 10,
+              paddingHorizontal: 12,
+              marginBottom: 8,
+            }}
+            onPress={handleCreateNewTag}
+          >
+            <Text style={{ color: colors.primary, textAlign: "center", fontWeight: "600" }}>
+              + Tạo tag mới "{tagSearchQuery}"
             </Text>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <TouchableOpacity
+        style={{
+          marginTop: 8,
+          backgroundColor: loading ? colors.subtext : colors.primary,
+          paddingVertical: 16,
+          borderRadius: radii.md,
+        }}
+        onPress={handleCreateGroup}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+            Tạo nhóm
+          </Text>
+        )}
+      </TouchableOpacity>
+    </ScrollView>
   );
 }

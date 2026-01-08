@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teamup.main.dto.request.TagRequest;
 import com.teamup.main.dto.response.ApiResponse;
+import com.teamup.main.dto.response.TagResponse;
 import com.teamup.main.model.Tags;
 import com.teamup.main.service.TagService;
 
@@ -38,14 +40,43 @@ public class TagController {
     }
     
     @GetMapping("/suggest/{userId}")
-    public ApiResponse<List<Tags>> getIndividualTags(@PathVariable String userId) {
-        return ApiResponse.<List<Tags>>builder()
+    public ApiResponse<List<TagResponse>> getIndividualTags(@PathVariable String userId) {
+        return ApiResponse.<List<TagResponse>>builder()
                 .code(200)
                 .message("Lấy gợi ý tag thành công")
                 .result(tagService.getIndividualTags(userId))
                 .build();
     }
 
+    @GetMapping("/all")
+    public ApiResponse<List<Tags>> getAllTags() {
+        try {
+            System.out.println("=== Getting all tags ===");
+            List<Tags> tags = tagService.getTags();
+            System.out.println("Found " + tags.size() + " tags");
+            return ApiResponse.<List<Tags>>builder()
+                    .code(200)
+                    .message("Lấy tất cả tag thành công")
+                    .result(tags)
+                    .build();
+        } catch (Exception e) {
+            System.err.println("Error getting all tags: " + e.getMessage());
+            e.printStackTrace();
+            return ApiResponse.<List<Tags>>builder()
+                    .code(500)
+                    .message("Lỗi khi lấy danh sách tags: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    @PostMapping
+    public ApiResponse<Tags> createTagByUser(@RequestBody @Valid TagRequest request) {
+        return ApiResponse.<Tags>builder()
+                .code(200)
+                .message("Tạo tag thành công")
+                .result(tagService.createTagByUser(request))
+                .build();
+    }
 
     /*
      * Admin only

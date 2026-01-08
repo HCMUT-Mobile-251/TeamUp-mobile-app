@@ -1,5 +1,6 @@
 package com.teamup.main.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -7,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teamup.main.dto.request.TagRequest;
+import com.teamup.main.dto.response.TagResponse;
 import com.teamup.main.exception.AppException;
 import com.teamup.main.enums.ErrorCode;
 import com.teamup.main.model.Tags;
@@ -29,20 +32,57 @@ public class TagService {
         return byName;
     }
 
-    public List<Tags> getIndividualTags(String userId) {
+    public List<TagResponse> getIndividualTags(String userId) {
         // lấy tag của user
-        Set<Tags> tags = userService.findById(userId)
+        Set<String> userTagIds = userService.findById(userId)
                 .getUserTags()
                 .stream()
-                .map(UserTag::getTag)
+                .map(userTag -> userTag.getTag().getTagId())
                 .collect(Collectors.toSet());
 
-        // nếu user chưa có tag thì add random 10 tag
-        if (tags.isEmpty()) {
-            return tagRepository.findRandomTags(10);
+        List<TagResponse> result = new ArrayList<>();
+
+        // nếu user chưa có tag thì trả về random 10 tag với isUserTag = false
+        if (userTagIds.isEmpty()) {
+            List<Tags> randomTags = tagRepository.findRandomTags(10);
+            for (Tags tag : randomTags) {
+                result.add(TagResponse.builder()
+                        .tagId(tag.getTagId())
+                        .name(tag.getName())
+                        .isUserTag(false)
+                        .build());
+            }
+            return result;
         }
 
-        return new java.util.ArrayList<>(tags);
+        // Lấy tất cả tags để hiển thị, đánh dấu tag nào là của user
+        List<Tags> allTags = tagRepository.findAll();
+        for (Tags tag : allTags) {
+            result.add(TagResponse.builder()
+                    .tagId(tag.getTagId())
+                    .name(tag.getName())
+                    .isUserTag(userTagIds.contains(tag.getTagId()))
+                    .build());
+        }
+
+        return result;
+    }
+
+    public Tags createTagByUser(TagRequest request) {
+        // Kiểm tra xem tag đã tồn tại chưa (case-insensitive)
+        List<Tags> existingTags = tagRepository.findByNameContainingIgnoreCase(request.getName());
+
+        // Nếu đã có tag trùng tên chính xác thì trả về tag đó
+        for (Tags existingTag : existingTags) {
+            if (existingTag.getName().equalsIgnoreCase(request.getName())) {
+                return existingTag;
+            }
+        }
+
+        // Nếu chưa có thì tạo mới
+        Tags newTag = new Tags();
+        newTag.setName(request.getName());
+        return tagRepository.save(newTag);
     }
 
     /*
