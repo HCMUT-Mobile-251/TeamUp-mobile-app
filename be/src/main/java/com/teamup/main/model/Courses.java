@@ -16,4 +16,5 @@ public class Courses {
     @Id
     String courseId;
     String name;
+    int credits;
 }

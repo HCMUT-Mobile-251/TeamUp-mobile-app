@@ -18,5 +18,5 @@ public class Tags {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String tagId;
-    String name;
+    String tagName;
 }

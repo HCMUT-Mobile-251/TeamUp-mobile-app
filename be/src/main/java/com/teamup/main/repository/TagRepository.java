@@ -12,7 +12,7 @@ import com.teamup.main.model.Tags;
 @Repository
 public interface TagRepository extends JpaRepository<Tags, String> {
     // Custom query methods can be defined here if needed
-    List<Tags> findByNameContainingIgnoreCase(String name);
+    List<Tags> findByTagNameContainingIgnoreCase(String tagName);
 
     @Query(value = "SELECT * FROM tags ORDER BY RAND() LIMIT :n", nativeQuery = true)
     List<Tags> findRandomTags(@Param("n") int n);
