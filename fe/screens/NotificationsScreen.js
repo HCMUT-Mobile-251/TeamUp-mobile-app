@@ -1,123 +1,83 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, TouchableOpacity, Alert, ActivityIndicator, ScrollView, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import Screen from "../src/ui/Screen";
-import Tag from "../src/components/Tag";
 import { colors, radii, shadow } from "../src/ui/theme";
-import { getNotificationsByUserId, deleteNotification } from "../src/api/notificationService";
-import { acceptJoinRequest, rejectJoinRequest } from "../src/api/groupService";
+import {
+  getNotificationsByUserId,
+  deleteNotification,
+} from "../src/api/notificationService";
+import {
+  acceptJoinRequest,
+  rejectJoinRequest,
+} from "../src/api/groupService";
 import { AuthContext } from "../App";
 
+/* ================================================= */
+/* ================= CARD ========================== */
+/* ================================================= */
+
 function NotificationCard({ notification, onAction }) {
-  const [actionLoading, setActionLoading] = useState(false);
-  const { user, group, joinMessage, time, status } = notification;
+  const { user, group, status, time } = notification;
+  const { userId: currentUserId } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
-  const handleAccept = async () => {
-    Alert.alert(
-      "Chấp thuận thành viên",
-      `Bạn có muốn chấp thuận ${user?.fullName || "thành viên này"} vào nhóm?`,
-      [
-        { text: "Hủy", style: "cancel" },
-        {
-          text: "Chấp thuận",
-          onPress: async () => {
-            setActionLoading(true);
-            try {
-              const response = await acceptJoinRequest(group?.groupId, user?.userId);
-              if (response.code === 200) {
-                Alert.alert("Thành công", "Đã chấp thuận thành viên vào nhóm!");
-                onAction();
-              } else {
-                Alert.alert("Lỗi", response.message || "Không thể chấp thuận");
-              }
-            } catch (error) {
-              console.error("Accept error:", error);
-              Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
-            } finally {
-              setActionLoading(false);
-            }
-          },
-        },
-      ]
-    );
+  const isPending = status === "Chờ được chấp nhận!";
+
+  // 1️⃣ Bạn được mời
+  const isInvite =
+    isPending &&
+    user?.userId === currentUserId &&
+    group?.leaderId !== currentUserId;
+
+  // 2️⃣ Bạn gửi request → đang chờ
+  const isMyJoinRequest =
+    isPending &&
+    user?.userId === currentUserId &&
+    group?.leaderId === currentUserId;
+
+  // 3️⃣ Leader duyệt request
+  const isLeaderApprove =
+    isPending &&
+    user?.userId !== currentUserId;
+
+  const formatTime = (t) => {
+    if (!t) return "";
+    const d = new Date(t);
+    const diff = Math.floor((Date.now() - d) / 3600000);
+    if (diff < 1) return "Vừa xong";
+    if (diff < 24) return `${diff} giờ trước`;
+    return d.toLocaleDateString("vi-VN");
   };
 
-  const handleReject = async () => {
-    Alert.alert(
-      "Từ chối thành viên",
-      `Bạn có muốn từ chối ${user?.fullName || "thành viên này"}?`,
-      [
-        { text: "Hủy", style: "cancel" },
-        {
-          text: "Từ chối",
-          style: "destructive",
-          onPress: async () => {
-            setActionLoading(true);
-            try {
-              const response = await rejectJoinRequest(group?.groupId, user?.userId);
-              if (response.code === 200) {
-                Alert.alert("Thành công", "Đã từ chối yêu cầu tham gia!");
-                onAction();
-              } else {
-                Alert.alert("Lỗi", response.message || "Không thể từ chối");
-              }
-            } catch (error) {
-              console.error("Reject error:", error);
-              Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
-            } finally {
-              setActionLoading(false);
-            }
-          },
-        },
-      ]
-    );
+  /* ============ ACTIONS ============ */
+
+  const accept = async () => {
+    setLoading(true);
+    await acceptJoinRequest(group.groupId, user.userId);
+    onAction();
   };
 
-  const handleDelete = async () => {
-    Alert.alert(
-      "Xóa thông báo",
-      "Bạn có muốn xóa thông báo này?",
-      [
-        { text: "Hủy", style: "cancel" },
-        {
-          text: "Xóa",
-          style: "destructive",
-          onPress: async () => {
-            setActionLoading(true);
-            try {
-              const response = await deleteNotification({
-                firstId: user?.userId,
-                secondId: group?.groupId,
-              });
-              if (response.code === 200) {
-                Alert.alert("Thành công", "Đã xóa thông báo!");
-                onAction();
-              } else {
-                Alert.alert("Lỗi", response.message || "Không thể xóa thông báo");
-              }
-            } catch (error) {
-              console.error("Delete error:", error);
-              Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
-            } finally {
-              setActionLoading(false);
-            }
-          },
+  const reject = async (msg) => {
+    Alert.alert(msg, "Bạn chắc chắn chứ?", [
+      { text: "Hủy", style: "cancel" },
+      {
+        text: "Xác nhận",
+        style: "destructive",
+        onPress: async () => {
+          setLoading(true);
+          await rejectJoinRequest(group.groupId, user.userId);
+          onAction();
         },
-      ]
-    );
-  };
-
-  const formatTime = (timestamp) => {
-    if (!timestamp) return "";
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInMs = now - date;
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    if (diffInHours < 1) return "Vừa xong";
-    if (diffInHours < 24) return `${diffInHours} giờ trước`;
-    if (diffInDays < 7) return `${diffInDays} ngày trước`;
-    return date.toLocaleDateString("vi-VN");
+      },
+    ]);
   };
 
   return (
@@ -132,181 +92,132 @@ function NotificationCard({ notification, onAction }) {
         shadow.card,
       ]}
     >
-      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 16, fontWeight: "800" }}>
-            {group?.name || "Nhóm"}
-          </Text>
-          <Text style={{ fontSize: 12, color: colors.subtext, marginTop: 2 }}>
-            {group?.topicName || ""}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={handleDelete} disabled={actionLoading}>
-          <Text style={{ color: colors.subtext, fontSize: 12 }}>✕</Text>
-        </TouchableOpacity>
-      </View>
+      <Text style={{ fontWeight: "800", fontSize: 16 }}>
+        {group?.name}
+      </Text>
 
-      {group?.groupTags && group.groupTags.length > 0 && (
-        <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 6 }}>
-          {group.groupTags.slice(0, 4).map((tag) => (
-            <Tag key={tag.tagId} label={tag.name} />
-          ))}
+      <Text style={{ marginTop: 6, color: colors.subtext }}>
+        {isInvite && `Bạn được mời tham gia nhóm`}
+        {isMyJoinRequest && `Yêu cầu tham gia nhóm`}
+        {isLeaderApprove &&
+          `${user?.fullName} muốn tham gia nhóm`}
+      </Text>
+
+      <Text style={{ fontSize: 12, color: colors.subtext, marginTop: 4 }}>
+        {formatTime(time)}
+      </Text>
+
+      {/* ================= ACTION UI ================= */}
+
+      {loading && (
+        <ActivityIndicator
+          style={{ marginTop: 10 }}
+          color={colors.primary}
+        />
+      )}
+
+      {/* INVITE */}
+      {isInvite && !loading && (
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Button text="Từ chối" onPress={() => reject("Từ chối lời mời")} />
+          <Button
+            text="Tham gia"
+            primary
+            onPress={accept}
+          />
         </View>
       )}
 
-      <View
-        style={{
-          marginTop: 10,
-          backgroundColor: colors.white,
-          borderRadius: radii.md,
-          padding: 12,
-        }}
-      >
-        <Text style={{ fontWeight: "700", marginBottom: 4 }}>
-          {user?.fullName || "Người dùng"}
-        </Text>
-        <Text style={{ color: colors.subtext, fontSize: 14 }}>
-          {joinMessage || "Muốn tham gia nhóm"}
-        </Text>
-        <Text style={{ color: colors.subtext, fontSize: 12, marginTop: 4 }}>
-          {formatTime(time)}
-        </Text>
-      </View>
+      {/* MY REQUEST */}
+      {isMyJoinRequest && !loading && (
+        <View style={{ marginTop: 10 }}>
+          <Button
+            text="Hủy yêu cầu"
+            danger
+            onPress={() => reject("Hủy yêu cầu tham gia")}
+          />
+        </View>
+      )}
 
-      {status === "PENDING" && (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 10,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.pinkSoft,
-              paddingHorizontal: 16,
-              paddingVertical: 10,
-              borderRadius: radii.md,
-              flex: 1,
-              marginRight: 8,
-            }}
-            onPress={handleReject}
-            disabled={actionLoading}
-          >
-            {actionLoading ? (
-              <ActivityIndicator size="small" color={colors.pink} />
-            ) : (
-              <Text style={{ color: colors.pink, fontWeight: "800", textAlign: "center" }}>
-                Từ chối
-              </Text>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.blueSoft,
-              paddingHorizontal: 16,
-              paddingVertical: 10,
-              borderRadius: radii.md,
-              flex: 1,
-              marginLeft: 8,
-            }}
-            onPress={handleAccept}
-            disabled={actionLoading}
-          >
-            {actionLoading ? (
-              <ActivityIndicator size="small" color={colors.primary} />
-            ) : (
-              <Text style={{ color: colors.primary, fontWeight: "800", textAlign: "center" }}>
-                Chấp thuận
-              </Text>
-            )}
-          </TouchableOpacity>
+      {/* LEADER */}
+      {isLeaderApprove && !loading && (
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <Button text="Từ chối" onPress={() => reject("Từ chối yêu cầu")} />
+          <Button
+            text="Chấp thuận"
+            primary
+            onPress={accept}
+          />
         </View>
       )}
     </View>
   );
 }
 
+/* ================= BUTTON ================= */
+
+function Button({ text, onPress, primary, danger }) {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        flex: 1,
+        marginHorizontal: 4,
+        padding: 10,
+        borderRadius: radii.md,
+        backgroundColor: primary
+          ? colors.primary
+          : danger
+          ? colors.pinkSoft
+          : colors.blueSoft,
+      }}
+    >
+      <Text
+        style={{
+          textAlign: "center",
+          fontWeight: "800",
+          color: primary ? "#fff" : colors.text,
+        }}
+      >
+        {text}
+      </Text>
+    </TouchableOpacity>
+  );
+}
+
+/* ================================================= */
+/* ================= SCREEN ======================== */
+/* ================================================= */
+
 export default function NotificationsScreen({ navigation }) {
   const { userId } = useContext(AuthContext);
-  const [notifications, setNotifications] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState(null);
 
-  const loadNotifications = async (isRefreshing = false) => {
-    if (!isRefreshing) setLoading(true);
-    setError(null);
-
-    try {
-      const response = await getNotificationsByUserId(userId);
-      if (response.code === 200) {
-        // Filter only PENDING notifications
-        const pending = (response.result || []).filter(
-          (notif) => notif.status === "PENDING"
-        );
-        setNotifications(pending);
-      } else {
-        setError(response.message || "Không thể tải thông báo");
-      }
-    } catch (error) {
-      console.error("Load notifications error:", error);
-      setError(error.response?.data?.message || "Có lỗi xảy ra khi tải thông báo");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+  const load = async () => {
+    setLoading(true);
+    const res = await getNotificationsByUserId(userId);
+    setData(
+      (res.result || []).filter(
+        (n) => n.status === "Chờ được chấp nhận!"
+      )
+    );
+    setLoading(false);
   };
 
   useEffect(() => {
-    loadNotifications();
+    load();
   }, []);
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    loadNotifications(true);
-  };
-
-  const handleAction = () => {
-    // Reload notifications after any action
-    loadNotifications();
+  const onAction = async () => {
+    await load();
+    navigation.navigate("Home", { refresh: true });
   };
 
   if (loading) {
     return (
       <Screen>
-        <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
-          Thông báo
-        </Text>
-        <View style={{ padding: 20, alignItems: "center" }}>
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
-      </Screen>
-    );
-  }
-
-  if (error) {
-    return (
-      <Screen>
-        <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
-          Thông báo
-        </Text>
-        <View style={{ padding: 24, alignItems: "center" }}>
-          <Text style={{ color: colors.subtext, fontSize: 16, marginBottom: 12 }}>
-            {error}
-          </Text>
-          <TouchableOpacity
-            onPress={() => loadNotifications()}
-            style={{
-              backgroundColor: colors.primary,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              borderRadius: radii.md,
-            }}
-          >
-            <Text style={{ color: colors.white, fontWeight: "700" }}>Thử lại</Text>
-          </TouchableOpacity>
-        </View>
+        <ActivityIndicator color={colors.primary} />
       </Screen>
     );
   }
@@ -314,28 +225,26 @@ export default function NotificationsScreen({ navigation }) {
   return (
     <Screen>
       <ScrollView
-        showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={loading} onRefresh={load} />
         }
       >
         <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
           Thông báo
         </Text>
-        {notifications.length > 0 ? (
-          notifications.map((notification, index) => (
+
+        {data.length > 0 ? (
+          data.map((n, i) => (
             <NotificationCard
-              key={`${notification.user?.userId}-${notification.group?.groupId}-${index}`}
-              notification={notification}
-              onAction={handleAction}
+              key={i}
+              notification={n}
+              onAction={onAction}
             />
           ))
         ) : (
-          <View style={{ padding: 24, alignItems: "center" }}>
-            <Text style={{ color: colors.subtext, fontSize: 16 }}>
-              Chưa có thông báo nào
-            </Text>
-          </View>
+          <Text style={{ textAlign: "center", color: colors.subtext }}>
+            Không có thông báo
+          </Text>
         )}
       </ScrollView>
     </Screen>

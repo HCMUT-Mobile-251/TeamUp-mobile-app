@@ -405,7 +405,8 @@ public class GroupService {
         try {
             group.getGroupMembers().stream()
                     .filter(member -> member.getUser().getUserId().equals(userId)
-                            && member.getStatus() == GroupStatus.JOINED)
+                            && (member.getStatus() == GroupStatus.JOINED
+                                    || member.getStatus() == GroupStatus.WAITING_APPROVAL))
                     .findFirst()
                     .ifPresent(member -> member.setStatus(isKick ? GroupStatus.REMOVED : GroupStatus.LEFT));
         } catch (Exception e) {

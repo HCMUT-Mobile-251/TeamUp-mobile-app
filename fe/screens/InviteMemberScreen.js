@@ -15,18 +15,24 @@ import { inviteMemberByIdentifier } from "../src/api/groupService";
 
 export default function InviteMemberScreen({ route, navigation }) {
   const { groupId } = route.params;
-  const [identifier, setIdentifier] = useState("");
+  const [studentId, setStudentId] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleInvite = async () => {
-    if (!identifier.trim()) {
-      Alert.alert("Lỗi", "Vui lòng nhập MSSV hoặc Email");
+    if (!studentId.trim()) {
+      Alert.alert("Lỗi", "Vui lòng nhập MSSV");
+      return;
+    }
+
+    // Validate MSSV (chỉ cho phép số)
+    if (!/^\d+$/.test(studentId.trim())) {
+      Alert.alert("Lỗi", "MSSV chỉ được chứa số");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await inviteMemberByIdentifier(groupId, identifier.trim());
+      const response = await inviteMemberByIdentifier(groupId, studentId.trim());
       if (response.code === 200) {
         Alert.alert(
           "Thành công",
@@ -69,12 +75,12 @@ export default function InviteMemberScreen({ route, navigation }) {
           Mời thành viên
         </Text>
         <Text style={{ fontSize: 14, color: colors.subtext, marginBottom: 24 }}>
-          Nhập MSSV hoặc Email của người bạn muốn mời vào nhóm
+          Nhập MSSV của người bạn muốn mời vào nhóm
         </Text>
 
         <View style={{ marginBottom: 20 }}>
           <Text style={{ marginBottom: 8, color: "#666", fontWeight: "600", fontSize: 14 }}>
-            MSSV hoặc Email
+            MSSV
           </Text>
           <TextInput
             style={{
@@ -86,15 +92,16 @@ export default function InviteMemberScreen({ route, navigation }) {
               fontSize: 16,
               backgroundColor: "#fff",
             }}
-            placeholder="Ví dụ: 2211234 hoặc user@hcmut.edu.vn"
-            value={identifier}
-            onChangeText={setIdentifier}
+            placeholder="Ví dụ: 2211234"
+            value={studentId}
+            onChangeText={setStudentId}
+            keyboardType="numeric"
             autoCapitalize="none"
             autoCorrect={false}
             editable={!loading}
           />
           <Text style={{ marginTop: 6, fontSize: 12, color: colors.subtext, fontStyle: "italic" }}>
-            Nhập MSSV (số) hoặc địa chỉ email của thành viên
+            Nhập MSSV của thành viên (chỉ số)
           </Text>
         </View>
 

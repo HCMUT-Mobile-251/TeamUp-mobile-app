@@ -15,6 +15,18 @@ export const getUserById = async (userId) => {
 };
 
 /**
+ * Search users by keyword (Student ID or Email)
+ * @param {string} keyword - Search keyword
+ * @returns {Promise} - List of users
+ */
+export const searchUsers = async (keyword) => {
+  const response = await client.get("/user/search", {
+    params: { keyword },
+  });
+  return response.data;
+};
+
+/**
  * Get user by student ID
  * @param {string} studentId - Student ID
  * @returns {Promise} - User data

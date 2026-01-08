@@ -34,12 +34,24 @@ export default function HomeScreen({ navigation, route }) {
 
   // Extract groups from user data
   const userData = user?.result;
-  const groups = userData?.groups?.map(gm => ({
+
+  useEffect(() => {
+    if (userData?.groups) {
+      console.log("HomeScreen Groups Debug:", userData.groups.map(g => ({ id: g.group?.groupId, status: g.status })));
+    }
+  }, [userData]);
+const normalizeStatus = (status) => {
+  if (status === "Đã tham gia!") return "JOINED";
+  if (status === "Chờ được chấp nhận!") return "PENDING";
+  return "UNKNOWN";
+};
+const groups = userData?.groups
+  ?.filter(gm => normalizeStatus(gm.status) === "JOINED")
+  ?.map(gm => ({
     ...gm.group,
-    memberStatus: gm.status,
+    memberStatus: normalizeStatus(gm.status),
     joinTime: gm.time
   })) || [];
-
   // Loading state
   if (loading) {
     return <LoadingSpinner message="Đang tải danh sách nhóm..." />;

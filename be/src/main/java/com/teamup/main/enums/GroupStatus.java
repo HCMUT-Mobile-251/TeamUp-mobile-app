@@ -1,6 +1,6 @@
 package com.teamup.main.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+// import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public enum GroupStatus {
 
     String description;
 
-    @JsonValue
+    // @JsonValue - Removed to allow Enum Name serialization
     public String getDescription() {
         return description;
     }

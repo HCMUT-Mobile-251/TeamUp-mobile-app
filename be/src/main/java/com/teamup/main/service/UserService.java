@@ -39,6 +39,10 @@ public class UserService {
         return userRepository.findByStudentIdContainingIgnoreCase(studentId);
     }
 
+    public List<Users> searchUsers(String keyword) {
+        return userRepository.findByStudentIdContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
+    }
+
     public Users updateUser(String userId, UserUpdateRequest request) {
         Users user = findById(userId);
         userMapper.updateUser(user, request);
@@ -64,7 +68,7 @@ public class UserService {
         for (Tags tag : listTag) {
             // check tag exist
             Tags existingTag = tagRepository.findById(tag.getTagId())
-                .orElseThrow(() -> new AppException(ErrorCode.TAG_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ErrorCode.TAG_NOT_FOUND));
             PairId id = new PairId(userId, existingTag.getTagId());
             UserTag userTag = new UserTag(id, user, existingTag);
             user.getUserTags().add(userTag);

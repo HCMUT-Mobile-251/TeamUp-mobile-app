@@ -51,6 +51,15 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/search")
+    public ApiResponse<List<Users>> searchUsers(@RequestParam String keyword) {
+        return ApiResponse.<List<Users>>builder()
+                .code(200)
+                .message("Tìm kiếm người dùng thành công")
+                .result(userService.searchUsers(keyword))
+                .build();
+    }
+
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable String userId) {
         userService.deleteUser(userId);

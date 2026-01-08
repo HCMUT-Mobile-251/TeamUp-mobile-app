@@ -6,7 +6,11 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Modal,
+  TextInput,
+  FlatList,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for close button
 import { colors, radii } from "../src/ui/theme";
 import {
   getGroupById,
@@ -14,7 +18,9 @@ import {
   leaveGroup,
   acceptJoinRequest,
   rejectJoinRequest,
+  increaseMembers, // Add increaseMembers import
 } from "../src/api/groupService";
+import { searchUsers } from "../src/api/userService"; // Add searchUsers import
 import { AuthContext } from "../App";
 
 export default function GroupInfoScreen({ route, navigation }) {
@@ -23,6 +29,12 @@ export default function GroupInfoScreen({ route, navigation }) {
   const [group, setGroup] = useState(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
+
+  // Invite Modal State
+  const [inviteModalVisible, setInviteModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     loadGroupInfo();
@@ -222,6 +234,94 @@ export default function GroupInfoScreen({ route, navigation }) {
     }
   };
 
+  // --- Invite Member Logic ---
+  const handleSearchUser = async (text) => {
+    setSearchText(text);
+    if (text.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await searchUsers(text);
+      if (response.code === 200) {
+        // Filter out users who are already in the group (JOINED, WAITING, PENDING)
+        // Note: The backend addMember also checks this, but filtering here improves UX
+        const filtered = response.result.filter(u => {
+          const isMember = group.groupMembers?.some(
+            m => m.user?.userId === u.userId &&
+              (m.status === 'JOINED' || m.status === 'WAITING_APPROVAL' || m.status === 'PENDING_APPROVAL')
+          );
+          return !isMember;
+        });
+        setSearchResults(filtered);
+      }
+    } catch (error) {
+      console.error("Search user error:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleInviteUser = async (userToInvite) => {
+    // Double check group limit
+    if (memberCount >= group.maxMembers) {
+      Alert.alert("Thông báo", "Nhóm đã đủ thành viên, không thể mời thêm.");
+      return;
+    }
+
+    // Check if user is already in group (just in case frontend filter missed it or race condition)
+    const existingMember = group.groupMembers?.find(
+      m => m.user?.userId === userToInvite.userId &&
+        (m.status === 'JOINED' || m.status === 'WAITING_APPROVAL' || m.status === 'PENDING_APPROVAL')
+    );
+
+    if (existingMember) {
+      Alert.alert("Thông báo", "Người dùng này đã tham gia hoặc đang chờ duyệt vào nhóm.");
+      return;
+    }
+
+    Alert.alert(
+      "Mời thành viên",
+      `Bạn có muốn mời ${userToInvite.firstName} ${userToInvite.lastName} vào nhóm?`,
+      [
+        { text: "Hủy", style: "cancel" },
+        {
+          text: "Mời",
+          onPress: async () => {
+            setActionLoading(true);
+            try {
+              // decreaseMembers takes a list of userIds - wait, increaseMembers!
+              const response = await increaseMembers(groupId, [userToInvite.userId]);
+              if (response.code === 200) {
+                Alert.alert("Thành công", "Đã gửi lời mời thành công!");
+                setInviteModalVisible(false);
+                setSearchText("");
+                setSearchResults([]);
+                loadGroupInfo(); // Reload group info
+              } else {
+                Alert.alert("Lỗi", response.message || "Không thể mời thành viên");
+              }
+            } catch (error) {
+              console.error("Invite error:", error);
+              // Custom error handling
+              if (error.response?.data?.code === 1008) { // GROUP_FULL
+                Alert.alert("Thông báo", "Nhóm đã đủ thành viên.");
+              } else if (error.response?.data?.code === 1005) { // USER_ALREADY_IN_GROUP
+                Alert.alert("Thông báo", "Người dùng này đã tham gia nhóm.");
+              } else {
+                Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra khi mời.");
+              }
+            } finally {
+              setActionLoading(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -248,7 +348,9 @@ export default function GroupInfoScreen({ route, navigation }) {
 
   // Check if user is in the group
   const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
-  const isUserInGroup = !!userMember && userMember.status === "JOINED";
+const isUserInGroup =  !!userMember && userMember.status === "Đã tham gia!";
+
+const isWaitingApproval =  !!userMember && userMember.status === "Chờ được chấp nhận!";
   const isLeader = group.leaderId?.userId === userId;
 
   // Count members: JOINED members + leader (if leader is not in groupMembers)
@@ -280,14 +382,19 @@ export default function GroupInfoScreen({ route, navigation }) {
     // Translate status to Vietnamese
     const getStatusText = (status) => {
       switch (status) {
-        case "PENDING":
+        case "WAITING_APPROVAL":
           return "Đang chờ duyệt";
-        case "ACCEPTED":
-          return "Đã được chấp nhận";
-        case "REJECTED":
-          return "Đã bị từ chối";
+        case "PENDING_APPROVAL":
+          return "Đã được mời"; // Or "Chờ chấp nhận"
+        case "ACCEPTED": // Not an enum, but check just in case
         case "JOINED":
           return "Đã tham gia";
+        case "REJECTED":
+          return "Đã bị từ chối";
+        case "LEFT":
+          return "Đã rời nhóm";
+        case "REMOVED":
+          return "Đã bị xóa";
         default:
           return status || "N/A";
       }
@@ -423,16 +530,55 @@ export default function GroupInfoScreen({ route, navigation }) {
 
       {/* Members */}
       <Text style={{ fontSize: 18, fontWeight: "800", marginTop: 8, marginBottom: 12 }}>
-        Thành viên ({group.groupMembers?.length || 0})
+        Thành viên ({memberCount} / {group.maxMembers})
       </Text>
-      {group.groupMembers && group.groupMembers.length > 0 ? (
-        group.groupMembers.map((member, index) => (
-          <MemberItem key={index} member={member} />
-        ))
+
+      {(isUserInGroup || isLeader) ? (
+        group.groupMembers && group.groupMembers.length > 0 ? (
+          group.groupMembers.map((member, index) => (
+            <MemberItem key={index} member={member} />
+          ))
+        ) : (
+          <Text style={{ color: colors.subtext, textAlign: "center", padding: 20 }}>
+            Chưa có thành viên
+          </Text>
+        )
       ) : (
-        <Text style={{ color: colors.subtext, textAlign: "center", padding: 20 }}>
-          Chưa có thành viên
-        </Text>
+        <View style={{
+          padding: 20,
+          backgroundColor: "#F3F4F6",
+          borderRadius: radii.md,
+          alignItems: "center"
+        }}>
+          <Ionicons name="lock-closed-outline" size={24} color={colors.subtext} style={{ marginBottom: 8 }} />
+          <Text style={{ color: colors.subtext, textAlign: "center" }}>
+            Bạn cần tham gia nhóm để xem danh sách thành viên
+          </Text>
+        </View>
+      )}
+
+      {/* Invite Button - Visible if user is a member (JOINED) or Leader, and group is not full */}
+      {/* As per requirement: "if not reached limit member -> can invite" */}
+      {(isUserInGroup || isLeader) && memberCount < group.maxMembers && (
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+            borderWidth: 1,
+            borderColor: colors.primary,
+            borderStyle: "dashed",
+            padding: 12,
+            borderRadius: radii.md,
+            marginTop: 8,
+            marginBottom: 8
+          }}
+          onPress={() => setInviteModalVisible(true)}
+        >
+          <Ionicons name="add-circle-outline" size={20} color={colors.primary} style={{ marginRight: 8 }} />
+          <Text style={{ color: colors.primary, fontWeight: "600" }}>Mời thành viên</Text>
+        </TouchableOpacity>
       )}
 
       {/* Action Buttons */}
@@ -455,26 +601,10 @@ export default function GroupInfoScreen({ route, navigation }) {
           </TouchableOpacity>
         )}
 
-        {/* Mời thành viên - Only for leader and when group is not full */}
-        {isLeader && memberCount < group.maxMembers && (
-          <TouchableOpacity
-            style={{
-              backgroundColor: colors.primary2,
-              paddingVertical: 16,
-              borderRadius: radii.md,
-              marginBottom: 12,
-            }}
-            onPress={() => navigation.navigate("InviteMember", { groupId })}
-            disabled={actionLoading}
-          >
-            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
-              Mời thành viên
-            </Text>
-          </TouchableOpacity>
-        )}
 
-        {/* Tham gia nhóm - Only if user is NOT in group and NOT leader */}
-        {!isUserInGroup && !isLeader && (
+
+        {/* Tham gia nhóm - Only if user is NOT in group and NOT leader and NOT waiting */}
+        {!isUserInGroup && !isLeader && !isWaitingApproval && (
           <TouchableOpacity
             style={{
               backgroundColor: colors.primary,
@@ -495,6 +625,68 @@ export default function GroupInfoScreen({ route, navigation }) {
           </TouchableOpacity>
         )}
 
+        {/* Hủy yêu cầu - Only if user is WAITING_APPROVAL */}
+        {isWaitingApproval && (
+          <View>
+            <View style={{
+              backgroundColor: "#FEF3C7",
+              padding: 12,
+              borderRadius: radii.md,
+              marginBottom: 12,
+              borderWidth: 1,
+              borderColor: "#F59E0B"
+            }}>
+              <Text style={{ color: "#B45309", textAlign: "center", fontWeight: "600" }}>
+                Bạn đã gửi yêu cầu tham gia nhóm
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#EF4444",
+                paddingVertical: 16,
+                borderRadius: radii.md,
+                marginBottom: 12,
+              }}
+              onPress={() => {
+                Alert.alert(
+                  "Hủy yêu cầu",
+                  "Bạn có chắc muốn hủy yêu cầu tham gia nhóm?",
+                  [
+                    { text: "Không", style: "cancel" },
+                    {
+                      text: "Hủy yêu cầu",
+                      style: "destructive",
+                      onPress: async () => {
+                        setActionLoading(true);
+                        try {
+                          const response = await leaveGroup(groupId, userId);
+                          if (response.code === 200) {
+                            Alert.alert("Thành công", "Đã hủy yêu cầu!", [
+                              { text: "OK", onPress: () => loadGroupInfo() }
+                            ]);
+                          } else {
+                            Alert.alert("Lỗi", response.message || "Không thể hủy yêu cầu");
+                          }
+                        } catch (error) {
+                          console.error("Cancel request error:", error);
+                          Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
+                        } finally {
+                          setActionLoading(false);
+                        }
+                      },
+                    },
+                  ]
+                );
+              }}
+              disabled={actionLoading}
+            >
+              <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+                Hủy yêu cầu
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Rời nhóm - Only if user is in group OR is leader */}
         {(isUserInGroup || isLeader) && (
           <TouchableOpacity
@@ -512,6 +704,94 @@ export default function GroupInfoScreen({ route, navigation }) {
           </TouchableOpacity>
         )}
       </View>
+      {/* Invite Modal */}
+      <Modal
+        visible={inviteModalVisible}
+        animationType="slide"
+        presentationStyle="pageSheet" // iOS style
+        onRequestClose={() => setInviteModalVisible(false)}
+      >
+        <View style={{ flex: 1, padding: 16, paddingTop: 60 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <Text style={{ fontSize: 20, fontWeight: "800" }}>Mời thành viên</Text>
+            <TouchableOpacity onPress={() => setInviteModalVisible(false)}>
+              <Text style={{ color: colors.primary, fontSize: 16 }}>Đóng</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#F3F4F6',
+            borderRadius: radii.md,
+            paddingHorizontal: 12,
+            marginBottom: 16
+          }}>
+            <Ionicons name="search" size={20} color="#9CA3AF" />
+            <TextInput
+              style={{ flex: 1, padding: 12, fontSize: 16 }}
+              placeholder="Nhập MSSV hoặc Email..."
+              value={searchText}
+              onChangeText={handleSearchUser}
+              autoCapitalize="none"
+            />
+          </View>
+
+          {isSearching ? (
+            <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />
+          ) : (
+            <FlatList
+              data={searchResults}
+              keyExtractor={(item) => item.userId}
+              ListEmptyComponent={
+                searchText.length > 0 ? (
+                  <Text style={{ textAlign: "center", color: colors.subtext, marginTop: 20 }}>
+                    Không tìm thấy người dùng
+                  </Text>
+                ) : (
+                  <Text style={{ textAlign: "center", color: colors.subtext, marginTop: 20 }}>
+                    Nhập thông tin để tìm kiếm
+                  </Text>
+                )
+              }
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => handleInviteUser(item)}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    padding: 12,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#E5E7EB"
+                  }}
+                >
+                  <View style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: colors.primary + "20",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginRight: 12
+                  }}>
+                    <Text style={{ color: colors.primary, fontWeight: "700" }}>
+                      {item.firstName?.[0]}{item.lastName?.[0]}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ fontWeight: "600", fontSize: 15 }}>
+                      {item.firstName} {item.lastName}
+                    </Text>
+                    <Text style={{ color: colors.subtext, fontSize: 13 }}>
+                      {item.studentId} - {item.email}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
