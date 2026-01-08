@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class NotificationResponse {
+    String notificationId;
     @JsonValue
     GroupStatus status;
     String message;

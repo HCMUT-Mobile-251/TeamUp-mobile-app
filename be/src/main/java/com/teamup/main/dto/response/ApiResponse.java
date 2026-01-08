@@ -13,7 +13,26 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
-    int code;
+    boolean success;
     String message;
+    T data;
+    int code;
     T result;
+
+    // Alias methods for backward compatibility
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public boolean isSuccess() {
+        return this.success;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public T getData() {
+        return this.data;
+    }
 }

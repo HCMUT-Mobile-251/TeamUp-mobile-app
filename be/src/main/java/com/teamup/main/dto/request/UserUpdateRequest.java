@@ -10,4 +10,7 @@ public class UserUpdateRequest {
     String faculty;
     String phoneNumber;
     String studentId;
+    String firstName;
+    String lastName;
+    String email;
 }
