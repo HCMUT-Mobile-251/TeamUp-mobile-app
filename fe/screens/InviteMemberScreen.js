@@ -44,7 +44,13 @@ export default function InviteMemberScreen({ route, navigation }) {
     } catch (error) {
       console.error("Invite member error:", error);
       const errorMessage = error.response?.data?.message || "Có lỗi xảy ra";
-      Alert.alert("Lỗi", errorMessage);
+
+      // Nếu là lỗi user đã trong nhóm, hiện thông báo thông thường thay vì "Lỗi"
+      if (errorMessage.includes("đã trong nhóm") || errorMessage.includes("already in group")) {
+        Alert.alert("Thông báo", errorMessage);
+      } else {
+        Alert.alert("Lỗi", errorMessage);
+      }
     } finally {
       setLoading(false);
     }
