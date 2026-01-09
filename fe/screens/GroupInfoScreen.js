@@ -185,7 +185,7 @@ const handleLeaveGroup = async () => {
           onPress: async () => {
             setActionLoading(true);
             try {
-              const response = await transferLeadership(groupId, newLeaderId);
+              const response = await transferLeadership(groupId, newLeaderId, group?.course?.courseId);
               if (response.code === 200) {
                 Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
                 setTransferModalVisible(false);
