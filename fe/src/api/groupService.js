@@ -193,12 +193,14 @@ export const inviteMemberByIdentifier = async (groupId, identifier) => {
  * Transfer leadership to another member
  * @param {string} groupId - Group ID
  * @param {string} newLeaderId - New leader's user ID
+ * @param {string} courseId - Course ID (required by backend)
  * @returns {Promise} - Transfer response
  */
-export const transferLeadership = async (groupId, newLeaderId) => {
+export const transferLeadership = async (groupId, newLeaderId, courseId) => {
   const response = await client.patch(`/group/${groupId}`, {
     groupId,
     leaderId: newLeaderId,
+    courseId,
   });
   return response.data;
 };
