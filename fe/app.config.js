@@ -24,9 +24,9 @@ module.exports = {
       // - Local backend (Android Emulator): "http://10.0.2.2:8080"
       // - Local backend (Physical device): "http://192.168.1.50:8080"
 
-      API_BASE_URL: process.env.API_BASE_URL || "http://192.168.1.50:8080", // Local backend - Physical device/Real IP
+      API_BASE_URL: process.env.API_BASE_URL || "https://teamup-mobile-app.onrender.com", // Deployed backend
       GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "67346913521-0bql06om6o8kj610ferhl52le2uqh3jr.apps.googleusercontent.com",
-      GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || "http://localhost:8080/auth/login",
+      GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || "https://teamup-mobile-app.onrender.com/auth/login",
       SKIP_AUTH: false
     },
     ios: {
