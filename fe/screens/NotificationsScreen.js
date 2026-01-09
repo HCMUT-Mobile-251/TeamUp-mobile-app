@@ -257,6 +257,10 @@ export default function NotificationsScreen() {
     );
   }
 
+  // Phân loại notifications theo loại
+  const invitations = notifications.filter(n => n.status === "PENDING_APPROVAL");
+  const joinRequests = notifications.filter(n => n.status === "WAITING_APPROVAL");
+
   return (
     <Screen>
       <ScrollView
@@ -264,23 +268,111 @@ export default function NotificationsScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={loadNotifications} />
         }
       >
-        <Text style={{ fontSize: 22, fontWeight: "900", marginBottom: 12 }}>
-          Thông báo
-        </Text>
+        {/* Header với badge tổng số thông báo */}
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <Text style={{ fontSize: 22, fontWeight: "900" }}>
+            Thông báo
+          </Text>
+          {notifications.length > 0 && (
+            <View style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              borderRadius: radii.md
+            }}>
+              <Text style={{ color: "#fff", fontSize: 12, fontWeight: "700" }}>
+                {notifications.length}
+              </Text>
+            </View>
+          )}
+        </View>
 
         {notifications.length > 0 ? (
-          notifications.map((n, i) => (
-            <NotificationCard
-              key={i}
-              notification={n}
-              onAction={loadNotifications}
-              currentUserId={userId}  // Truyền userId từ context
-            />
-          ))
+          <>
+            {/* Section: Lời mời tham gia */}
+            {invitations.length > 0 && (
+              <View style={{ marginBottom: 20 }}>
+                <View style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  paddingBottom: 8,
+                  borderBottomWidth: 2,
+                  borderBottomColor: colors.primary || "#3B82F6"
+                }}>
+                  <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
+                    📩 Lời mời tham gia
+                  </Text>
+                  <View style={{
+                    backgroundColor: colors.primary || "#3B82F6",
+                    paddingHorizontal: 8,
+                    paddingVertical: 2,
+                    borderRadius: radii.sm,
+                    marginLeft: 8
+                  }}>
+                    <Text style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}>
+                      {invitations.length}
+                    </Text>
+                  </View>
+                </View>
+                {invitations.map((n, i) => (
+                  <NotificationCard
+                    key={`invite-${i}`}
+                    notification={n}
+                    onAction={loadNotifications}
+                    currentUserId={userId}
+                  />
+                ))}
+              </View>
+            )}
+
+            {/* Section: Yêu cầu vào nhóm */}
+            {joinRequests.length > 0 && (
+              <View style={{ marginBottom: 20 }}>
+                <View style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  paddingBottom: 8,
+                  borderBottomWidth: 2,
+                  borderBottomColor: colors.pink || "#EC4899"
+                }}>
+                  <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
+                    👥 Yêu cầu vào nhóm
+                  </Text>
+                  <View style={{
+                    backgroundColor: colors.pink || "#EC4899",
+                    paddingHorizontal: 8,
+                    paddingVertical: 2,
+                    borderRadius: radii.sm,
+                    marginLeft: 8
+                  }}>
+                    <Text style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}>
+                      {joinRequests.length}
+                    </Text>
+                  </View>
+                </View>
+                {joinRequests.map((n, i) => (
+                  <NotificationCard
+                    key={`request-${i}`}
+                    notification={n}
+                    onAction={loadNotifications}
+                    currentUserId={userId}
+                  />
+                ))}
+              </View>
+            )}
+          </>
         ) : (
-          <Text style={{ color: colors.subtext, textAlign: "center", marginTop: 40 }}>
-            Không có thông báo
-          </Text>
+          <View style={{ alignItems: "center", marginTop: 80 }}>
+            <Text style={{ fontSize: 64, marginBottom: 16 }}>🔔</Text>
+            <Text style={{ color: colors.text, textAlign: "center", fontSize: 18, fontWeight: "700" }}>
+              Không có thông báo
+            </Text>
+            <Text style={{ color: colors.subtext, textAlign: "center", fontSize: 14, marginTop: 8, paddingHorizontal: 40 }}>
+              Bạn sẽ nhận thông báo khi có lời mời hoặc yêu cầu tham gia nhóm
+            </Text>
+          </View>
         )}
       </ScrollView>
     </Screen>
