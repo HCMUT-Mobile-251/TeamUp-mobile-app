@@ -16,6 +16,14 @@ import { AuthContext } from "../App";
 import { colors, radii, shadow } from "../src/ui/theme";
 import { getUserById } from "../src/api/userService";
 
+// Helper function để chuẩn hóa status (giống HomeScreen)
+const normalizeStatus = (status) => {
+  if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
+  if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL" || status === "PENDING_APPROVAL") return "PENDING";
+  if (status === "LEFT") return "LEFT";
+  return status;
+};
+
 export default function ProfileScreen({ route }) {
   const { userId, signOut, resetOnboarding } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -226,7 +234,7 @@ export default function ProfileScreen({ route }) {
         >
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 24, fontWeight: "800", color: colors.primary }}>
-              {userData?.groups?.length || 0}
+              {userData?.groups?.filter(gm => normalizeStatus(gm.status) === "JOINED").length || 0}
             </Text>
             <Text style={{ color: colors.subtext, marginTop: 4 }}>Nhóm tham gia</Text>
           </View>

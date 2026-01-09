@@ -3,6 +3,14 @@ import { View, Text, TouchableOpacity } from "react-native";
 import Tag from "./Tag";
 import { colors, radii, shadow } from "../ui/theme";
 
+// Helper function để chuẩn hóa status (giống HomeScreen & ProfileScreen)
+const normalizeStatus = (status) => {
+  if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
+  if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL" || status === "PENDING_APPROVAL") return "PENDING";
+  if (status === "LEFT") return "LEFT";
+  return status;
+};
+
 export default function ProjectCard({
   data,
   title,
@@ -18,9 +26,9 @@ export default function ProjectCard({
                       data?.tags?.map(t => t.name) ||
                       tags || [];
 
-  // Calculate member count (groupMembers + leader)
-  // leaderId is an object {userId: "..."}, so check if it exists
-  const memberCount = (data?.groupMembers?.length || 0) + (data?.leaderId?.userId || data?.leaderId ? 1 : 0);
+  // Calculate member count: CHỈ đếm groupMembers có status JOINED + leader
+  const joinedMembers = data?.groupMembers?.filter(gm => normalizeStatus(gm.status) === "JOINED").length || 0;
+  const memberCount = joinedMembers + (data?.leaderId?.userId || data?.leaderId ? 1 : 0);
   const displayMembers = data?.currentMembers || memberCount || members || 0;
   const maxMembers = data?.maxMembers || null;
 

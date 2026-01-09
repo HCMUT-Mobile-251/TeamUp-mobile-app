@@ -22,6 +22,12 @@ import {
 } from "../src/api/groupService";
 import { searchUsers } from "../src/api/userService"; // Add searchUsers import
 import { AuthContext } from "../App";
+const MEMBER_STATUS = {
+  JOINED: "JOINED",
+  WAITING: "WAITING_APPROVAL",   // user xin vào
+  PENDING: "PENDING_APPROVAL",   // leader mời
+  REJECTED: "REJECTED",
+};
 
 export default function GroupInfoScreen({ route, navigation }) {
   const { groupId } = route.params;
@@ -45,6 +51,13 @@ export default function GroupInfoScreen({ route, navigation }) {
     try {
       const response = await getGroupById(groupId);
       if (response.code === 200) {
+        // DEBUG: Log all members and their status
+        console.log("=== GROUP DEBUG ===");
+        console.log("Leader ID:", response.result.leaderId?.userId);
+        console.log("Total groupMembers:", response.result.groupMembers?.length || 0);
+        response.result.groupMembers?.forEach((m, i) => {
+          console.log(`Member ${i + 1}: ${m.user?.userId} | Status: ${m.status}`);
+        });
         setGroup(response.result);
       } else {
         Alert.alert("Lỗi", response.message || "Không thể tải thông tin nhóm");
@@ -95,109 +108,48 @@ export default function GroupInfoScreen({ route, navigation }) {
     );
   };
 
-  const handleLeaveGroup = async () => {
-    if (!userId) {
-      Alert.alert("Lỗi", "Không tìm thấy thông tin người dùng");
-      return;
-    }
-
-    // Check if user is leader
-    if (isLeader) {
-      // Count JOINED members excluding leader (if leader is also in groupMembers)
-      const acceptedMembers = group.groupMembers?.filter(
-        m => m.status === "JOINED" && m.user?.userId !== userId
-      ) || [];
-
-      console.log("Leader checking leave - JOINED members (excluding leader):", acceptedMembers.length);
-      console.log("Total groupMembers:", group.groupMembers?.length);
-
-      if (acceptedMembers.length > 0) {
-        Alert.alert(
-          "Không thể rời nhóm",
-          "Bạn là trưởng nhóm. Vui lòng chuyển quyền trưởng nhóm cho thành viên khác trước khi rời nhóm."
-        );
-        return;
-      } else {
-        // Leader is the only member, confirm delete group
-        Alert.alert(
-          "Xóa nhóm",
-          "Bạn là thành viên duy nhất trong nhóm. Rời nhóm sẽ xóa nhóm này. Bạn có chắc chắn?",
-          [
-            { text: "Hủy", style: "cancel" },
-            {
-              text: "Xóa nhóm",
-              style: "destructive",
-              onPress: async () => {
-                setActionLoading(true);
-                try {
-                  console.log("Attempting to delete group:", groupId, "by leader:", userId);
-                  const response = await leaveGroup(groupId, userId);
-                  console.log("Delete group response:", response);
-                  if (response.code === 200) {
-                    Alert.alert("Thành công", "Đã xóa nhóm!", [
-                      {
-                        text: "OK",
-                        onPress: () => navigation.navigate("Tabs", {
-                          screen: "Home",
-                          params: { refresh: true }
-                        })
-                      },
-                    ]);
-                  } else {
-                    Alert.alert("Lỗi", response.message || "Không thể xóa nhóm");
-                  }
-                } catch (error) {
-                  console.error("Delete group error:", error);
-                  Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
-                } finally {
-                  setActionLoading(false);
-                }
-              },
-            },
-          ]
-        );
-      }
-      return;
-    }
-
-    // Normal member leaving
-    Alert.alert(
-      "Rời nhóm",
-      "Bạn có chắc muốn rời khỏi nhóm này?",
-      [
-        { text: "Hủy", style: "cancel" },
-        {
-          text: "Rời nhóm",
-          style: "destructive",
-          onPress: async () => {
-            setActionLoading(true);
-            try {
-              const response = await leaveGroup(groupId, userId);
-              if (response.code === 200) {
-                Alert.alert("Thành công", "Đã rời khỏi nhóm!", [
-                  {
-                    text: "OK",
-                    onPress: () => navigation.navigate("Tabs", {
+const handleLeaveGroup = async () => {
+  Alert.alert(
+    "Rời nhóm",
+    "Bạn có chắc chắn muốn rời khỏi nhóm này?",
+    [
+      { text: "Hủy", style: "cancel" },
+      {
+        text: "Rời nhóm",
+        style: "destructive",
+        onPress: async () => {
+          setActionLoading(true);
+          try {
+            const response = await leaveGroup(groupId, userId);
+            if (response.code === 200) {
+              Alert.alert("Thành công", "Bạn đã rời nhóm", [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    navigation.navigate("Tabs", {
                       screen: "Home",
-                      params: { refresh: true }
-                    })
+                      params: { refresh: true },
+                    });
                   },
-                ]);
-              } else {
-                Alert.alert("Lỗi", response.message || "Không thể rời nhóm");
-              }
-            } catch (error) {
-              console.error("Leave group error:", error);
-              Alert.alert("Lỗi", error.response?.data?.message || "Có lỗi xảy ra");
-            } finally {
-              setActionLoading(false);
+                },
+              ]);
+            } else {
+              Alert.alert("Lỗi", response.message || "Không thể rời nhóm");
             }
-          },
+          } catch (error) {
+            console.error("Leave group error:", error);
+            Alert.alert(
+              "Lỗi",
+              error.response?.data?.message || "Không thể rời nhóm"
+            );
+          } finally {
+            setActionLoading(false);
+          }
         },
-      ]
-    );
-  };
-
+      },
+    ]
+  );
+};
   const handleApproveRequest = async (userId) => {
     setActionLoading(true);
     try {
@@ -346,15 +298,24 @@ export default function GroupInfoScreen({ route, navigation }) {
     );
   }
 
+  // Normalize status helper
+  const normalizeStatus = (status) => {
+    if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
+    if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL") return "WAITING_APPROVAL";
+    if (status === "PENDING_APPROVAL") return "PENDING_APPROVAL";
+    if (status === "LEFT") return "LEFT";
+    if (status === "REJECTED") return "REJECTED";
+    return status;
+  };
+
   // Check if user is in the group
   const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
-const isUserInGroup =  !!userMember && userMember.status === "Đã tham gia!";
-
-const isWaitingApproval =  !!userMember && userMember.status === "Chờ được chấp nhận!";
+  const isUserInGroup = !!userMember && normalizeStatus(userMember.status) === "JOINED";
+  const isWaitingApproval = !!userMember && normalizeStatus(userMember.status) === "WAITING_APPROVAL";
   const isLeader = group.leaderId?.userId === userId;
 
   // Count members: JOINED members + leader (if leader is not in groupMembers)
-  const joinedMembers = group.groupMembers?.filter(m => m.status === "JOINED") || [];
+  const joinedMembers = group.groupMembers?.filter(m => normalizeStatus(m.status) === "JOINED") || [];
   const leaderInMembers = joinedMembers.some(m => m.user?.userId === group.leaderId?.userId);
   const memberCount = joinedMembers.length + (leaderInMembers ? 0 : 1);
 
