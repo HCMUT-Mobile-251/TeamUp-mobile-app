@@ -6,7 +6,7 @@ services:
     dockerContext: ./be
     plan: free
     region: singapore
-    branch: deploy
+    branch: nhoang
     envVars:
       - key: SPRING_DATASOURCE_URL
         sync: false
