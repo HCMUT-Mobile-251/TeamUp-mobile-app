@@ -188,3 +188,17 @@ export const inviteMemberByIdentifier = async (groupId, identifier) => {
   });
   return response.data;
 };
+
+/**
+ * Transfer leadership to another member
+ * @param {string} groupId - Group ID
+ * @param {string} newLeaderId - New leader's user ID
+ * @returns {Promise} - Transfer response
+ */
+export const transferLeadership = async (groupId, newLeaderId) => {
+  const response = await client.patch(`/group/${groupId}`, {
+    groupId,
+    leaderId: newLeaderId,
+  });
+  return response.data;
+};

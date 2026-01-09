@@ -19,6 +19,7 @@ import {
   acceptJoinRequest,
   rejectJoinRequest,
   increaseMembers, // Add increaseMembers import
+  transferLeadership,
 } from "../src/api/groupService";
 import { searchUsers } from "../src/api/userService"; // Add searchUsers import
 import { AuthContext } from "../App";
@@ -43,6 +44,10 @@ export default function GroupInfoScreen({ route, navigation }) {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Transfer Leadership Modal State
+  const [transferModalVisible, setTransferModalVisible] = useState(false);
+  const [selectedNewLeader, setSelectedNewLeader] = useState(null);
 
   useEffect(() => {
     loadGroupInfo();
@@ -111,6 +116,22 @@ export default function GroupInfoScreen({ route, navigation }) {
   };
 
 const handleLeaveGroup = async () => {
+  // If user is leader, they must transfer leadership first
+  if (isLeader) {
+    Alert.alert(
+      "Chuyển quyền leader",
+      "Bạn là leader của nhóm. Vui lòng chuyển quyền leader cho thành viên khác trước khi rời nhóm.",
+      [
+        { text: "Hủy", style: "cancel" },
+        {
+          text: "Chuyển quyền",
+          onPress: () => setTransferModalVisible(true),
+        },
+      ]
+    );
+    return;
+  }
+
   Alert.alert(
     "Rời nhóm",
     "Bạn có chắc chắn muốn rời khỏi nhóm này?",
@@ -152,6 +173,41 @@ const handleLeaveGroup = async () => {
     ]
   );
 };
+
+  const handleTransferLeadership = async (newLeaderId) => {
+    Alert.alert(
+      "Xác nhận chuyển quyền",
+      "Bạn có chắc chắn muốn chuyển quyền leader cho thành viên này? Sau khi chuyển, bạn có thể rời nhóm.",
+      [
+        { text: "Hủy", style: "cancel" },
+        {
+          text: "Chuyển quyền",
+          onPress: async () => {
+            setActionLoading(true);
+            try {
+              const response = await transferLeadership(groupId, newLeaderId);
+              if (response.code === 200) {
+                Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
+                setTransferModalVisible(false);
+                setSelectedNewLeader(null);
+                loadGroupInfo(); // Reload to see updated leader
+              } else {
+                Alert.alert("Lỗi", response.message || "Không thể chuyển quyền leader");
+              }
+            } catch (error) {
+              console.error("Transfer leadership error:", error);
+              Alert.alert(
+                "Lỗi",
+                error.response?.data?.message || "Có lỗi xảy ra khi chuyển quyền"
+              );
+            } finally {
+              setActionLoading(false);
+            }
+          },
+        },
+      ]
+    );
+  };
   const handleApproveRequest = async (userId) => {
     setActionLoading(true);
     try {
@@ -641,6 +697,24 @@ const handleLeaveGroup = async () => {
           </View>
         )}
 
+        {/* Chuyển quyền leader - Only for leader */}
+        {isLeader && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: colors.primary,
+              paddingVertical: 16,
+              borderRadius: radii.md,
+              marginBottom: 12,
+            }}
+            onPress={() => setTransferModalVisible(true)}
+            disabled={actionLoading}
+          >
+            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+              Chuyển quyền leader
+            </Text>
+          </TouchableOpacity>
+        )}
+
         {/* Rời nhóm - Only if user is in group OR is leader */}
         {(isUserInGroup || isLeader) && (
           <TouchableOpacity
@@ -744,6 +818,93 @@ const handleLeaveGroup = async () => {
               )}
             />
           )}
+        </View>
+      </Modal>
+
+      {/* Transfer Leadership Modal */}
+      <Modal
+        visible={transferModalVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setTransferModalVisible(false)}
+      >
+        <View style={{ flex: 1, padding: 16, paddingTop: 60 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <Text style={{ fontSize: 20, fontWeight: "800" }}>Chuyển quyền leader</Text>
+            <TouchableOpacity onPress={() => setTransferModalVisible(false)}>
+              <Text style={{ color: colors.primary, fontSize: 16 }}>Đóng</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{
+            backgroundColor: "#FEF3C7",
+            padding: 12,
+            borderRadius: radii.md,
+            marginBottom: 16,
+            borderWidth: 1,
+            borderColor: "#F59E0B"
+          }}>
+            <Text style={{ color: "#B45309", fontSize: 14, fontWeight: "600" }}>
+              Chọn thành viên để chuyển quyền leader. Sau khi chuyển, bạn sẽ có thể rời nhóm.
+            </Text>
+          </View>
+
+          <Text style={{ fontSize: 16, fontWeight: "700", marginBottom: 12 }}>
+            Chọn thành viên:
+          </Text>
+
+          <FlatList
+            data={joinedMembers.filter(m => m.user?.userId !== userId)}
+            keyExtractor={(item, index) => item.user?.userId || index.toString()}
+            ListEmptyComponent={
+              <View style={{ alignItems: "center", padding: 20 }}>
+                <Text style={{ color: colors.subtext, textAlign: "center" }}>
+                  Không có thành viên nào để chuyển quyền. Vui lòng mời thêm thành viên vào nhóm trước.
+                </Text>
+              </View>
+            }
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedNewLeader(item.user?.userId);
+                  handleTransferLeadership(item.user?.userId);
+                }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  padding: 12,
+                  backgroundColor: "#fff",
+                  borderRadius: radii.md,
+                  marginBottom: 8,
+                  borderWidth: 1,
+                  borderColor: selectedNewLeader === item.user?.userId ? colors.primary : "#E5E7EB"
+                }}
+              >
+                <View style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  backgroundColor: colors.primary + "20",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12
+                }}>
+                  <Text style={{ color: colors.primary, fontWeight: "700" }}>
+                    {item.user?.firstName?.[0]}{item.user?.lastName?.[0]}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontWeight: "600", fontSize: 15 }}>
+                    {item.user?.firstName} {item.user?.lastName}
+                  </Text>
+                  <Text style={{ color: colors.subtext, fontSize: 13 }}>
+                    {item.user?.email}
+                  </Text>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={colors.subtext} />
+              </TouchableOpacity>
+            )}
+          />
         </View>
       </Modal>
     </ScrollView>
