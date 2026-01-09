@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "ab95eba7-9f95-4dbc-ae71-7d1a71e6521b",
+		"name": "user",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40131075",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/h5ncyip/user?action=share&source=collection_link&creator=40131075"
+	},
+	"item": [
+		{
+			"name": "del",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user/3096ff51-7b05-4cfb-ad3a-ba0caeaeb09c",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"3096ff51-7b05-4cfb-ad3a-ba0caeaeb09c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-userid",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user/ce9b3366-3c54-4687-981c-ca7a21ab2c66",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"ce9b3366-3c54-4687-981c-ca7a21ab2c66"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"faculty\":\"KHMT\",\r\n    \"phoneNumber\":\"08111111\",\r\n    \"studentId\":\"2211111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/user/ef851d5b-0655-4e01-91a0-4b22a1b428de",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"ef851d5b-0655-4e01-91a0-4b22a1b428de"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"admin\",\r\n    \"lastName\":\"\",\r\n    \"email\":\"admin@hcmut.edu.vn\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/user/admin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-studentId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user?studentId=22110",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "studentId",
+							"value": "22110"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/user/admin/all",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"user",
+						"admin",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

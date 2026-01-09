@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "8b47f886-ab25-44df-b88d-08f807feedc4",
+		"name": "notification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50885775",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/y91n35t/notification?action=share&source=collection_link&creator=50885775"
+	},
+	"item": [
+		{
+			"name": "get-by-userId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{publicURL}}/notification/efd053fd-7c87-4b6d-aa96-46be1ba600c6",
+					"host": [
+						"{{publicURL}}"
+					],
+					"path": [
+						"notification",
+						"efd053fd-7c87-4b6d-aa96-46be1ba600c6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{publicURL}}/notification/ce9b3366-3c54-4687-981c-ca7a21ab2c66/search?search=A",
+					"host": [
+						"{{publicURL}}"
+					],
+					"path": [
+						"notification",
+						"ce9b3366-3c54-4687-981c-ca7a21ab2c66",
+						"search"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "A"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "del",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstId\": \"f924061d-4c01-4c89-8ea3-10a0b0efecc2\",\r\n  \"secondId\": \"a9317455-90f4-4972-810a-c651376a3972\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{publicURL}}/notification/delete",
+					"host": [
+						"{{publicURL}}"
+					],
+					"path": [
+						"notification",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

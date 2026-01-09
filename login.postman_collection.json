@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "8c5c31e9-3684-4f02-a5fb-8d5061b392be",
+		"name": "login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40131075",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/bdxe7lu/login?action=share&source=collection_link&creator=40131075"
+	},
+	"item": [
+		{
+			"name": "get-token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/auth/login?code=4%2F0Ab32j932-v9-qgwmKUXNGb2Be1RBDL6aQc_GGJBpReDs32n0rj3BLmeIEJy_cdauAR29qw&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&hd=hcmut.edu.vn&prompt=consent",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "4%2F0Ab32j932-v9-qgwmKUXNGb2Be1RBDL6aQc_GGJBpReDs32n0rj3BLmeIEJy_cdauAR29qw"
+						},
+						{
+							"key": "scope",
+							"value": "email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid"
+						},
+						{
+							"key": "authuser",
+							"value": "0"
+						},
+						{
+							"key": "hd",
+							"value": "hcmut.edu.vn"
+						},
+						{
+							"key": "prompt",
+							"value": "consent"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/auth/login&response_type=code&client_id={{vault:google-oauth-token}}&approval_prompt=force",
+					"protocol": "https",
+					"host": [
+						"accounts",
+						"google",
+						"com"
+					],
+					"path": [
+						"o",
+						"oauth2",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "scope",
+							"value": "email profile openid"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8080/auth/login"
+						},
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "client_id",
+							"value": "{{vault:google-oauth-token}}"
+						},
+						{
+							"key": "approval_prompt",
+							"value": "force"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-role",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/auth/{{vault:token_admin}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"{{vault:token_admin}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

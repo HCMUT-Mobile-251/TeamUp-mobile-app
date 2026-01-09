@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "918a9936-327d-48f3-ab24-552d2e39441e",
+		"name": "search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40131075",
+		"_collection_link": "https://www.postman.com/aihomeee/teamup/collection/z1ghdur/search?action=share&source=collection_link&creator=40131075"
+	},
+	"item": [
+		{
+			"name": "normal",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/search/normal?group=văn&userId=f924061d-4c01-4c89-8ea3-10a0b0efecc2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"search",
+						"normal"
+					],
+					"query": [
+						{
+							"key": "group",
+							"value": "văn",
+							"description": "search các trường trừ id-tags"
+						},
+						{
+							"key": "userId",
+							"value": "f924061d-4c01-4c89-8ea3-10a0b0efecc2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "advance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:token_admin}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"\",\r\n    \"groupClass\": \"\",\r\n    \"topicName\": \"\",\r\n    \"tagId\": [ \r\n        \"9f1a63f2-5ed8-4d54-8775-048d035ccf74\",\r\n        \"68a43104-88f0-4bf2-96b4-7b8c356d3dae\"\r\n   ],\r\n    \"course\": {\r\n        \"courseId\": \"AS2015\",\r\n        \"name\": \"\"\r\n    },\r\n    \"userId\": \"ce9b3366-3c54-4687-981c-ca7a21ab2c66\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/search/advance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"search",
+						"advance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

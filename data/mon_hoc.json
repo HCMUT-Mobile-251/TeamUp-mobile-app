@@ -1,0 +1,5546 @@
+[
+  {
+    "courseId":"400433",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"409303",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"AS2009",
+    "name":"Csở cơ học lượng tử - vlcr"
+  },
+  {
+    "courseId":"AS2013",
+    "name":"CAD ứng dụng"
+  },
+  {
+    "courseId":"AS2015",
+    "name":"Thực tập cơ kỹ thuật 1"
+  },
+  {
+    "courseId":"AS2031",
+    "name":"Đồ án môn học - thiết kế kt"
+  },
+  {
+    "courseId":"AS2069",
+    "name":"PP số cho KH dữ liệu"
+  },
+  {
+    "courseId":"AS3105",
+    "name":"Cơ sở y khoa"
+  },
+  {
+    "courseId":"AS3153",
+    "name":"Thực tập cơ kỹ thuật"
+  },
+  {
+    "courseId":"AS3171",
+    "name":"Đồ án môn học - thiết kế kt"
+  },
+  {
+    "courseId":"AS4005",
+    "name":"Đồ án chuyên ngành (vlkt)"
+  },
+  {
+    "courseId":"AS4007",
+    "name":"Đồ án chuyên ngành (ckt)"
+  },
+  {
+    "courseId":"AS4317",
+    "name":"Luận văn tốt nghiệp (ckt)"
+  },
+  {
+    "courseId":"AS4325",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"AS4337",
+    "name":"Đồ án tốt nghiệp (ckt)"
+  },
+  {
+    "courseId":"AS4347",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"AS5009",
+    "name":"Chuyên đề vật lý nâng cao 1"
+  },
+  {
+    "courseId":"AS5027",
+    "name":"Ứng xử cơ học của vật liệu"
+  },
+  {
+    "courseId":"AS5031",
+    "name":"Phương pháp PTHH ứng dụng trong cơ kỹ thuật"
+  },
+  {
+    "courseId":"AS5059",
+    "name":"Thực tập đồ án"
+  },
+  {
+    "courseId":"AS5101",
+    "name":"Kỹ thuật thiết bị y học và thí nghiệm"
+  },
+  {
+    "courseId":"AS5103",
+    "name":"Tin học vật lý kỹ thuật"
+  },
+  {
+    "courseId":"AS5105",
+    "name":"Thiết bị chẩn đoán hình ảnh y học"
+  },
+  {
+    "courseId":"AS5107",
+    "name":"Dao động kỹ thuật"
+  },
+  {
+    "courseId":"AS5109",
+    "name":"Đàn hồi ứng dụng"
+  },
+  {
+    "courseId":"AS5111",
+    "name":"Đại số tuyến tính"
+  },
+  {
+    "courseId":"AS5113",
+    "name":"Triết học"
+  },
+  {
+    "courseId":"AS5117",
+    "name":"Phương trình đạo hàm riêng"
+  },
+  {
+    "courseId":"AS5119",
+    "name":"Mô hình toán và mô phỏng"
+  },
+  {
+    "courseId":"AS5131",
+    "name":"Phương trình vi phân và Lý thuyết ổn định"
+  },
+  {
+    "courseId":"AS5137",
+    "name":"Phương pháp sai phân hữu hạn"
+  },
+  {
+    "courseId":"AS5141",
+    "name":"Toán tài chính"
+  },
+  {
+    "courseId":"AS5143",
+    "name":"Phương pháp số nâng cao"
+  },
+  {
+    "courseId":"AS5155",
+    "name":"Phương pháp tính tuổi thọ"
+  },
+  {
+    "courseId":"AS5159",
+    "name":"Cơ sở laser và ứng dụng"
+  },
+  {
+    "courseId":"AS5161",
+    "name":"Cảm biến trong ứng dụng kỹ thuật và y sinh"
+  },
+  {
+    "courseId":"AS5247",
+    "name":"Thống kê nâng cao"
+  },
+  {
+    "courseId":"AS5251",
+    "name":"Mô hình hóa hệ cơ điện tử"
+  },
+  {
+    "courseId":"AS5255",
+    "name":"Cơ học phá hủy"
+  },
+  {
+    "courseId":"AS5257",
+    "name":"Tính toán kết cấu"
+  },
+  {
+    "courseId":"AS5259",
+    "name":"Hệ thống thiết bị y tế dùng trong chẩn đoán, điều trị và phục hồi"
+  },
+  {
+    "courseId":"AS5261",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"AS5273",
+    "name":"Thực tập Cơ kỹ thuật 1"
+  },
+  {
+    "courseId":"AS5275",
+    "name":"Thực tập Cơ kỹ thuật 2"
+  },
+  {
+    "courseId":"AS5277",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"AS5279",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"AS5293",
+    "name":"Phương trình toán lý và cơ sở toán ứng dụng"
+  },
+  {
+    "courseId":"AS5295",
+    "name":"Phương pháp tính"
+  },
+  {
+    "courseId":"AS5297",
+    "name":"Xác suất thống kê"
+  },
+  {
+    "courseId":"AS5299",
+    "name":"Cơ sở cơ học lượng tử - vật lý chất rắn"
+  },
+  {
+    "courseId":"AS7013",
+    "name":"Cơ sở mô phỏng trong vật lý"
+  },
+  {
+    "courseId":"AS7065",
+    "name":"Phân tích sống sót"
+  },
+  {
+    "courseId":"AS7067",
+    "name":"Tối ưu số"
+  },
+  {
+    "courseId":"AS7069",
+    "name":"Giải tích biến phân và ứng dụng"
+  },
+  {
+    "courseId":"AS7071",
+    "name":"Tối ưu không trơn"
+  },
+  {
+    "courseId":"AS7081",
+    "name":"Giải tích ngẫu nhiên và ứng dụng"
+  },
+  {
+    "courseId":"AS7091",
+    "name":"Thống kê nhiều chiều"
+  },
+  {
+    "courseId":"AS7125",
+    "name":"Chuyên đề những vấn đề toán học hiện đại"
+  },
+  {
+    "courseId":"CH1005",
+    "name":"Hóa lý hóa keo"
+  },
+  {
+    "courseId":"CH2003",
+    "name":"Hóa lý 1"
+  },
+  {
+    "courseId":"CH2007",
+    "name":"Hóa học - hóa sinh thực phẩm"
+  },
+  {
+    "courseId":"CH200B",
+    "name":"Hóa lý 1 (mr)"
+  },
+  {
+    "courseId":"CH2017",
+    "name":"Kỹ thuật thực phẩm 1"
+  },
+  {
+    "courseId":"CH2019",
+    "name":"Quá trình và thiết bị cơ học"
+  },
+  {
+    "courseId":"CH201E",
+    "name":"Quá trình và thiết bị cơ học (mr)"
+  },
+  {
+    "courseId":"CH202A",
+    "name":"Hóa hữu cơ (mr)"
+  },
+  {
+    "courseId":"CH2035",
+    "name":"Kỹ thuật thực phẩm 2"
+  },
+  {
+    "courseId":"CH2041",
+    "name":"Thí nghiệm hóa lý"
+  },
+  {
+    "courseId":"CH2043",
+    "name":"Q\/tr và thiết bị truyền nhiệt"
+  },
+  {
+    "courseId":"CH2045",
+    "name":"Vi sinh thực phẩm"
+  },
+  {
+    "courseId":"CH2049",
+    "name":"TN hóa học và hóa sinh tp"
+  },
+  {
+    "courseId":"CH204A",
+    "name":"Thí nghiệm hóa lý (mr)"
+  },
+  {
+    "courseId":"CH204B",
+    "name":"Q\/tr và thiết bị tr\/nhiệt (mr)"
+  },
+  {
+    "courseId":"CH2051",
+    "name":"Quá trình và tbị truyền khối"
+  },
+  {
+    "courseId":"CH2053",
+    "name":"Thí nghiệm hóa hữu cơ"
+  },
+  {
+    "courseId":"CH2109",
+    "name":"Hóa lý 2"
+  },
+  {
+    "courseId":"CH210E",
+    "name":"Hóa lý 2 (mr)"
+  },
+  {
+    "courseId":"CH2111",
+    "name":"Thí nghiệm hóa hữu cơ cb"
+  },
+  {
+    "courseId":"CH2113",
+    "name":"Hóa phân tích"
+  },
+  {
+    "courseId":"CH3015",
+    "name":"T\/n quá trình thiết bị"
+  },
+  {
+    "courseId":"CH3133",
+    "name":"Mô hình hóa, mp và tưh CNHH"
+  },
+  {
+    "courseId":"CH3321",
+    "name":"Thiết kế hệ thống qtcnhh"
+  },
+  {
+    "courseId":"CH3327",
+    "name":"Hóa keo"
+  },
+  {
+    "courseId":"CH3329",
+    "name":"Các Phương pháp phân tích hđ"
+  },
+  {
+    "courseId":"CH3331",
+    "name":"Cs vật liệu và bảo vệ ăn mòn"
+  },
+  {
+    "courseId":"CH3337",
+    "name":"Tổng hợp hữu cơ hóa dầu"
+  },
+  {
+    "courseId":"CH3341",
+    "name":"Cơ sở điều khiển quá trình"
+  },
+  {
+    "courseId":"CH3347",
+    "name":"Kỹ thuật phản ứng"
+  },
+  {
+    "courseId":"CH3349",
+    "name":"Cơ sở tính toán tk tb hh"
+  },
+  {
+    "courseId":"CH3369",
+    "name":"Dinh dưỡng"
+  },
+  {
+    "courseId":"CH3371",
+    "name":"Phân tích thực phẩm"
+  },
+  {
+    "courseId":"CH3389",
+    "name":"Phát triển bền vững và cnxlmt"
+  },
+  {
+    "courseId":"CH3421",
+    "name":"Cơ sở kỹ thuật mỹ phẩm"
+  },
+  {
+    "courseId":"CH3425",
+    "name":"Sinh hóa dược"
+  },
+  {
+    "courseId":"CH4001",
+    "name":"Thí nghiệm Công nghệ cbtp"
+  },
+  {
+    "courseId":"CH4007",
+    "name":"Đồ án thiết kế kỹ thuật hh"
+  },
+  {
+    "courseId":"CH4011",
+    "name":"Đồ án thiết kế công nghệ sh"
+  },
+  {
+    "courseId":"CH4053",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CH4057",
+    "name":"Đồ án công nghệ sinh học"
+  },
+  {
+    "courseId":"CH4063",
+    "name":"Thiết kế P và ID"
+  },
+  {
+    "courseId":"CH4079",
+    "name":"Hóa học xanh"
+  },
+  {
+    "courseId":"CH4085",
+    "name":"Hóa học và Công nghệ chất hđbm"
+  },
+  {
+    "courseId":"CH4087",
+    "name":"Các pp vật lý nc chất rắn"
+  },
+  {
+    "courseId":"CH4091",
+    "name":"Hóa học nano và ứng dụng"
+  },
+  {
+    "courseId":"CH4095",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CH4099",
+    "name":"Đồ án thiết kế nhà máy tp"
+  },
+  {
+    "courseId":"CH4101",
+    "name":"Quản trị chất lượng thực phẩm"
+  },
+  {
+    "courseId":"CH4103",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CH4111",
+    "name":"Vật lý thực phẩm"
+  },
+  {
+    "courseId":"CH4113",
+    "name":"Kỹ thuật bao gói thực phẩm"
+  },
+  {
+    "courseId":"CH4115",
+    "name":"Công nghệ sau thu hoạch"
+  },
+  {
+    "courseId":"CH4125",
+    "name":"Độc chất học"
+  },
+  {
+    "courseId":"CH4143",
+    "name":"CN ứng dụng hợp chất TN"
+  },
+  {
+    "courseId":"CH4149",
+    "name":"QL chất lượng mỹ phẩm"
+  },
+  {
+    "courseId":"CH4313",
+    "name":"Luận văn tốt nghiệp (cbdk)"
+  },
+  {
+    "courseId":"CH4327",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CH4335",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CH4345",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CH4357",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CH4367",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CH4377",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CH5311",
+    "name":"Lý thuyết truyền vận"
+  },
+  {
+    "courseId":"CH5315",
+    "name":"Mô phỏng và Tối ưu hóa các Quá trình Lọc Hóa Dầu"
+  },
+  {
+    "courseId":"CH5317",
+    "name":"Cơ Sở Vận Hành Nhà Máy Lọc Hóa Dầu"
+  },
+  {
+    "courseId":"CH5321",
+    "name":"Công nghệ lọc và chế biến dầu"
+  },
+  {
+    "courseId":"CH5373",
+    "name":"Công nghệ phân lập và tinh chế hợp chất tự nhiên"
+  },
+  {
+    "courseId":"CH5407",
+    "name":"Luật và quản trị an ninh thực phẩm"
+  },
+  {
+    "courseId":"CH5477",
+    "name":"Một số phương pháp phân tích hóa lý trong nghiên cứu thực phẩm"
+  },
+  {
+    "courseId":"CH5505",
+    "name":"Dinh dưỡng và sức khỏe"
+  },
+  {
+    "courseId":"CH5597",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"CH5599",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"CH5601",
+    "name":"Thiết kế PvàID trong công nghiệp"
+  },
+  {
+    "courseId":"CH5603",
+    "name":"Công nghệ chất hoạt động bề mặt trong công nghiệp"
+  },
+  {
+    "courseId":"CH5605",
+    "name":"Tự động hóa quá trình hóa học trong công nghiệp"
+  },
+  {
+    "courseId":"CH5607",
+    "name":"Xúc tác và quá trình xúc tác công nghiệp"
+  },
+  {
+    "courseId":"CH5623",
+    "name":"Vật liệu mao quản - từ tự nhiên đến công nghiệp"
+  },
+  {
+    "courseId":"CH5625",
+    "name":"Độc chất học và ứng dụng trong công nghiệp"
+  },
+  {
+    "courseId":"CH5647",
+    "name":"Các phương pháp nghiên cứu cấu trúc của vật liệu"
+  },
+  {
+    "courseId":"CH5649",
+    "name":"Công nghệ vật liệu nano trong lĩnh vực năng lượng và môi trường"
+  },
+  {
+    "courseId":"CH5653",
+    "name":"Sản xuất sạch hơn trong công nghiệp"
+  },
+  {
+    "courseId":"CH5661",
+    "name":"Các phương pháp phân tích trong Công nghệ sinh học"
+  },
+  {
+    "courseId":"CH5663",
+    "name":"Cơ sở công nghiệp công nghệ sinh học"
+  },
+  {
+    "courseId":"CH5665",
+    "name":"Thiết kế thí nghiệm và xử lý số liệu trong sinh học"
+  },
+  {
+    "courseId":"CH5671",
+    "name":"Sản xuất công nghiệp các chất có hoạt tính sinh học"
+  },
+  {
+    "courseId":"CH5673",
+    "name":"Thực tập quy trình công nghệ chế biến thực phẩm"
+  },
+  {
+    "courseId":"CH5675",
+    "name":"Thực tập hệ thống đảm bảo chất lượng thực phẩm"
+  },
+  {
+    "courseId":"CH5677",
+    "name":"Thực tập Công nghệ sinh học 1"
+  },
+  {
+    "courseId":"CH5679",
+    "name":"Thực tập Công nghệ sinh học 2"
+  },
+  {
+    "courseId":"CH5683",
+    "name":"Hóa học và hóa sinh thực phẩm nâng cao"
+  },
+  {
+    "courseId":"CH5685",
+    "name":"Vi sinh thực phẩm nâng cao"
+  },
+  {
+    "courseId":"CH5687",
+    "name":"Các công nghệ tiên tiến trong công nghiệp thực phẩm"
+  },
+  {
+    "courseId":"CH5693",
+    "name":"Thực hành các công nghệ tiên tiến trong công nghiệp thực phẩm"
+  },
+  {
+    "courseId":"CH5699",
+    "name":"Hóa hữu cơ nâng cao"
+  },
+  {
+    "courseId":"CH5703",
+    "name":"Nhiệt động kỹ thuật hóa học"
+  },
+  {
+    "courseId":"CH5711",
+    "name":"Các phương pháp phân tích công cụ"
+  },
+  {
+    "courseId":"CH5741",
+    "name":"Quản lý chất lượng sản phẩm công nghệ sinh học"
+  },
+  {
+    "courseId":"CH5747",
+    "name":"Đổi mới và phát triển sản phẩm thực phẩm"
+  },
+  {
+    "courseId":"CH5767",
+    "name":"Truy xuất nguồn gốc thực phẩm"
+  },
+  {
+    "courseId":"CH5803",
+    "name":"Công nghệ chế biến khí thiên nhiên thành các sản phẩm"
+  },
+  {
+    "courseId":"CI1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"CI1065",
+    "name":"Nhập môn kiến trúc"
+  },
+  {
+    "courseId":"CI2069",
+    "name":"Thiết kế kiến trúc công cộng 3"
+  },
+  {
+    "courseId":"CI2071",
+    "name":"Kỹ thuật kiến trúc 2"
+  },
+  {
+    "courseId":"CI2097",
+    "name":"Nguyên lý thiết kế kiến trúc ctdd"
+  },
+  {
+    "courseId":"CI2101",
+    "name":"Đồ án thiết kế cơ sở kt"
+  },
+  {
+    "courseId":"CI2103",
+    "name":"N\/l thiết kế kiến trúc ct nhà ở"
+  },
+  {
+    "courseId":"CI2105",
+    "name":"thiết kế kt kiến trúc ctdd"
+  },
+  {
+    "courseId":"CI2111",
+    "name":"Bố cục tạo hình trong kt"
+  },
+  {
+    "courseId":"CI2117",
+    "name":"Đồ án kiến trúc cảnh quan"
+  },
+  {
+    "courseId":"CI2123",
+    "name":"Pt địa điểm và kiến tạo nc"
+  },
+  {
+    "courseId":"CI2125",
+    "name":"thiết kế I- ct công cộng"
+  },
+  {
+    "courseId":"CI2127",
+    "name":"Hóa học nước trong ktmt"
+  },
+  {
+    "courseId":"CI2131",
+    "name":"TN môi trường nước đô thị"
+  },
+  {
+    "courseId":"CI2133",
+    "name":"Kết cấu thép"
+  },
+  {
+    "courseId":"CI2139",
+    "name":"Kết cấu bê tông cốt thép"
+  },
+  {
+    "courseId":"CI2145",
+    "name":"Nền móng"
+  },
+  {
+    "courseId":"CI2147",
+    "name":"Thí nghiệm công trình"
+  },
+  {
+    "courseId":"CI2149",
+    "name":"Thí nghiệm vật liệu CTGT"
+  },
+  {
+    "courseId":"CI2151",
+    "name":"Kinh tế xây dựng"
+  },
+  {
+    "courseId":"CI2155",
+    "name":"Thí nghiệm vật lý kiến trúc"
+  },
+  {
+    "courseId":"CI2157",
+    "name":"Nhập môn BIM trong xd"
+  },
+  {
+    "courseId":"CI2159",
+    "name":"Bản vẽ xây dựng và đồ họa máy tính"
+  },
+  {
+    "courseId":"CI3043",
+    "name":"Kỹ thuật thi công"
+  },
+  {
+    "courseId":"CI3147",
+    "name":"Quy hoạch đô thị bền vững"
+  },
+  {
+    "courseId":"CI3151",
+    "name":"Thí nghiệm vật lý kiến trúc"
+  },
+  {
+    "courseId":"CI3163",
+    "name":"Phân tích thiết kế kết cấu"
+  },
+  {
+    "courseId":"CI3231",
+    "name":"Kết cấu thép"
+  },
+  {
+    "courseId":"CI3237",
+    "name":"Kết cấu bê tông cốt thép"
+  },
+  {
+    "courseId":"CI3241",
+    "name":"Cấp thoát nước"
+  },
+  {
+    "courseId":"CI3243",
+    "name":"Kết cấu công trình btct"
+  },
+  {
+    "courseId":"CI3249",
+    "name":"Thực tập di sản kt và đô thị"
+  },
+  {
+    "courseId":"CI3255",
+    "name":"Thực tập đo vẽ và lập bđ đh"
+  },
+  {
+    "courseId":"CI3265",
+    "name":"Kỹ thuật hạ tầng đô thị"
+  },
+  {
+    "courseId":"CI3271",
+    "name":"Nguyên lý thiết kế kiến trúc và ktctcn"
+  },
+  {
+    "courseId":"CI3273",
+    "name":"thiết kế kiến trúc II - ctcc"
+  },
+  {
+    "courseId":"CI3285",
+    "name":"Nguyên lý thiết kế kiến trúc và ktctcn"
+  },
+  {
+    "courseId":"CI3289",
+    "name":"Lãnh đạo và khởi nghiệp"
+  },
+  {
+    "courseId":"CI3291",
+    "name":"Lãnh đạo và quản lý dự án"
+  },
+  {
+    "courseId":"CI3297",
+    "name":"thiết kế II - chung cư"
+  },
+  {
+    "courseId":"CI3299",
+    "name":"thiết kế III - ct công nghiệp"
+  },
+  {
+    "courseId":"CI3315",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CI3411",
+    "name":"Lãnh đạo và QL năng lượng"
+  },
+  {
+    "courseId":"CI3415",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CI3425",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CI3435",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CI3485",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CI4011",
+    "name":"Thí nghiệm Công trình"
+  },
+  {
+    "courseId":"CI4023",
+    "name":"Thi công công trình csht"
+  },
+  {
+    "courseId":"CI4025",
+    "name":"Thi công công trình thủy"
+  },
+  {
+    "courseId":"CI4057",
+    "name":"Đồ án cs dữ liệu địa chính"
+  },
+  {
+    "courseId":"CI4103",
+    "name":"Thực tập tốt nghiệp (ktr)"
+  },
+  {
+    "courseId":"CI4123",
+    "name":"ĐAMH thiết kế cầu"
+  },
+  {
+    "courseId":"CI4129",
+    "name":"Kinh tế xây dựng"
+  },
+  {
+    "courseId":"CI4131",
+    "name":"Kết cấu công trình thép"
+  },
+  {
+    "courseId":"CI4133",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4141",
+    "name":"Công trình cấp thoát nước và tb"
+  },
+  {
+    "courseId":"CI4155",
+    "name":"Thủy điện và trạm bơm"
+  },
+  {
+    "courseId":"CI4157",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4161",
+    "name":"Quy hoạch hạ tầng đô thị"
+  },
+  {
+    "courseId":"CI4167",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4169",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4171",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4173",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4175",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4177",
+    "name":"thiết kế IV - ct phức hợp"
+  },
+  {
+    "courseId":"CI4179",
+    "name":"Đồ án thiết kế nội thất"
+  },
+  {
+    "courseId":"CI4181",
+    "name":"Lãnh đạo và Khởi nghiệp"
+  },
+  {
+    "courseId":"CI4183",
+    "name":"Lãnh đạo và Quản lý Dự án"
+  },
+  {
+    "courseId":"CI4187",
+    "name":"Thiên tai và biến đổi khí hậu"
+  },
+  {
+    "courseId":"CI4189",
+    "name":"Quy hoạch tổ chức thi công"
+  },
+  {
+    "courseId":"CI4193",
+    "name":"Ứng dụng thống kê trong ql và cn nước"
+  },
+  {
+    "courseId":"CI4207",
+    "name":"Thiết kế IV - c\/quan đt"
+  },
+  {
+    "courseId":"CI4209",
+    "name":"Xu hướng kiến trúc cq đ\/đại"
+  },
+  {
+    "courseId":"CI4213",
+    "name":"Kỹ thuật xử lý nước"
+  },
+  {
+    "courseId":"CI4235",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI4313",
+    "name":"Luận văn tốt nghiệp (cđ)"
+  },
+  {
+    "courseId":"CI4315",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CI4317",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CI4337",
+    "name":"Luận văn tốt nghiệp (ctb)"
+  },
+  {
+    "courseId":"CI4341",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CI4343",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CI4347",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CI4417",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4427",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4437",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4447",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4457",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4467",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4477",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI4487",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"CI5001",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI5003",
+    "name":"Ks nước mưa chảy tràn đt"
+  },
+  {
+    "courseId":"CI5005",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CI5009",
+    "name":"Đồ án nckh và phát triển"
+  },
+  {
+    "courseId":"CI5011",
+    "name":"Công trình cấp thoát nước và tb"
+  },
+  {
+    "courseId":"CI5015",
+    "name":"C\/tr Xanh, k\/g, a\/t và A\/s"
+  },
+  {
+    "courseId":"CI5017",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CI5019",
+    "name":"Kết cấu công trình btct"
+  },
+  {
+    "courseId":"CI5021",
+    "name":"Kết cấu công trình thép"
+  },
+  {
+    "courseId":"CI5023",
+    "name":"Động lực học công trình"
+  },
+  {
+    "courseId":"CI5025",
+    "name":"Kỹ thuật thi công"
+  },
+  {
+    "courseId":"CI5027",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CI5031",
+    "name":"T\/n và đ\/h k\/k trong tòa nhà"
+  },
+  {
+    "courseId":"CI5033",
+    "name":"Địa chất thủy văn"
+  },
+  {
+    "courseId":"CI5069",
+    "name":"Địa chất công trình nâng cao"
+  },
+  {
+    "courseId":"CI5081",
+    "name":"Cơ học đất nâng cao 2"
+  },
+  {
+    "courseId":"CI5083",
+    "name":"Các phương pháp khảo sát hiện trường và thí nghiệm đất trong phòng"
+  },
+  {
+    "courseId":"CI5085",
+    "name":"Cơ học đá"
+  },
+  {
+    "courseId":"CI5087",
+    "name":"Đào sâu trong đất"
+  },
+  {
+    "courseId":"CI5089",
+    "name":"Tường chắn đất"
+  },
+  {
+    "courseId":"CI5097",
+    "name":"Kỹ thuật xử lý nền đất yếu"
+  },
+  {
+    "courseId":"CI5099",
+    "name":"Ổn định mái dốc"
+  },
+  {
+    "courseId":"CI5115",
+    "name":"Ứng dụng tính toán mềm trong quản lý xây dựng"
+  },
+  {
+    "courseId":"CI5137",
+    "name":"Quản lý dự án xây dựng nâng cao"
+  },
+  {
+    "courseId":"CI5139",
+    "name":"Quản lý rủi ro trong xây dựng"
+  },
+  {
+    "courseId":"CI5141",
+    "name":"Thống kê ứng dụng trong quản lý xây dựng"
+  },
+  {
+    "courseId":"CI5143",
+    "name":"Hệ thống văn bản qui phạm pháp luật trong xây dựng tại Việt Nam"
+  },
+  {
+    "courseId":"CI5147",
+    "name":"Quản lý xây dựng"
+  },
+  {
+    "courseId":"CI5149",
+    "name":"Các chủ đề và phương pháp nghiên cứu trong quản lý xây dựng"
+  },
+  {
+    "courseId":"CI5179",
+    "name":"Lý thuyết độ tin cậy và tuổi thọ công trình"
+  },
+  {
+    "courseId":"CI5181",
+    "name":"Lý thuyết tính toán nền mặt đường"
+  },
+  {
+    "courseId":"CI5183",
+    "name":"Đánh giá chất lượng và khai thác đường"
+  },
+  {
+    "courseId":"CI5189",
+    "name":"Lý thuyết dòng xe và tổ chức giao thông"
+  },
+  {
+    "courseId":"CI5195",
+    "name":"Hệ thống giao thông công cộng"
+  },
+  {
+    "courseId":"CI5207",
+    "name":"Mạng lưới cấp và thoát nước"
+  },
+  {
+    "courseId":"CI5239",
+    "name":"Phát triển bền vững trong xây dựng"
+  },
+  {
+    "courseId":"CI5245",
+    "name":"Cơ kết cấu nâng cao"
+  },
+  {
+    "courseId":"CI5247",
+    "name":"Kết cấu bê tông cốt thép nâng cao"
+  },
+  {
+    "courseId":"CI5249",
+    "name":"Phương pháp phần tử hữu hạn nâng cao"
+  },
+  {
+    "courseId":"CI5251",
+    "name":"Động lực học kết cấu nâng cao"
+  },
+  {
+    "courseId":"CI5253",
+    "name":"Kết cấu tấm vỏ"
+  },
+  {
+    "courseId":"CI5255",
+    "name":"Tối ưu hóa kết cấu"
+  },
+  {
+    "courseId":"CI5259",
+    "name":"Cơ học vật rắn biến dạng"
+  },
+  {
+    "courseId":"CI5263",
+    "name":"Phương pháp số"
+  },
+  {
+    "courseId":"CI5269",
+    "name":"Tác động của gió lên công trình"
+  },
+  {
+    "courseId":"CI5273",
+    "name":"Ăn mòn và chống ăn mòn bê tông cốt thép nâng cao"
+  },
+  {
+    "courseId":"CI5279",
+    "name":"Thiết kế kháng chấn cho công trình"
+  },
+  {
+    "courseId":"CI5299",
+    "name":"Ứng dụng GIS trong đánh giá đất và quy hoạch sử dụng đất"
+  },
+  {
+    "courseId":"CI5303",
+    "name":"Phương pháp phần tử hữu hạn trong địa kỹ thuật xây dựng"
+  },
+  {
+    "courseId":"CI5305",
+    "name":"Cơ học đất nâng cao 1"
+  },
+  {
+    "courseId":"CI5307",
+    "name":"Kỹ thuật Nền móng nâng cao"
+  },
+  {
+    "courseId":"CI5323",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"CI5325",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"CI5331",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"CI5351",
+    "name":"Thực tập kỹ thuật 1"
+  },
+  {
+    "courseId":"CI5353",
+    "name":"Thực tập kỹ thuật 2"
+  },
+  {
+    "courseId":"CI5367",
+    "name":"Kết cấu nhà cao tầng"
+  },
+  {
+    "courseId":"CI5369",
+    "name":"Địa chất công trình"
+  },
+  {
+    "courseId":"CI5371",
+    "name":"Cơ học đất"
+  },
+  {
+    "courseId":"CI5373",
+    "name":"Nền móng"
+  },
+  {
+    "courseId":"CI5379",
+    "name":"Phương pháp phần tử hữu hạn"
+  },
+  {
+    "courseId":"CI5381",
+    "name":"Cơ kết cấu"
+  },
+  {
+    "courseId":"CI5385",
+    "name":"Kết cấu công trình thép"
+  },
+  {
+    "courseId":"CI5387",
+    "name":"Thiết kế và công nghệ xây dựng cầu bê tông cốt thép"
+  },
+  {
+    "courseId":"CI5389",
+    "name":"Thiết kế và công nghệ xây dựng cầu thép"
+  },
+  {
+    "courseId":"CI5391",
+    "name":"Thiết kế và công nghệ xây dựng đường bộ"
+  },
+  {
+    "courseId":"CI5393",
+    "name":"Đường đô thị và đường sắt đô thị"
+  },
+  {
+    "courseId":"CI5403",
+    "name":"Kỹ thuật và Công nghệ thi công xây dựng"
+  },
+  {
+    "courseId":"CI5405",
+    "name":"Tổ chức Thi công công trình xây dựng"
+  },
+  {
+    "courseId":"CI5407",
+    "name":"Quản lý Dự án xây dựng"
+  },
+  {
+    "courseId":"CI5409",
+    "name":"Nguyên lý kinh tế và Luật xây dựng"
+  },
+  {
+    "courseId":"CI5451",
+    "name":"Quản lý kinh doanh xây dựng"
+  },
+  {
+    "courseId":"CI5763",
+    "name":"Công trình trên đất yếu"
+  },
+  {
+    "courseId":"CI5765",
+    "name":"Thủy văn nâng cao"
+  },
+  {
+    "courseId":"CI5771",
+    "name":"Phân tích phi tuyến kết cấu"
+  },
+  {
+    "courseId":"CI5775",
+    "name":"Kết cấu thép - bê tông liên hợp"
+  },
+  {
+    "courseId":"CI5777",
+    "name":"Ổn định kết cấu"
+  },
+  {
+    "courseId":"CI5779",
+    "name":"Vật liệu xây dựng nâng cao"
+  },
+  {
+    "courseId":"CI5781",
+    "name":"Kỹ thuật bê tông nâng cao"
+  },
+  {
+    "courseId":"CI5795",
+    "name":"Biến đổi khí hậu và Thiên tai biển"
+  },
+  {
+    "courseId":"CI5805",
+    "name":"Kết cấu thép nâng cao"
+  },
+  {
+    "courseId":"CO1007",
+    "name":"Cấu trúc rời rạc cho KHMT"
+  },
+  {
+    "courseId":"CO1029",
+    "name":"Đồ án hệ thống số"
+  },
+  {
+    "courseId":"CO2001",
+    "name":"Kỹ năng chuyên nghiệp cho kỹ sư"
+  },
+  {
+    "courseId":"CO200B",
+    "name":"Cấu trúc dữ liệu và giải thuật (mr)"
+  },
+  {
+    "courseId":"CO200D",
+    "name":"Kiến trúc máy tính (mr)"
+  },
+  {
+    "courseId":"CO2011",
+    "name":"Mô hình hóa toán học"
+  },
+  {
+    "courseId":"CO201D",
+    "name":"Hệ điều hành (mr)"
+  },
+  {
+    "courseId":"CO203E",
+    "name":"Lập trình nâng cao (mr)"
+  },
+  {
+    "courseId":"CO3001",
+    "name":"Công nghệ phần mềm"
+  },
+  {
+    "courseId":"CO3005",
+    "name":"Nguyên lý ngôn ngữ lập trình"
+  },
+  {
+    "courseId":"CO3007",
+    "name":"Đánh giá hiệu năng hệ thống"
+  },
+  {
+    "courseId":"CO3011",
+    "name":"Quản lý dự án phần mềm"
+  },
+  {
+    "courseId":"CO3015",
+    "name":"Kiểm tra phần mềm"
+  },
+  {
+    "courseId":"CO3017",
+    "name":"Kiến trúc phần mềm"
+  },
+  {
+    "courseId":"CO3021",
+    "name":"Hệ quản trị cơ sở dữ liệu"
+  },
+  {
+    "courseId":"CO3027",
+    "name":"Thương mại điện tử"
+  },
+  {
+    "courseId":"CO3029",
+    "name":"Khai phá dữ liệu"
+  },
+  {
+    "courseId":"CO3043",
+    "name":"Phát triển ứng dụng trên thiết bị di động"
+  },
+  {
+    "courseId":"CO3045",
+    "name":"Lập trình game"
+  },
+  {
+    "courseId":"CO3057",
+    "name":"Xử lý ảnh số và thị giác máy tính"
+  },
+  {
+    "courseId":"CO3059",
+    "name":"Đồ họa máy tính"
+  },
+  {
+    "courseId":"CO3061",
+    "name":"Nhập môn trí tuệ nhân tạo"
+  },
+  {
+    "courseId":"CO3063",
+    "name":"Đồ án môn học kỹ thuật máy tính"
+  },
+  {
+    "courseId":"CO3065",
+    "name":"Công nghệ phần mềm nâng cao"
+  },
+  {
+    "courseId":"CO3075",
+    "name":"Đồ án 2"
+  },
+  {
+    "courseId":"CO3091",
+    "name":"Đồ án thiết kế luận lý"
+  },
+  {
+    "courseId":"CO309B",
+    "name":"Mạng máy tính (mr)"
+  },
+  {
+    "courseId":"CO3101",
+    "name":"Đồ án tổng hợp - ttnt"
+  },
+  {
+    "courseId":"CO3103",
+    "name":"Đồ án tổng hợp - cnpm"
+  },
+  {
+    "courseId":"CO3105",
+    "name":"Đồ án tổng hợp - httt"
+  },
+  {
+    "courseId":"CO3107",
+    "name":"T\/tập ĐAMH đa ngành-ttnt"
+  },
+  {
+    "courseId":"CO3109",
+    "name":"T\/tập ĐAMH đa ngành-cnpm"
+  },
+  {
+    "courseId":"CO3111",
+    "name":"T\/tập ĐAMH đa ngành-httt"
+  },
+  {
+    "courseId":"CO3115",
+    "name":"Phân tích và thiết kế hệ thống"
+  },
+  {
+    "courseId":"CO3117",
+    "name":"Học máy"
+  },
+  {
+    "courseId":"CO3119",
+    "name":"Đồ án mạng máy tính"
+  },
+  {
+    "courseId":"CO3127",
+    "name":"Đồ án tổng hợp - hktdl"
+  },
+  {
+    "courseId":"CO3313",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"CO3335",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CO3345",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"CO4007",
+    "name":"Đồ án 3"
+  },
+  {
+    "courseId":"CO4029",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"CO4031",
+    "name":"Kho dữ liệu và hệ hỗ trợ quyết định"
+  },
+  {
+    "courseId":"CO4033",
+    "name":"Phân tích dữ liệu lớn và trí tuệ kinh doanh"
+  },
+  {
+    "courseId":"CO4041",
+    "name":"Đồ án môn học kỹ thuật máy tính"
+  },
+  {
+    "courseId":"CO4311",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CO4313",
+    "name":"Luận văn tốt nghiệp (khmt)"
+  },
+  {
+    "courseId":"CO4315",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CO4321",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CO4333",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"CO4337",
+    "name":"Đồ án tốt nghiệp(khmt)"
+  },
+  {
+    "courseId":"CO4347",
+    "name":"Đồ án tốt nghiệp (ktmt)"
+  },
+  {
+    "courseId":"CO5083",
+    "name":"Phân tích mã độc"
+  },
+  {
+    "courseId":"CO5085",
+    "name":"Học sâu và ứng dụng trong thị giác máy tính"
+  },
+  {
+    "courseId":"CO5087",
+    "name":"Cách tiếp cận hiện đại trong xử lý ngôn ngữ tự nhiên"
+  },
+  {
+    "courseId":"CO5097",
+    "name":"Cơ sở Toán cho Khoa Học Máy Tính"
+  },
+  {
+    "courseId":"CO5101",
+    "name":"Thực tập tốt nghiệp thạc sĩ MIS"
+  },
+  {
+    "courseId":"CO5103",
+    "name":"Đồ án hệ thống thông tin quản lý"
+  },
+  {
+    "courseId":"CO5107",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"CO5109",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"CO5111",
+    "name":"Hệ thống thông tin quản lý hiện đại"
+  },
+  {
+    "courseId":"CO5115",
+    "name":"Giải thuật nâng cao"
+  },
+  {
+    "courseId":"CO5119",
+    "name":"Hệ thống thông minh"
+  },
+  {
+    "courseId":"CO5125",
+    "name":"Xử lý ngôn ngữ tự nhiên"
+  },
+  {
+    "courseId":"CO5135",
+    "name":"Dữ liệu lớn"
+  },
+  {
+    "courseId":"CO5137",
+    "name":"An ninh mạng"
+  },
+  {
+    "courseId":"CO5157",
+    "name":"Bảo mật cơ sở dữ liệu"
+  },
+  {
+    "courseId":"CO5159",
+    "name":"Các vấn đề về Luật pháp, chính sách và chuẩn trong an ninh mạng"
+  },
+  {
+    "courseId":"CO5161",
+    "name":"Mật mã học Ứng dụng"
+  },
+  {
+    "courseId":"CO5173",
+    "name":"Kỹ thuật dữ liệu"
+  },
+  {
+    "courseId":"CO5175",
+    "name":"Học máy và Ứng dụng"
+  },
+  {
+    "courseId":"CO5177",
+    "name":"Nền tảng lập trình cho phân tích và trực quan dữ liệu"
+  },
+  {
+    "courseId":"CO5179",
+    "name":"Những xu hướng mới trong lĩnh vực công nghệ thông tin"
+  },
+  {
+    "courseId":"CO5185",
+    "name":"Kiến trúc phần mềm"
+  },
+  {
+    "courseId":"CO5317",
+    "name":"Mô hình ngôn ngữ lớn"
+  },
+  {
+    "courseId":"EE2023",
+    "name":"Thực tập điện tử 1"
+  },
+  {
+    "courseId":"EE2025",
+    "name":"Thực tập điện 1"
+  },
+  {
+    "courseId":"EE2043",
+    "name":"Đồ án bs mạch điện tử"
+  },
+  {
+    "courseId":"EE2045",
+    "name":"Đồ án bs vi xử lý"
+  },
+  {
+    "courseId":"EE2057",
+    "name":"Đồ án 1 (Kt ĐtVt và Ktđ)"
+  },
+  {
+    "courseId":"EE2109",
+    "name":"Thực tập công nhân"
+  },
+  {
+    "courseId":"EE2409",
+    "name":"Cơ sở trường điện từ"
+  },
+  {
+    "courseId":"EE2421",
+    "name":"Đồ án cơ sở ngành"
+  },
+  {
+    "courseId":"EE3003",
+    "name":"Thiết kế hệ thống nhúng"
+  },
+  {
+    "courseId":"EE3011",
+    "name":"Mạch điện tử thông tin"
+  },
+  {
+    "courseId":"EE3015",
+    "name":"Kỹ thuật hệ thống viễn thông"
+  },
+  {
+    "courseId":"EE3021",
+    "name":"Thực tập điện tử 2"
+  },
+  {
+    "courseId":"EE3023",
+    "name":"Thực tập điện 2"
+  },
+  {
+    "courseId":"EE3025",
+    "name":"Kỹ thuật siêu cao tần"
+  },
+  {
+    "courseId":"EE3031",
+    "name":"Lập trình hệ thống nhúng"
+  },
+  {
+    "courseId":"EE3035",
+    "name":"Xử lý ảnh"
+  },
+  {
+    "courseId":"EE3041",
+    "name":"Xl tín hiệu số với FPGA"
+  },
+  {
+    "courseId":"EE3043",
+    "name":"Cấu trúc máy tính"
+  },
+  {
+    "courseId":"EE3057",
+    "name":"Nhập môn điều khiển tm"
+  },
+  {
+    "courseId":"EE3061",
+    "name":"Đồ án"
+  },
+  {
+    "courseId":"EE3063",
+    "name":"Trí tuệ nhân tạo trong đk"
+  },
+  {
+    "courseId":"EE3065",
+    "name":"Kỹ thuật Robot"
+  },
+  {
+    "courseId":"EE3067",
+    "name":"Hệ thống điều khiển nhúng"
+  },
+  {
+    "courseId":"EE3075",
+    "name":"Thiết bị và hệ thống tự động tk"
+  },
+  {
+    "courseId":"EE3077",
+    "name":"Thị giác máy"
+  },
+  {
+    "courseId":"EE3085",
+    "name":"Mạng viễn thông"
+  },
+  {
+    "courseId":"EE3101",
+    "name":"Kỹ thuật t\/kiệm và sd hqđn"
+  },
+  {
+    "courseId":"EE3107",
+    "name":"Thông tin di động"
+  },
+  {
+    "courseId":"EE3109",
+    "name":"Chuyên đề về kt điện, điện tử"
+  },
+  {
+    "courseId":"EE3111",
+    "name":"Mạng máy tính"
+  },
+  {
+    "courseId":"EE3117",
+    "name":"Thiết kế vi mạch số"
+  },
+  {
+    "courseId":"EE3121",
+    "name":"Thiết kế vi mạch tt và hh"
+  },
+  {
+    "courseId":"EE3127",
+    "name":"Anten - truyền sóng vô tuyến"
+  },
+  {
+    "courseId":"EE3129",
+    "name":"Điện tử ứng dụng"
+  },
+  {
+    "courseId":"EE3131",
+    "name":"Hệ thống năng lượng xanh"
+  },
+  {
+    "courseId":"EE3133",
+    "name":"Thiết bị điện trong ppđ"
+  },
+  {
+    "courseId":"EE3145",
+    "name":"Kỹ thuật ra quyết định"
+  },
+  {
+    "courseId":"EE3165",
+    "name":"Thiết kế vi mạch"
+  },
+  {
+    "courseId":"EE3167",
+    "name":"Thiết kế và pt ứng dụng IoT"
+  },
+  {
+    "courseId":"EE3169",
+    "name":"Máy học cơ bản và ứng dụng"
+  },
+  {
+    "courseId":"EE3171",
+    "name":"IoT trong công nghiệp và dân dụng"
+  },
+  {
+    "courseId":"EE3177",
+    "name":"Chuyên đề điện tử - viễn thông"
+  },
+  {
+    "courseId":"EE3181",
+    "name":"Đồ án 1 (Kỹ thuật điện)"
+  },
+  {
+    "courseId":"EE3183",
+    "name":"Đồ án 1 (Kt điện tử-vt)"
+  },
+  {
+    "courseId":"EE3185",
+    "name":"Đồ án 1 (Kt Điều khiển và tđh)"
+  },
+  {
+    "courseId":"EE3201",
+    "name":"Cơ sở thiết kế vi mạch"
+  },
+  {
+    "courseId":"EE3203",
+    "name":"Kiến trúc máy tính"
+  },
+  {
+    "courseId":"EE3213",
+    "name":"Thiết kế và kiểm định hệ thống số"
+  },
+  {
+    "courseId":"EE3315",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE3333",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"EE3335",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE3345",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE3365",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE3385",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE3401",
+    "name":"Kỹ thuật hệ thống máy tính"
+  },
+  {
+    "courseId":"EE4007",
+    "name":"Đồ án 2 (ktđ)"
+  },
+  {
+    "courseId":"EE4009",
+    "name":"Đồ án 2 (đth)"
+  },
+  {
+    "courseId":"EE4011",
+    "name":"Đồ án 2 (đvt)"
+  },
+  {
+    "courseId":"EE4051",
+    "name":"Thiết kế vi mạch (PBL)"
+  },
+  {
+    "courseId":"EE4053",
+    "name":"Thiết kế hệ thống nhúng (PBL)"
+  },
+  {
+    "courseId":"EE4057",
+    "name":"Đồ án cơ sở ngành"
+  },
+  {
+    "courseId":"EE4059",
+    "name":"Các Công nghệ n\/l mới (PBL)"
+  },
+  {
+    "courseId":"EE4061",
+    "name":"Kỹ thuật chiếu sáng(PBL)"
+  },
+  {
+    "courseId":"EE4065",
+    "name":"Nhà máy điện và trạm b\/á (PBL)"
+  },
+  {
+    "courseId":"EE4069",
+    "name":"Đồ án cơ sở ngành"
+  },
+  {
+    "courseId":"EE4123",
+    "name":"Đồ án 2 (Tđh và Vt)"
+  },
+  {
+    "courseId":"EE4313",
+    "name":"Luận văn tốt nghiệp (ktd)"
+  },
+  {
+    "courseId":"EE4315",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"EE4317",
+    "name":"Luận văn tốt nghiệp (ktd)"
+  },
+  {
+    "courseId":"EE4321",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"EE4323",
+    "name":"Luận văn tốt nghiệp (đktđ)"
+  },
+  {
+    "courseId":"EE4327",
+    "name":"Luận văn tốt nghiệp (đktđ)"
+  },
+  {
+    "courseId":"EE4331",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"EE4333",
+    "name":"Luận văn tốt nghiệp (dttt)"
+  },
+  {
+    "courseId":"EE4335",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"EE4347",
+    "name":"Đồ án tốt nghiệp (ktd)"
+  },
+  {
+    "courseId":"EE4357",
+    "name":"Đồ án tốt nghiệp (tdh)"
+  },
+  {
+    "courseId":"EE4367",
+    "name":"Đồ án tốt nghiệp (dvt)"
+  },
+  {
+    "courseId":"EE4377",
+    "name":"Đồ án tốt nghiệp (tt)"
+  },
+  {
+    "courseId":"EE4405",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"EE4423",
+    "name":"Cấu trúc máy tính"
+  },
+  {
+    "courseId":"EE4451",
+    "name":"Thiết kế vi mạch số"
+  },
+  {
+    "courseId":"EE4455",
+    "name":"Trí tuệ nhân tạo"
+  },
+  {
+    "courseId":"EE5001",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"EE5003",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"EE5005",
+    "name":"Thiết bị điện trong pp điện (PBL)"
+  },
+  {
+    "courseId":"EE5007",
+    "name":"Kỹ thuật cao áp (PBL)"
+  },
+  {
+    "courseId":"EE5011",
+    "name":"Hệ thống n\/l xanh (PBL)"
+  },
+  {
+    "courseId":"EE5013",
+    "name":"Kỹ thuật siêu cao tần (PBL)"
+  },
+  {
+    "courseId":"EE5015",
+    "name":"Mạch điện tử thông tin (PBL)"
+  },
+  {
+    "courseId":"EE5019",
+    "name":"Thông tin di động (PBL)"
+  },
+  {
+    "courseId":"EE5025",
+    "name":"Điều khiển máy điện nâng cao"
+  },
+  {
+    "courseId":"EE5113",
+    "name":"Máy học và ứng dụng"
+  },
+  {
+    "courseId":"EE5137",
+    "name":"Chuyên đề kỹ thuật điện"
+  },
+  {
+    "courseId":"EE5141",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"EE5143",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"EE5153",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"EE5155",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"EE5159",
+    "name":"Chuyên đề nghiên cứu 2"
+  },
+  {
+    "courseId":"EE5161",
+    "name":"Chuyên đề nghiên cứu 3"
+  },
+  {
+    "courseId":"EE5163",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"EE5165",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"EE5167",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"EE5169",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"EE5173",
+    "name":"Chuyên đề 2"
+  },
+  {
+    "courseId":"EE5175",
+    "name":"Chuyên đề 3"
+  },
+  {
+    "courseId":"EE5179",
+    "name":"Chuyên đề nghiên cứu 2"
+  },
+  {
+    "courseId":"EE5181",
+    "name":"Chuyên đề nghiên cứu 3"
+  },
+  {
+    "courseId":"EE5187",
+    "name":"Điện tử Công suất nâng cao"
+  },
+  {
+    "courseId":"EE5189",
+    "name":"Năng lượng tái tạo - tích trữ năng lượng nâng cao"
+  },
+  {
+    "courseId":"EE5191",
+    "name":"Hệ thống thông tin nâng cao"
+  },
+  {
+    "courseId":"EE5193",
+    "name":"Xử lý số tín hiệu nâng cao"
+  },
+  {
+    "courseId":"EE5195",
+    "name":"Mạch tích hợp siêu cao tần"
+  },
+  {
+    "courseId":"EE5197",
+    "name":"Thiết kế vi mạch nâng cao"
+  },
+  {
+    "courseId":"EE5199",
+    "name":"Hệ thống điều khiển số"
+  },
+  {
+    "courseId":"EE5201",
+    "name":"Xử lý số tín hiệu"
+  },
+  {
+    "courseId":"EE5203",
+    "name":"Mạng công nghiệp"
+  },
+  {
+    "courseId":"EE5205",
+    "name":"Thị giác máy tính"
+  },
+  {
+    "courseId":"EE5207",
+    "name":"Kiến trúc máy tính nâng cao"
+  },
+  {
+    "courseId":"EE5209",
+    "name":"Phân tích và thiết kế mạch điện tử"
+  },
+  {
+    "courseId":"EE5221",
+    "name":"Kỹ thuật tổng hợp mạch"
+  },
+  {
+    "courseId":"EE5237",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"EE5239",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"EE5287",
+    "name":"Phương pháp tối ưu và ứng dụng"
+  },
+  {
+    "courseId":"EE5295",
+    "name":"Thiết kế vi mạch tương tự nâng cao"
+  },
+  {
+    "courseId":"EE5339",
+    "name":"SCADA: Phân tích và thiết kế"
+  },
+  {
+    "courseId":"EN1003",
+    "name":"Con người và môi trường"
+  },
+  {
+    "courseId":"EN1005",
+    "name":"Sinh thái học"
+  },
+  {
+    "courseId":"EN1007",
+    "name":"Hóa phân tích"
+  },
+  {
+    "courseId":"EN2033",
+    "name":"Luật và chính sách môi trường"
+  },
+  {
+    "courseId":"EN2039",
+    "name":"Thực tập tham quan (qlmt)"
+  },
+  {
+    "courseId":"EN2045",
+    "name":"Các qt hóa - lý trong mt"
+  },
+  {
+    "courseId":"EN3025",
+    "name":"Kinh tế tài nguyên và mt"
+  },
+  {
+    "courseId":"EN3055",
+    "name":"Thực tập tham quan (ktmt)"
+  },
+  {
+    "courseId":"EN3073",
+    "name":"An toàn lao động và vệ sinh môi trường cn"
+  },
+  {
+    "courseId":"EN3077",
+    "name":"Đamh xử lý nước thải và nc"
+  },
+  {
+    "courseId":"EN3087",
+    "name":"Biến đổi khí hậu"
+  },
+  {
+    "courseId":"EN3205",
+    "name":"Thủy văn môi trường"
+  },
+  {
+    "courseId":"EN3211",
+    "name":"Quản lý môi trường đô thị và kcn"
+  },
+  {
+    "courseId":"EN3313",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"EN4023",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"EN4027",
+    "name":"Đamh xử lý khí thải và ctr"
+  },
+  {
+    "courseId":"EN4317",
+    "name":"Luận văn tốt nghiệp (qlm)"
+  },
+  {
+    "courseId":"EN4337",
+    "name":"Đồ án tốt nghiệp (qlm)"
+  },
+  {
+    "courseId":"EN4347",
+    "name":"Đồ án tốt nghiệp (kmt)"
+  },
+  {
+    "courseId":"EN5041",
+    "name":"GIS và viễn thám nâng cao"
+  },
+  {
+    "courseId":"EN5075",
+    "name":"Ứng dụng thống kê trong quản lý tài nguyên và môi trường"
+  },
+  {
+    "courseId":"EN5077",
+    "name":"Độc học môi trường (nâng cao)"
+  },
+  {
+    "courseId":"EN5083",
+    "name":"Các nguyên lý trong quản lý tài nguyên và môi trường"
+  },
+  {
+    "courseId":"EN5087",
+    "name":"Ứng dụng Công nghệ sinh học trong kỹ thuật môi trường"
+  },
+  {
+    "courseId":"EN5131",
+    "name":"Đánh giá rủi ro môi trường và tài nguyên"
+  },
+  {
+    "courseId":"EN5135",
+    "name":"Chính sách quản lý chất thải bền vững"
+  },
+  {
+    "courseId":"EN5147",
+    "name":"Phân tích chính sách môi trường và tài nguyên"
+  },
+  {
+    "courseId":"EN5149",
+    "name":"Ngăn ngừa và kiểm soát ô nhiễm công nghiệp"
+  },
+  {
+    "courseId":"EN5151",
+    "name":"Chuyên đề thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"EN5153",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"EN5157",
+    "name":"Quản lý chất lượng nước"
+  },
+  {
+    "courseId":"EN5167",
+    "name":"Thực tập Chuyên ngành"
+  },
+  {
+    "courseId":"EN5169",
+    "name":"Thực tập Doanh nghiệp"
+  },
+  {
+    "courseId":"EN5187",
+    "name":"Nguyên lý các quá trình xử lý bậc cao trong KTMT"
+  },
+  {
+    "courseId":"EN5189",
+    "name":"Kỹ thuật tiên tiến trong xử lý nước và nước thải"
+  },
+  {
+    "courseId":"EN5191",
+    "name":"Kỹ thuật tiên tiến trong xử lý chất thải rắn"
+  },
+  {
+    "courseId":"EN5193",
+    "name":"Kỹ thuật tiên tiến trong xử lý khí thải"
+  },
+  {
+    "courseId":"EN5195",
+    "name":"Kỹ thuật hiện đại trong kiểm soát và đánh giá các quá trình trong môi trường"
+  },
+  {
+    "courseId":"EN5197",
+    "name":"Mô phỏng các quá trình xử lý chất thải"
+  },
+  {
+    "courseId":"GE1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"GE1015",
+    "name":"Sức khỏe, an toàn và môi trường trong ndk"
+  },
+  {
+    "courseId":"GE2001",
+    "name":"Cơ sở kỹ thuật dầu khí"
+  },
+  {
+    "courseId":"GE2049",
+    "name":"Cơ học đá"
+  },
+  {
+    "courseId":"GE2053",
+    "name":"Nhiệt động học vỉa và tccl"
+  },
+  {
+    "courseId":"GE2057",
+    "name":"Đồ án tổng quan về địa nl"
+  },
+  {
+    "courseId":"GE2065",
+    "name":"Vật liệu xây dựng"
+  },
+  {
+    "courseId":"GE2067",
+    "name":"Sức bền - kết cấu vật liệu"
+  },
+  {
+    "courseId":"GE2069",
+    "name":"Trắc địa công trình"
+  },
+  {
+    "courseId":"GE3013",
+    "name":"Thí nghiệm địa kỹ thuật"
+  },
+  {
+    "courseId":"GE3015",
+    "name":"Công nghệ khai thác dầu khí"
+  },
+  {
+    "courseId":"GE3017",
+    "name":"Kỹ thuật vỉa dầu khí"
+  },
+  {
+    "courseId":"GE3105",
+    "name":"Đặc trưng hóa và mhh vỉa"
+  },
+  {
+    "courseId":"GE3137",
+    "name":"Công trình xây dựng"
+  },
+  {
+    "courseId":"GE3139",
+    "name":"Cơ học đá + thực hành"
+  },
+  {
+    "courseId":"GE3151",
+    "name":"Bv mtr trog cndk + kiếntập"
+  },
+  {
+    "courseId":"GE3163",
+    "name":"Tầng chứa, tn và tl dầu khí"
+  },
+  {
+    "courseId":"GE3181",
+    "name":"Công nghệ khoan dầu khí"
+  },
+  {
+    "courseId":"GE3209",
+    "name":"Đồ án kỹ thuật dầu khí"
+  },
+  {
+    "courseId":"GE3215",
+    "name":"Địa thống kê ứng dụng"
+  },
+  {
+    "courseId":"GE3219",
+    "name":"Hoàn thiện và k\/thích giếng"
+  },
+  {
+    "courseId":"GE4091",
+    "name":"Mô phỏng vỉa dầu khí"
+  },
+  {
+    "courseId":"GE4111",
+    "name":"Đồ án chuyên đề 3"
+  },
+  {
+    "courseId":"GE4141",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"GE4143",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"GE4327",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"GE4333",
+    "name":"Luận văn tốt nghiệp (dkt)"
+  },
+  {
+    "courseId":"GE4337",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"GE4347",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"GE5031",
+    "name":"Thực tập công ty"
+  },
+  {
+    "courseId":"GE5117",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"GE5121",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"GE5123",
+    "name":"Thực tập công ty 1"
+  },
+  {
+    "courseId":"GE5125",
+    "name":"Địa chất môi trường ứng dụng"
+  },
+  {
+    "courseId":"GE5127",
+    "name":"Địa chất thủy văn nâng cao"
+  },
+  {
+    "courseId":"GE5129",
+    "name":"Địa vật lý ứng dụng"
+  },
+  {
+    "courseId":"GE5131",
+    "name":"Địa kỹ thuật nâng cao"
+  },
+  {
+    "courseId":"GE5133",
+    "name":"Địa chất dầu khí"
+  },
+  {
+    "courseId":"GE5135",
+    "name":"Kỹ thuật khoan dầu khí"
+  },
+  {
+    "courseId":"GE5137",
+    "name":"Công nghệ khai thác dầu khí"
+  },
+  {
+    "courseId":"GE5139",
+    "name":"Kỹ thuật vỉa dầu khí"
+  },
+  {
+    "courseId":"GK5007",
+    "name":"Phương pháp nghiên cứu khoa học nâng cao"
+  },
+  {
+    "courseId":"GK5009",
+    "name":"Quản lý và lãnh đạo"
+  },
+  {
+    "courseId":"GK5011",
+    "name":"Đổi mới sáng tạo và Khởi nghiệp"
+  },
+  {
+    "courseId":"GK5021",
+    "name":"Đạo đức kinh doanh và trách nhiệm xã hội"
+  },
+  {
+    "courseId":"GK5023",
+    "name":"Quản lý dịch vụ"
+  },
+  {
+    "courseId":"GK5025",
+    "name":"Quản lý dự án"
+  },
+  {
+    "courseId":"GK5033",
+    "name":"Chuyên đề nghiên cứu: Phương pháp nghiên cứu khoa học"
+  },
+  {
+    "courseId":"GK5035",
+    "name":"Chuyên đề nghiên cứu: Kỹ năng phân tích, viết, xuất bản NCKH"
+  },
+  {
+    "courseId":"GK5037",
+    "name":"Chuyên đề nghiên cứu: Phân tích và xử lý dữ liệu đa chiều"
+  },
+  {
+    "courseId":"GK5039",
+    "name":"Chuyên đề nghiên cứu: Khoa học dữ liệu ứng dụng"
+  },
+  {
+    "courseId":"GK5041",
+    "name":"Chuyên đề nghiên cứu: Trí tuệ nhân tạo"
+  },
+  {
+    "courseId":"GK5045",
+    "name":"Chiến lược ra quyết định dựa trên mô hình toán tối ưu cho ngành kỹ thuật"
+  },
+  {
+    "courseId":"GK5933",
+    "name":"Chuyên đề nghiên cứu: Phương pháp nghiên cứu khoa học nâng cao"
+  },
+  {
+    "courseId":"IM1001",
+    "name":"Giới thiệu ngành"
+  },
+  {
+    "courseId":"IM1003",
+    "name":"Kinh tế học vi mô"
+  },
+  {
+    "courseId":"IM1007",
+    "name":"Quản trị đại cương"
+  },
+  {
+    "courseId":"IM1013",
+    "name":"Kinh tế học đại cương"
+  },
+  {
+    "courseId":"IM1015",
+    "name":"Kế toán tài chính"
+  },
+  {
+    "courseId":"IM1017",
+    "name":"Thống kê trong kinh doanh"
+  },
+  {
+    "courseId":"IM1019",
+    "name":"Tiếp thị căn bản"
+  },
+  {
+    "courseId":"IM1021",
+    "name":"Khởi nghiệp"
+  },
+  {
+    "courseId":"IM1023",
+    "name":"Quản lý sản xuất cho kỹ sư"
+  },
+  {
+    "courseId":"IM1025",
+    "name":"Quản lý dự án cho kỹ sư"
+  },
+  {
+    "courseId":"IM1029",
+    "name":"Hệ thống sản xuất"
+  },
+  {
+    "courseId":"IM1031",
+    "name":"Khởi nghiệp và đổi mới sáng tạo"
+  },
+  {
+    "courseId":"IM1033",
+    "name":"Công nghệ số trong kinh doanh"
+  },
+  {
+    "courseId":"IM2017",
+    "name":"Hành vi tổ chức"
+  },
+  {
+    "courseId":"IM2019",
+    "name":"Kế toán quản trị"
+  },
+  {
+    "courseId":"IM2031",
+    "name":"Quản lý sản xuất"
+  },
+  {
+    "courseId":"IM2033",
+    "name":"Tài chính doanh nghiệp"
+  },
+  {
+    "courseId":"IM3021",
+    "name":"Quản lý chuỗi cung ứng"
+  },
+  {
+    "courseId":"IM3029",
+    "name":"Quản lý công nghệ"
+  },
+  {
+    "courseId":"IM3035",
+    "name":"Quản lý bảo trì"
+  },
+  {
+    "courseId":"IM3047",
+    "name":"Giao tiếp trong kinh doanh"
+  },
+  {
+    "courseId":"IM3051",
+    "name":"Đạo đức kinh doanh và tn xh"
+  },
+  {
+    "courseId":"IM3055",
+    "name":"Quản lý nhân sự"
+  },
+  {
+    "courseId":"IM3063",
+    "name":"Quản lý chất lượng"
+  },
+  {
+    "courseId":"IM3073",
+    "name":"Điều độ sản xuất"
+  },
+  {
+    "courseId":"IM3077",
+    "name":"Quản lý sản xuất theo Lean và Six Sigma"
+  },
+  {
+    "courseId":"IM3083",
+    "name":"Hành vi người tiêu dùng"
+  },
+  {
+    "courseId":"IM3087",
+    "name":"Hệ thống thông tin quản lý"
+  },
+  {
+    "courseId":"IM3093",
+    "name":"Quản lý logistics và vcqt"
+  },
+  {
+    "courseId":"IM3095",
+    "name":"Quản lý vận hành bán lẻ"
+  },
+  {
+    "courseId":"IM3101",
+    "name":"Quản lý cung ứng và tmqt"
+  },
+  {
+    "courseId":"IM3105",
+    "name":"Phương pháp nc trong kd"
+  },
+  {
+    "courseId":"IM3109",
+    "name":"Tiếp thị số"
+  },
+  {
+    "courseId":"IM3325",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"IM4001",
+    "name":"Phương pháp nc trong kd"
+  },
+  {
+    "courseId":"IM4003",
+    "name":"Quản lý dự án"
+  },
+  {
+    "courseId":"IM4019",
+    "name":"Khoa học dữ liệu trg kd"
+  },
+  {
+    "courseId":"IM4033",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"IM4035",
+    "name":"Iso 9000"
+  },
+  {
+    "courseId":"IM4327",
+    "name":"Khóa luận tốt nghiệp"
+  },
+  {
+    "courseId":"IM5001",
+    "name":"Phương pháp nghiên cứu trong kinh doanh"
+  },
+  {
+    "courseId":"IM5009",
+    "name":"Quản lý tiếp thị"
+  },
+  {
+    "courseId":"IM5065",
+    "name":"Quản lý vận hành"
+  },
+  {
+    "courseId":"IM5067",
+    "name":"Quản trị tài chánh"
+  },
+  {
+    "courseId":"IM5085",
+    "name":"Digital marketing"
+  },
+  {
+    "courseId":"IM5091",
+    "name":"Kế toán quản trị cho người ra quyết định"
+  },
+  {
+    "courseId":"IM5093",
+    "name":"Quản trị con người và tổ chức"
+  },
+  {
+    "courseId":"IM5109",
+    "name":"Quản lý chuỗi cung ứng toàn cầu"
+  },
+  {
+    "courseId":"IM5111",
+    "name":"Quản lý chiến lược trong thời đại số"
+  },
+  {
+    "courseId":"IM5113",
+    "name":"Kinh doanh quốc tế"
+  },
+  {
+    "courseId":"IM5115",
+    "name":"Thực tập chuyên đề kinh doanh 1"
+  },
+  {
+    "courseId":"IM5117",
+    "name":"Thực tập chuyên đề kinh doanh 2"
+  },
+  {
+    "courseId":"IM5119",
+    "name":"Quản trị hệ thống thông tin kinh doanh"
+  },
+  {
+    "courseId":"IM5121",
+    "name":"Quản trị con người và tổ chức"
+  },
+  {
+    "courseId":"IM5125",
+    "name":"Quản trị tài chính dịch vụ chăm sóc sức khỏe"
+  },
+  {
+    "courseId":"IM5127",
+    "name":"Quản trị chất lượng dịch vụ khám chữa bệnh"
+  },
+  {
+    "courseId":"IM5129",
+    "name":"Chuyển đổi số trong bệnh viện"
+  },
+  {
+    "courseId":"IM5131",
+    "name":"Giải quyết vấn đề trong quản trị bệnh viện"
+  },
+  {
+    "courseId":"IM5133",
+    "name":"Lãnh đạo và quản trị sự thay đổi"
+  },
+  {
+    "courseId":"IM5135",
+    "name":"Kinh tế y tế"
+  },
+  {
+    "courseId":"IM5137",
+    "name":"Bệnh viện thông minh"
+  },
+  {
+    "courseId":"IM5139",
+    "name":"Quản trị rủi ro, khủng hoảng"
+  },
+  {
+    "courseId":"IM5151",
+    "name":"Thực tập quản trị bệnh viện 1"
+  },
+  {
+    "courseId":"IM5153",
+    "name":"Thực tập quản trị bệnh viện 2"
+  },
+  {
+    "courseId":"IM5155",
+    "name":"Marketing dịch vụ chăm sóc sức khỏe"
+  },
+  {
+    "courseId":"IM5157",
+    "name":"Quản trị nguồn nhân lực bệnh viện"
+  },
+  {
+    "courseId":"IM7109",
+    "name":"Môn học chuyên sâu"
+  },
+  {
+    "courseId":"IM7111",
+    "name":"Các lý thuyết nền liên quan"
+  },
+  {
+    "courseId":"IU4013",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"IU4313",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"IU4327",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"LA1003",
+    "name":"Anh văn 1"
+  },
+  {
+    "courseId":"LA1005",
+    "name":"Anh văn 2"
+  },
+  {
+    "courseId":"LA1007",
+    "name":"Anh văn 3"
+  },
+  {
+    "courseId":"LA1009",
+    "name":"Anh văn 4"
+  },
+  {
+    "courseId":"LA1011",
+    "name":"Pháp văn 1"
+  },
+  {
+    "courseId":"LA1015",
+    "name":"Pháp văn 3"
+  },
+  {
+    "courseId":"LA1027",
+    "name":"Tiếng Việt 1"
+  },
+  {
+    "courseId":"LA1039",
+    "name":"Anh văn 2A (nhu cầu)"
+  },
+  {
+    "courseId":"LA1041",
+    "name":"Anh văn 3A (nhu cầu)"
+  },
+  {
+    "courseId":"LA1043",
+    "name":"Anh văn 4A (nhu cầu)"
+  },
+  {
+    "courseId":"LA1045",
+    "name":"Tiếng Nhật 1"
+  },
+  {
+    "courseId":"LA2005",
+    "name":"Tiếng Nhật 3"
+  },
+  {
+    "courseId":"LA2017",
+    "name":"Tiếng Nhật 3"
+  },
+  {
+    "courseId":"LA3013",
+    "name":"Tiếng Nhật 6"
+  },
+  {
+    "courseId":"LA3017",
+    "name":"Tiếng Nhật cn ktđ-đt-tt4"
+  },
+  {
+    "courseId":"LA3019",
+    "name":"Tiếng Việt 3"
+  },
+  {
+    "courseId":"LA3021",
+    "name":"Pháp văn 5"
+  },
+  {
+    "courseId":"LA3025",
+    "name":"Tiếng Nhật 5"
+  },
+  {
+    "courseId":"LA4007",
+    "name":"Tiếng Nhật 7"
+  },
+  {
+    "courseId":"MA2013",
+    "name":"Các nguồn n\/lượng tái tạo"
+  },
+  {
+    "courseId":"MA3031",
+    "name":"Vl chuyển hóa và tồn trữ nl"
+  },
+  {
+    "courseId":"MA3051",
+    "name":"Thí nghiệm silicat cn"
+  },
+  {
+    "courseId":"MA3087",
+    "name":"T\/hành hh và h\/lý silicat"
+  },
+  {
+    "courseId":"MA3099",
+    "name":"Thí nghiệm điện hóa học"
+  },
+  {
+    "courseId":"MA3121",
+    "name":"TN hóa học polyme"
+  },
+  {
+    "courseId":"MA3123",
+    "name":"TN hóa lý polyme"
+  },
+  {
+    "courseId":"MA3125",
+    "name":"Thực hành vật liệu 1"
+  },
+  {
+    "courseId":"MA3153",
+    "name":"Mt và atnmsx và gia công vật liệu"
+  },
+  {
+    "courseId":"MA3159",
+    "name":"Mô phỏng trong KTVL"
+  },
+  {
+    "courseId":"MA4025",
+    "name":"Công nghệ sản xuất gạch ôl-sứ vs"
+  },
+  {
+    "courseId":"MA4065",
+    "name":"Đo lường và tự động hóa"
+  },
+  {
+    "courseId":"MA4069",
+    "name":"Các t\/chất của vl polyme"
+  },
+  {
+    "courseId":"MA4071",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"MA4079",
+    "name":"Công nghệ các chất tạo màng"
+  },
+  {
+    "courseId":"MA4081",
+    "name":"Vl polyme có tính năng đb"
+  },
+  {
+    "courseId":"MA4091",
+    "name":"Vật liệu môi trường"
+  },
+  {
+    "courseId":"MA4111",
+    "name":"Thí nghiệm phân tích Hoaly"
+  },
+  {
+    "courseId":"MA4119",
+    "name":"Vl và công nghệ quang khắc"
+  },
+  {
+    "courseId":"MA4155",
+    "name":"Thí nghiệm công nghệ cao su"
+  },
+  {
+    "courseId":"MA4157",
+    "name":"Đồ án chuyên ngành 1"
+  },
+  {
+    "courseId":"MA4169",
+    "name":"Vật liệu polyme xốp"
+  },
+  {
+    "courseId":"MA4173",
+    "name":"Tk quy trình sản xuất\/nm"
+  },
+  {
+    "courseId":"MA4181",
+    "name":"Vật liệu và Công nghệ nano"
+  },
+  {
+    "courseId":"MA4185",
+    "name":"Vật liệu sinh học và ứng dụng"
+  },
+  {
+    "courseId":"MA4189",
+    "name":"Vật liệu thông minh và đa chức năng"
+  },
+  {
+    "courseId":"MA4323",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"MA4327",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"MA4333",
+    "name":"Luận văn tốt nghiệp (vsi)"
+  },
+  {
+    "courseId":"MA4395",
+    "name":"Thực tập kỹ sư"
+  },
+  {
+    "courseId":"MA5003",
+    "name":"Vl nano trong các hệ nl"
+  },
+  {
+    "courseId":"MA5005",
+    "name":"ĐAMH chuyên ngành vl và nl"
+  },
+  {
+    "courseId":"MA5007",
+    "name":"Đồ án chuyên ngành 2"
+  },
+  {
+    "courseId":"MA5015",
+    "name":"Các pp pt cấu trúc vlhc"
+  },
+  {
+    "courseId":"MA5017",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"MA5019",
+    "name":"T\/h tạo màng và ctccvl pol"
+  },
+  {
+    "courseId":"MA5021",
+    "name":"Dự án năng lượng"
+  },
+  {
+    "courseId":"MA5025",
+    "name":"V\/l polyme composite (PBL)"
+  },
+  {
+    "courseId":"MA5027",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"MA5059",
+    "name":"Thực tập quy trình sản xuất vật liệu"
+  },
+  {
+    "courseId":"MA5061",
+    "name":"Thực tập quản lý sản xuất"
+  },
+  {
+    "courseId":"MA5067",
+    "name":"Cơ sở các tính chất vật liệu kỹ thuật"
+  },
+  {
+    "courseId":"MA5069",
+    "name":"Kỹ thuật thực nghiệm và viết báo cáo"
+  },
+  {
+    "courseId":"MA5071",
+    "name":"Giảm cấp và bảo vệ vật liệu"
+  },
+  {
+    "courseId":"MA5073",
+    "name":"Lựa chọn vật liệu"
+  },
+  {
+    "courseId":"MA5075",
+    "name":"Khoa Học và Công Nghệ Vật Liệu Tiên Tiến"
+  },
+  {
+    "courseId":"MA5079",
+    "name":"Cơ sở mô phỏng vật liệu"
+  },
+  {
+    "courseId":"MA5081",
+    "name":"Hóa học nano"
+  },
+  {
+    "courseId":"MA5089",
+    "name":"Công nghệ và ứng dụng luyện kim bột tiên tiến"
+  },
+  {
+    "courseId":"MA5097",
+    "name":"Cấu trúc, tính chất và ứng dụng của polyme có tính năng đặc biệt"
+  },
+  {
+    "courseId":"ME1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"ME1005",
+    "name":"Thực tập cơ khí đại cương 1"
+  },
+  {
+    "courseId":"ME1013",
+    "name":"Thực tập cơ khí đại cương 1"
+  },
+  {
+    "courseId":"ME2011",
+    "name":"Đồ án thiết kế"
+  },
+  {
+    "courseId":"ME2027",
+    "name":"Thực tập kỹ thuật (MXD)"
+  },
+  {
+    "courseId":"ME2059",
+    "name":"Polymer dệt"
+  },
+  {
+    "courseId":"ME205A",
+    "name":"Vận trù học (mr)"
+  },
+  {
+    "courseId":"ME2065",
+    "name":"Công nghệ may 1"
+  },
+  {
+    "courseId":"ME2087",
+    "name":"Thực tập cơ khí đ\/cương 2"
+  },
+  {
+    "courseId":"ME2107",
+    "name":"Tn kiểm tra pt vật liệu dệt"
+  },
+  {
+    "courseId":"ME2113",
+    "name":"Quản lý thu mua"
+  },
+  {
+    "courseId":"ME2115",
+    "name":"Thực tập kỹ thuật"
+  },
+  {
+    "courseId":"ME2117",
+    "name":"Thí nghiệm cơ học máy"
+  },
+  {
+    "courseId":"ME2123",
+    "name":"Kỹ thuật hệ thống"
+  },
+  {
+    "courseId":"ME2133",
+    "name":"Tiếp thị"
+  },
+  {
+    "courseId":"ME2135",
+    "name":"Đồ án thiết kế"
+  },
+  {
+    "courseId":"ME2137",
+    "name":"T\/h Td Hóa thiết kế (ca)"
+  },
+  {
+    "courseId":"ME2141",
+    "name":"Kỹ thuật dự báo"
+  },
+  {
+    "courseId":"ME2143",
+    "name":"Thực tập đại cương"
+  },
+  {
+    "courseId":"ME2151",
+    "name":"Quản lý chuỗi cung ứng"
+  },
+  {
+    "courseId":"ME2169",
+    "name":"Kđ và đánh giá cl trong dm"
+  },
+  {
+    "courseId":"ME2173",
+    "name":"Các CN 4.0 trong qlns và cl"
+  },
+  {
+    "courseId":"ME3017",
+    "name":"Đồ án thiết kế hệ thống cđt"
+  },
+  {
+    "courseId":"ME3029",
+    "name":"Thực tập tốt nghiệp (ktct)"
+  },
+  {
+    "courseId":"ME3047",
+    "name":"Công nghệ không dệt"
+  },
+  {
+    "courseId":"ME3105",
+    "name":"Thiết kế đồ họa"
+  },
+  {
+    "courseId":"ME3123",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"ME3127",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"ME3129",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"ME3135",
+    "name":"Thực tập ngoài trường"
+  },
+  {
+    "courseId":"ME3139",
+    "name":"Đồ án thiết kế"
+  },
+  {
+    "courseId":"ME3141",
+    "name":"T\/h tự động hóa thiết kế (CAD)"
+  },
+  {
+    "courseId":"ME3143",
+    "name":"Thực tập kỹ thuật cơ khí"
+  },
+  {
+    "courseId":"ME3145",
+    "name":"Đồ án hệ thống tr\/động"
+  },
+  {
+    "courseId":"ME3149",
+    "name":"Thực tập nhiệt đại cương"
+  },
+  {
+    "courseId":"ME3151",
+    "name":"Đồ án thiết kế - hướng tb lạnh"
+  },
+  {
+    "courseId":"ME3155",
+    "name":"Thực tập kỹ thuật n\/lạnh"
+  },
+  {
+    "courseId":"ME3169",
+    "name":"Thực tập kỹ thuật dệt"
+  },
+  {
+    "courseId":"ME3173",
+    "name":"Tiếp thị"
+  },
+  {
+    "courseId":"ME3175",
+    "name":"Thiết bị may"
+  },
+  {
+    "courseId":"ME3177",
+    "name":"Thực tập thiết kế đồ họa"
+  },
+  {
+    "courseId":"ME3229",
+    "name":"Kỹ thuật ra quyết định"
+  },
+  {
+    "courseId":"ME3285",
+    "name":"Công nghệ may 2"
+  },
+  {
+    "courseId":"ME3287",
+    "name":"Thực tập kỹ thuật (cdm)"
+  },
+  {
+    "courseId":"ME3299",
+    "name":"Chuỗi cung ứng điện tử"
+  },
+  {
+    "courseId":"ME4019",
+    "name":"Luận văn tốt nghiệp (cđt)"
+  },
+  {
+    "courseId":"ME4021",
+    "name":"Vận tải hàng hóa"
+  },
+  {
+    "courseId":"ME4029",
+    "name":"Luận văn tốt nghiệp (ktct)"
+  },
+  {
+    "courseId":"ME4039",
+    "name":"Luận văn tốt nghiệp (ktn)"
+  },
+  {
+    "courseId":"ME4045",
+    "name":"Đồ án chuyên ngành (ct)"
+  },
+  {
+    "courseId":"ME4049",
+    "name":"Luận văn tốt nghiệp (kttk)"
+  },
+  {
+    "courseId":"ME4053",
+    "name":"Đồ án chuyên ngành (ktn)"
+  },
+  {
+    "courseId":"ME4061",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"ME4067",
+    "name":"Đề cương luận văn tn (det)"
+  },
+  {
+    "courseId":"ME4071",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"ME4073",
+    "name":"Năng lượng tái tạo"
+  },
+  {
+    "courseId":"ME4075",
+    "name":"Thực hành Ttmp trong Nl"
+  },
+  {
+    "courseId":"ME4081",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"ME4089",
+    "name":"Luận văn tốt nghiệp (htcn)"
+  },
+  {
+    "courseId":"ME4101",
+    "name":"Đồ án thiết kế hệ thống cn"
+  },
+  {
+    "courseId":"ME4103",
+    "name":"Đồ án thiết kế hệ thống logistics"
+  },
+  {
+    "courseId":"ME4113",
+    "name":"Đồ án 1"
+  },
+  {
+    "courseId":"ME4121",
+    "name":"Đồ án ngành 1"
+  },
+  {
+    "courseId":"ME4141",
+    "name":"Kỹ thuật thông gió cn"
+  },
+  {
+    "courseId":"ME4219",
+    "name":"Đề cương luận văn tn (cđt)"
+  },
+  {
+    "courseId":"ME4221",
+    "name":"Luận văn tốt nghiệp (cđt)"
+  },
+  {
+    "courseId":"ME4307",
+    "name":"Kinh tế năng lượng"
+  },
+  {
+    "courseId":"ME4311",
+    "name":"Điện trong kỹ thuật lạnh"
+  },
+  {
+    "courseId":"ME4313",
+    "name":"Anh văn chuyên ngành"
+  },
+  {
+    "courseId":"ME4327",
+    "name":"Đồ án tốt nghiệp (cdt)"
+  },
+  {
+    "courseId":"ME4337",
+    "name":"Đồ án tốt nghiệp (ktn)"
+  },
+  {
+    "courseId":"ME4347",
+    "name":"Đồ án tốt nghiệp (ktd)"
+  },
+  {
+    "courseId":"ME4357",
+    "name":"Đồ án tốt nghiệp (cndm)"
+  },
+  {
+    "courseId":"ME4367",
+    "name":"Đồ án tốt nghiệp (kthtcn"
+  },
+  {
+    "courseId":"ME4377",
+    "name":"Đồ án tốt nghiệp (log)"
+  },
+  {
+    "courseId":"ME4387",
+    "name":"Đồ án tốt nghiệp (ktck)"
+  },
+  {
+    "courseId":"ME4533",
+    "name":"Quản lý đơn hàng"
+  },
+  {
+    "courseId":"ME4607",
+    "name":"Phân tích và thiết kế hệ thống thông tin quản lý"
+  },
+  {
+    "courseId":"ME4615",
+    "name":"Sản xuất tinh gọn"
+  },
+  {
+    "courseId":"ME4625",
+    "name":"Kỹ năng lãnh đạo"
+  },
+  {
+    "courseId":"ME4645",
+    "name":"Hệ thống logistics thu hồi"
+  },
+  {
+    "courseId":"ME4673",
+    "name":"Luận văn tốt nghiệp (htcn)"
+  },
+  {
+    "courseId":"ME4725",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"ME4727",
+    "name":"Luận văn tốt nghiệp (ktck)"
+  },
+  {
+    "courseId":"ME5001",
+    "name":"Đồ án chuyên ngành cđt"
+  },
+  {
+    "courseId":"ME5003",
+    "name":"Kỹ thuật robot"
+  },
+  {
+    "courseId":"ME5017",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"ME5021",
+    "name":"Thiết kế tối ưu và quy hoạch thực nghiệm"
+  },
+  {
+    "courseId":"ME5037",
+    "name":"Hệ thống Micro và Nano"
+  },
+  {
+    "courseId":"ME5075",
+    "name":"Thiết kế và phân tích theo độ tin cậy"
+  },
+  {
+    "courseId":"ME5077",
+    "name":"Quản lý chất lượng tổng thể"
+  },
+  {
+    "courseId":"ME5079",
+    "name":"Công nghệ tinh gọn trong sản xuất dịch vụ"
+  },
+  {
+    "courseId":"ME5081",
+    "name":"Hỗ trợ ra quyết định"
+  },
+  {
+    "courseId":"ME5087",
+    "name":"Kỹ thuật thiết kế mặt bằng công nghiệp"
+  },
+  {
+    "courseId":"ME5089",
+    "name":"Đánh giá kinh tế và quản lý dự án"
+  },
+  {
+    "courseId":"ME5091",
+    "name":"Lập kế hoạch và điều độ trong sản xuất và dịch vụ"
+  },
+  {
+    "courseId":"ME5093",
+    "name":"Hoạch định tồn kho và vật tư"
+  },
+  {
+    "courseId":"ME5101",
+    "name":"Hoạch định nguồn lực ERP"
+  },
+  {
+    "courseId":"ME5103",
+    "name":"Lean Six Sigma"
+  },
+  {
+    "courseId":"ME5107",
+    "name":"Quản lý vận tải logistics"
+  },
+  {
+    "courseId":"ME5109",
+    "name":"Cảm biến và Ứng dụng"
+  },
+  {
+    "courseId":"ME5111",
+    "name":"Mô hình hóa Hệ thống Cơ điện tử"
+  },
+  {
+    "courseId":"ME5115",
+    "name":"Hệ thống điều khiển phi tuyến"
+  },
+  {
+    "courseId":"ME5119",
+    "name":"Điều khiển mặt trượt"
+  },
+  {
+    "courseId":"ME5121",
+    "name":"Hệ tuyến tính và điều khiển"
+  },
+  {
+    "courseId":"ME5145",
+    "name":"Quá trình cháy và thiết bị"
+  },
+  {
+    "courseId":"ME5191",
+    "name":"Thực tập tốt nghiệp 1"
+  },
+  {
+    "courseId":"ME5199",
+    "name":"Thực tập doanh nghiệp"
+  },
+  {
+    "courseId":"ME5201",
+    "name":"Hệ thống sản xuất tự động"
+  },
+  {
+    "courseId":"ME5203",
+    "name":"Thực tập chuyên ngành 1"
+  },
+  {
+    "courseId":"ME5207",
+    "name":"Nhiệt động lực học nâng cao"
+  },
+  {
+    "courseId":"ME5209",
+    "name":"Truyền nhiệt nâng cao"
+  },
+  {
+    "courseId":"ME5211",
+    "name":"Năng lượng tái tạo nâng cao"
+  },
+  {
+    "courseId":"ME5215",
+    "name":"Trung tâm nhiệt điện nâng cao"
+  },
+  {
+    "courseId":"ME5217",
+    "name":"Thiết kế hệ thống năng lượng"
+  },
+  {
+    "courseId":"ME5227",
+    "name":"Thực tập tại Công ty"
+  },
+  {
+    "courseId":"ME5229",
+    "name":"Đồ án thực tập"
+  },
+  {
+    "courseId":"ME5231",
+    "name":"Kỹ thuật Dệt hiện đại"
+  },
+  {
+    "courseId":"ME5233",
+    "name":"Khoa học quản lý trong dệt may"
+  },
+  {
+    "courseId":"ME5235",
+    "name":"Kiểm định và đánh giá trong dệt may"
+  },
+  {
+    "courseId":"ME5241",
+    "name":"Thực tập tốt nghiệp 2"
+  },
+  {
+    "courseId":"ME5243",
+    "name":"Thực tập công ty"
+  },
+  {
+    "courseId":"ME5245",
+    "name":"Đồ án thực tập"
+  },
+  {
+    "courseId":"ME5247",
+    "name":"Kiến trúc máy tính"
+  },
+  {
+    "courseId":"ME5249",
+    "name":"Đo lường và đảm bảo chất lượng"
+  },
+  {
+    "courseId":"ME5251",
+    "name":"Đồ án thực tập"
+  },
+  {
+    "courseId":"ME5253",
+    "name":"Thiết kế tối ưu cho các hệ thống cơ điện tử"
+  },
+  {
+    "courseId":"ME5255",
+    "name":"Xử lý tín hiệu cho các hệ thống cơ điện tử"
+  },
+  {
+    "courseId":"ME5257",
+    "name":"Điện tử công nghiệp cho hệ thống cơ điện tử"
+  },
+  {
+    "courseId":"ME5259",
+    "name":"Chế tạo thông minh"
+  },
+  {
+    "courseId":"ME5261",
+    "name":"Kỹ thuật lựa chọn vật liệu hiện đại"
+  },
+  {
+    "courseId":"ME5263",
+    "name":"Thiết kế hệ thống Cơ khí"
+  },
+  {
+    "courseId":"ME5265",
+    "name":"Động lực học và dao động trong cơ khí"
+  },
+  {
+    "courseId":"ME5267",
+    "name":"Cải tiến và đảm bảo chất lượng"
+  },
+  {
+    "courseId":"ME5269",
+    "name":"Phân tích và Thiết kế công việc"
+  },
+  {
+    "courseId":"ME5271",
+    "name":"Logistics - SCM"
+  },
+  {
+    "courseId":"ME5273",
+    "name":"Ứng dụng tự động hóa trong Dệt may"
+  },
+  {
+    "courseId":"ME5275",
+    "name":"Chuỗi giá trị Dệt may"
+  },
+  {
+    "courseId":"ME5277",
+    "name":"An toàn và Phát triển bền vững trong Dệt may"
+  },
+  {
+    "courseId":"MT1003",
+    "name":"Giải tích 1"
+  },
+  {
+    "courseId":"MT1005",
+    "name":"Giải tích 2"
+  },
+  {
+    "courseId":"MT1007",
+    "name":"Đại số tuyến tính"
+  },
+  {
+    "courseId":"MT1009",
+    "name":"Phương pháp tính"
+  },
+  {
+    "courseId":"MT1011",
+    "name":"Giải tích 1"
+  },
+  {
+    "courseId":"MT1013",
+    "name":"Giải tích 2"
+  },
+  {
+    "courseId":"MT1015",
+    "name":"Đại số tuyến tính"
+  },
+  {
+    "courseId":"MT1017",
+    "name":"Giải tích trong kinh doanh"
+  },
+  {
+    "courseId":"MT1019",
+    "name":"Giải tích 1"
+  },
+  {
+    "courseId":"MT1023",
+    "name":"Cơ sở phương trình vi phân"
+  },
+  {
+    "courseId":"MT2007",
+    "name":"Giải tích 3"
+  },
+  {
+    "courseId":"MT2009",
+    "name":"Xác suất và thống kê"
+  },
+  {
+    "courseId":"MT2013",
+    "name":"Xác suất và thống kê"
+  },
+  {
+    "courseId":"MT2015",
+    "name":"Xác suất và ứng dụng kt"
+  },
+  {
+    "courseId":"PE1017",
+    "name":"Cầu lông (học phần 1)"
+  },
+  {
+    "courseId":"PE1037",
+    "name":"Bóng bàn (học phần 2)"
+  },
+  {
+    "courseId":"PE1041",
+    "name":"Cầu lông (học phần 2)"
+  },
+  {
+    "courseId":"PH1007",
+    "name":"Thí nghiệm vật lý"
+  },
+  {
+    "courseId":"PH1011",
+    "name":"Vật lý - cơ học"
+  },
+  {
+    "courseId":"PH2007",
+    "name":"Thí nghiệm vật lý"
+  },
+  {
+    "courseId":"SA0005",
+    "name":"Sinh hoạt sinh viên cuối khóa 1"
+  },
+  {
+    "courseId":"SA0007",
+    "name":"Sinh hoạt sinh viên cuối khóa 2"
+  },
+  {
+    "courseId":"SA0009",
+    "name":"Sinh hoạt sinh viên cuối khóa 3"
+  },
+  {
+    "courseId":"SP1007",
+    "name":"Pháp luật Việt Nam đại cương"
+  },
+  {
+    "courseId":"SP1031",
+    "name":"Triết học Mác - Lênin"
+  },
+  {
+    "courseId":"SP1033",
+    "name":"Kinh tế Chính Trị Mac-lênin"
+  },
+  {
+    "courseId":"SP1035",
+    "name":"Chủ nghĩa xã hội khoa học"
+  },
+  {
+    "courseId":"SP1037",
+    "name":"Tư tưởng Hồ Chí Minh"
+  },
+  {
+    "courseId":"SP1039",
+    "name":"Lịch sử Đảng Cộng sản Việt Nam"
+  },
+  {
+    "courseId":"SP1043",
+    "name":"Văn hóa Nhật"
+  },
+  {
+    "courseId":"TR1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"TR3003",
+    "name":"Cơ học vật liệu hàng không"
+  },
+  {
+    "courseId":"TR3025",
+    "name":"Phân tích pthh trong ô tô"
+  },
+  {
+    "courseId":"TR3043",
+    "name":"Đồ án thiết kế động cơ đt"
+  },
+  {
+    "courseId":"TR3051",
+    "name":"Thí nghiệm kỹ thuật hk 2"
+  },
+  {
+    "courseId":"TR3055",
+    "name":"Các hệ thời gian thực"
+  },
+  {
+    "courseId":"TR3059",
+    "name":"CAD ứd trong thiết kế ô tô"
+  },
+  {
+    "courseId":"TR3075",
+    "name":"Thực tập kỹ thuật Ô tô"
+  },
+  {
+    "courseId":"TR3077",
+    "name":"Thí nghiệm k\/th hàng không 1"
+  },
+  {
+    "courseId":"TR3119",
+    "name":"Thí nghiệm ô tô và d\/co Dt"
+  },
+  {
+    "courseId":"TR4015",
+    "name":"Thí nghiệm kỹ thuật hk 3"
+  },
+  {
+    "courseId":"TR4037",
+    "name":"Đồ án môn học thiết kế ô tô"
+  },
+  {
+    "courseId":"TR4047",
+    "name":"Phương pháp số - đlh lc"
+  },
+  {
+    "courseId":"TR4051",
+    "name":"Phương pháp phần tử hhạn"
+  },
+  {
+    "courseId":"TR4057",
+    "name":"Hệ thống lực đẩy hỏa tiễn"
+  },
+  {
+    "courseId":"TR4073",
+    "name":"Cơ học va chạm"
+  },
+  {
+    "courseId":"TR4079",
+    "name":"Đồ án chuyên ngành hk"
+  },
+  {
+    "courseId":"TR4081",
+    "name":"Thiết kế máy bay"
+  },
+  {
+    "courseId":"TR4085",
+    "name":"Phương pháp thiết kế động cơ và ô tô"
+  },
+  {
+    "courseId":"TR4087",
+    "name":"Công nghệ ô tô"
+  },
+  {
+    "courseId":"TR4089",
+    "name":"Điều khiển tự động trên ô tô"
+  },
+  {
+    "courseId":"TR4091",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"TR4093",
+    "name":"Đồ án chuyên ngành (kttt)"
+  },
+  {
+    "courseId":"TR4317",
+    "name":"Luận văn tốt nghiệp (ô tô)"
+  },
+  {
+    "courseId":"TR4321",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"TR4347",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"TR4357",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"TR4367",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"TR4377",
+    "name":"Đồ án tốt nghiệp"
+  },
+  {
+    "courseId":"TR5001",
+    "name":"Đồ án chuyên ngành"
+  },
+  {
+    "courseId":"TR5003",
+    "name":"Chuyên đề công nghiệp (PBL)"
+  },
+  {
+    "courseId":"TR5009",
+    "name":"Điều khiển tự động trên ô tô nâng cao"
+  },
+  {
+    "courseId":"TR5017",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"TR5021",
+    "name":"Kỹ thuật thiết kế phương tiện GTVT hiện đại"
+  },
+  {
+    "courseId":"TR5023",
+    "name":"Phương pháp tính toán số cho kết cấu phương tiện"
+  },
+  {
+    "courseId":"TR5025",
+    "name":"Phương pháp thực nghiệm trong nghiên cứu và phát triển PTVT"
+  },
+  {
+    "courseId":"TR5027",
+    "name":"Năng lượng mới và nhiên liệu thay thế"
+  },
+  {
+    "courseId":"TR5063",
+    "name":"Khí động lực học ứng dụng"
+  },
+  {
+    "courseId":"TR5065",
+    "name":"Động lực học và điều khiển bay nâng cao"
+  },
+  {
+    "courseId":"TR5067",
+    "name":"Kết cấu hàng không chuyên sâu"
+  },
+  {
+    "courseId":"TR5069",
+    "name":"Động cơ tua bin khí"
+  },
+  {
+    "courseId":"TR5085",
+    "name":"Đồ án Kỹ thuật Hàng không"
+  },
+  {
+    "courseId":"TR5087",
+    "name":"Chuyên đề Công nghiệp"
+  },
+  {
+    "courseId":"TR5089",
+    "name":"Cơ học Kết cấu"
+  },
+  {
+    "courseId":"TR5091",
+    "name":"Động lực học hệ thống cơ khí"
+  },
+  {
+    "courseId":"TR5093",
+    "name":"Cơ học thủy khí"
+  },
+  {
+    "courseId":"TR5095",
+    "name":"Cơ sở điều khiển tự động"
+  },
+  {
+    "courseId":"TR5097",
+    "name":"Thực tập"
+  },
+  {
+    "courseId":"TR5101",
+    "name":"Thực tập 1"
+  },
+  {
+    "courseId":"TR5103",
+    "name":"Thực tập 2"
+  },
+  {
+    "courseId":"AS1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"AS1003",
+    "name":"Cơ lý thuyết"
+  },
+  {
+    "courseId":"AS2001",
+    "name":"Cơ học ứng dụng"
+  },
+  {
+    "courseId":"AS2003",
+    "name":"Kỹ thuật lập trình CKT"
+  },
+  {
+    "courseId":"AS2039",
+    "name":"Cơ sở vật lý hạt nhân và ứng dụng"
+  },
+  {
+    "courseId":"AS2049",
+    "name":"Cơ học vật rắn và sóng cơ"
+  },
+  {
+    "courseId":"AS2059",
+    "name":"Quang học Kỹ thuật và ứng dụng"
+  },
+  {
+    "courseId":"AS2063",
+    "name":"Lập trình tính toán ckt"
+  },
+  {
+    "courseId":"AS2071",
+    "name":"Cơ học kỹ thuật"
+  },
+  {
+    "courseId":"AS3013",
+    "name":"Tính toán kết cấu"
+  },
+  {
+    "courseId":"AS3015",
+    "name":"Phương pháp phần tử hữu hạn ckt"
+  },
+  {
+    "courseId":"AS3029",
+    "name":"Lý thuyết dẻo kỹ thuật"
+  },
+  {
+    "courseId":"AS3031",
+    "name":"Đo lường các đại lượng pđ"
+  },
+  {
+    "courseId":"AS3035",
+    "name":"T\/toán động lực học lưu chất"
+  },
+  {
+    "courseId":"AS3055",
+    "name":"Xử lý hình ảnh y sinh bằng kts"
+  },
+  {
+    "courseId":"AS3061",
+    "name":"Dao động cơ sở"
+  },
+  {
+    "courseId":"AS3075",
+    "name":"Cơ sở về laser và ứng dụng"
+  },
+  {
+    "courseId":"AS3097",
+    "name":"Ứng xử cơ học của vật liệu"
+  },
+  {
+    "courseId":"AS3103",
+    "name":"Kỹ thuật thiết bị y học-tn"
+  },
+  {
+    "courseId":"AS3147",
+    "name":"Cơ học vật rắn biến dạng"
+  },
+  {
+    "courseId":"AS3169",
+    "name":"Thiết kế kỹ thuật"
+  },
+  {
+    "courseId":"CH1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"CH1003",
+    "name":"Hóa đại cương"
+  },
+  {
+    "courseId":"CH2009",
+    "name":"Hóa phân tích"
+  },
+  {
+    "courseId":"CH2013",
+    "name":"Hóa vô cơ"
+  },
+  {
+    "courseId":"CH2021",
+    "name":"Hóa hữu cơ"
+  },
+  {
+    "courseId":"CH2027",
+    "name":"Sinh học đại cương"
+  },
+  {
+    "courseId":"CH3003",
+    "name":"Vi sinh vật"
+  },
+  {
+    "courseId":"CH3021",
+    "name":"Công nghệ protein - enzyme"
+  },
+  {
+    "courseId":"CH3049",
+    "name":"Phân tích cảm quan thực phẩm"
+  },
+  {
+    "courseId":"CH3131",
+    "name":"Công nghệ gen"
+  },
+  {
+    "courseId":"CH3351",
+    "name":"Sinh học tế bào"
+  },
+  {
+    "courseId":"CH3399",
+    "name":"Công nghệ sản xuất vaccine"
+  },
+  {
+    "courseId":"CH3403",
+    "name":"Phương pháp đánh giá hoạt tính sinh học của các hợp chất tự nhiên"
+  },
+  {
+    "courseId":"CH3429",
+    "name":"Công nghệ sản xuất mỹ phẩm"
+  },
+  {
+    "courseId":"CH4051",
+    "name":"An toàn quá trình"
+  },
+  {
+    "courseId":"CH4107",
+    "name":"Pt sản phẩm thực phẩm mới"
+  },
+  {
+    "courseId":"CH4139",
+    "name":"Công nghệ bào chế và sản xuất dược phẩm"
+  },
+  {
+    "courseId":"CI1003",
+    "name":"Vẽ kỹ thuật"
+  },
+  {
+    "courseId":"CI1007",
+    "name":"Trắc địa đại cương"
+  },
+  {
+    "courseId":"CI1033",
+    "name":"Vẽ kỹ thuật xây dựng"
+  },
+  {
+    "courseId":"CI1055",
+    "name":"thiết kế kiến trúc công nghiệp"
+  },
+  {
+    "courseId":"CI1067",
+    "name":"Vẽ kỹ thuật kiến trúc"
+  },
+  {
+    "courseId":"CI1069",
+    "name":"Khoa học trái đất"
+  },
+  {
+    "courseId":"CI2001",
+    "name":"Sức bền vật liệu"
+  },
+  {
+    "courseId":"CI2003",
+    "name":"Cơ lưu chất"
+  },
+  {
+    "courseId":"CI2007",
+    "name":"Sức bền vật liệu"
+  },
+  {
+    "courseId":"CI2037",
+    "name":"Vật liệu xây dựng"
+  },
+  {
+    "courseId":"CI2043",
+    "name":"Đo vẽ địa hình"
+  },
+  {
+    "courseId":"CI2045",
+    "name":"Hệ thống thông tin địa lý"
+  },
+  {
+    "courseId":"CI2095",
+    "name":"Địa chất công trình"
+  },
+  {
+    "courseId":"CI2099",
+    "name":"Lịch sử kiến trúc và định cư"
+  },
+  {
+    "courseId":"CI2115",
+    "name":"Nguyên lý quy hoạch và tk đô thị"
+  },
+  {
+    "courseId":"CI2135",
+    "name":"Cơ kết cấu"
+  },
+  {
+    "courseId":"CI2137",
+    "name":"Cơ học đất"
+  },
+  {
+    "courseId":"CI2153",
+    "name":"Thủy lực và thủy văn đô thị"
+  },
+  {
+    "courseId":"CI3013",
+    "name":"Thủy văn đô thị"
+  },
+  {
+    "courseId":"CI3025",
+    "name":"Thủy văn công trình"
+  },
+  {
+    "courseId":"CI3057",
+    "name":"Kỹ thuật bê tông"
+  },
+  {
+    "courseId":"CI3061",
+    "name":"Phương pháp phần tử hh"
+  },
+  {
+    "courseId":"CI3067",
+    "name":"Hệ thống định vị toàn cầu"
+  },
+  {
+    "courseId":"CI3145",
+    "name":"Thiết kế kiến trúc nhà ở"
+  },
+  {
+    "courseId":"CI3233",
+    "name":"Cơ kết cấu"
+  },
+  {
+    "courseId":"CI3245",
+    "name":"Kỹ thuật chất kết dính"
+  },
+  {
+    "courseId":"CI3251",
+    "name":"Lý thuyết s\/số và xử lý sl"
+  },
+  {
+    "courseId":"CI3259",
+    "name":"Kỹ thuật địa chính"
+  },
+  {
+    "courseId":"CI3261",
+    "name":"Cơ sở thiết kế công trình cầu"
+  },
+  {
+    "courseId":"CI3263",
+    "name":"Cơ sở thiết kế đường"
+  },
+  {
+    "courseId":"CI3269",
+    "name":"Sức bền vật liệu"
+  },
+  {
+    "courseId":"CI3287",
+    "name":"Nguyên lý thiết kế kiến trúc cảnh quan"
+  },
+  {
+    "courseId":"CI3301",
+    "name":"Đo vẽ địa hình"
+  },
+  {
+    "courseId":"CI4139",
+    "name":"Thiết kế cn sản xuất và lđckbt đúc sẳn"
+  },
+  {
+    "courseId":"CI4143",
+    "name":"Quản lý dự án và kt cảng"
+  },
+  {
+    "courseId":"CI4145",
+    "name":"Cs thi công và khai thác cđ"
+  },
+  {
+    "courseId":"CI4147",
+    "name":"Kỹ thuật t\/công dưới nước"
+  },
+  {
+    "courseId":"CI4153",
+    "name":"Bê tông đặc biệt cho ct"
+  },
+  {
+    "courseId":"CI4159",
+    "name":"Trắc địa công trình"
+  },
+  {
+    "courseId":"CI4163",
+    "name":"Ăn mòn bê tông và btct"
+  },
+  {
+    "courseId":"CI4165",
+    "name":"Hạ tầng c\/tr giao thông"
+  },
+  {
+    "courseId":"CI4197",
+    "name":"Quy hoạch hạ tầng g\/thông"
+  },
+  {
+    "courseId":"CI4205",
+    "name":"Cảm thụ cảnh quan"
+  },
+  {
+    "courseId":"CO1003",
+    "name":"Nhập môn về lập trình"
+  },
+  {
+    "courseId":"CO1005",
+    "name":"Nhập môn điện toán"
+  },
+  {
+    "courseId":"CO1023",
+    "name":"Hệ thống số"
+  },
+  {
+    "courseId":"CO2003",
+    "name":"Cấu trúc dữ liệu và giải thuật"
+  },
+  {
+    "courseId":"CO2007",
+    "name":"Kiến trúc máy tính"
+  },
+  {
+    "courseId":"CO2013",
+    "name":"Hệ cơ sở dữ liệu"
+  },
+  {
+    "courseId":"CO2017",
+    "name":"Hệ điều hành"
+  },
+  {
+    "courseId":"CO2103",
+    "name":"Mạch điện - điện tử"
+  },
+  {
+    "courseId":"CO3009",
+    "name":"Vi xử lý - vi điều khiển"
+  },
+  {
+    "courseId":"CO3033",
+    "name":"Bảo mật hệ thống thông tin"
+  },
+  {
+    "courseId":"CO3037",
+    "name":"Pt ứng dụng internet of things"
+  },
+  {
+    "courseId":"CO3049",
+    "name":"Lập trình web"
+  },
+  {
+    "courseId":"CO3053",
+    "name":"Hệ thống nhúng"
+  },
+  {
+    "courseId":"CO3067",
+    "name":"Tính toán song song"
+  },
+  {
+    "courseId":"CO3069",
+    "name":"Mật mã và an ninh mạng"
+  },
+  {
+    "courseId":"CO3071",
+    "name":"Hệ phân bố"
+  },
+  {
+    "courseId":"CO3083",
+    "name":"Mật mã học và mã hóa tt"
+  },
+  {
+    "courseId":"CO3085",
+    "name":"Xử lý ngôn ngữ tự nhiên"
+  },
+  {
+    "courseId":"CO3093",
+    "name":"Mạng máy tính"
+  },
+  {
+    "courseId":"CO3137",
+    "name":"Dữ liệu lớn"
+  },
+  {
+    "courseId":"CO3143",
+    "name":"Giới thiệu hệ thống trên chip"
+  },
+  {
+    "courseId":"EE1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"EE1005",
+    "name":"Kỹ thuật điện"
+  },
+  {
+    "courseId":"EE1007",
+    "name":"Vật lý bán dẫn"
+  },
+  {
+    "courseId":"EE1009",
+    "name":"Kỹ thuật số"
+  },
+  {
+    "courseId":"EE1025",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"EE1029",
+    "name":"Cơ sở kỹ thuật điện - máy tính"
+  },
+  {
+    "courseId":"EE2003",
+    "name":"Trường điện từ"
+  },
+  {
+    "courseId":"EE2005",
+    "name":"Tín hiệu và hệ thống"
+  },
+  {
+    "courseId":"EE2009",
+    "name":"Hệ thống Máy tính và ngôn ngữ lập trình"
+  },
+  {
+    "courseId":"EE2011",
+    "name":"Kỹ thuật điện - điện tử"
+  },
+  {
+    "courseId":"EE2013",
+    "name":"Vi xử lý"
+  },
+  {
+    "courseId":"EE2015",
+    "name":"Xử lý số tín hiệu"
+  },
+  {
+    "courseId":"EE2017",
+    "name":"Cơ sở kỹ thuật điện"
+  },
+  {
+    "courseId":"EE2019",
+    "name":"Cơ sở điều khiển tự động"
+  },
+  {
+    "courseId":"EE2021",
+    "name":"Cơ sở điện tử công suất"
+  },
+  {
+    "courseId":"EE2031",
+    "name":"Điện - giải tích mạch"
+  },
+  {
+    "courseId":"EE2033",
+    "name":"Giải tích mạch"
+  },
+  {
+    "courseId":"EE2035",
+    "name":"Mạch điện tử"
+  },
+  {
+    "courseId":"EE2039",
+    "name":"Vi xử lý"
+  },
+  {
+    "courseId":"EE2081",
+    "name":"Ngôn ngữ lập trình"
+  },
+  {
+    "courseId":"EE2401",
+    "name":"Vật lý: điện và từ học"
+  },
+  {
+    "courseId":"EE2405",
+    "name":"Xử lý tín hiệu tương tự"
+  },
+  {
+    "courseId":"EE2407",
+    "name":"Nguyên lý tự luận"
+  },
+  {
+    "courseId":"EE2415",
+    "name":"Ht máy tính và ngôn ngữ lập trình"
+  },
+  {
+    "courseId":"EE2417",
+    "name":"Cơ sở máy tính"
+  },
+  {
+    "courseId":"EE2419",
+    "name":"Kỹ thuật số"
+  },
+  {
+    "courseId":"EE3001",
+    "name":"Hệ thống cung cấp điện"
+  },
+  {
+    "courseId":"EE3007",
+    "name":"L\/t điều khiển nâng cao"
+  },
+  {
+    "courseId":"EE3009",
+    "name":"Máy điện"
+  },
+  {
+    "courseId":"EE3013",
+    "name":"Giải tích hệ thống điện"
+  },
+  {
+    "courseId":"EE3017",
+    "name":"Đo lường và điều khiển bằng máy tính"
+  },
+  {
+    "courseId":"EE3019",
+    "name":"Truyền số liệu và mạng"
+  },
+  {
+    "courseId":"EE3027",
+    "name":"Nhà máy điện và trạm biến áp"
+  },
+  {
+    "courseId":"EE3029",
+    "name":"Thiết bị và hệ thống tự động"
+  },
+  {
+    "courseId":"EE3087",
+    "name":"Bảo vệ rơle trong hệ thống điện"
+  },
+  {
+    "courseId":"EE3089",
+    "name":"Kỹ thuật cao áp"
+  },
+  {
+    "courseId":"EE3091",
+    "name":"Vật liệu kỹ thuật điện"
+  },
+  {
+    "courseId":"EE3093",
+    "name":"Vận hành và điều khiển htđ"
+  },
+  {
+    "courseId":"EE3095",
+    "name":"Ổn định hệ thống điện"
+  },
+  {
+    "courseId":"EE3097",
+    "name":"Kỹ thuật an toàn điện"
+  },
+  {
+    "courseId":"EE3099",
+    "name":"Kỹ thuật chiếu sáng"
+  },
+  {
+    "courseId":"EE3189",
+    "name":"Điện tử học t\/t và ứng dụng"
+  },
+  {
+    "courseId":"EE3205",
+    "name":"Mạch điện tử nâng cao"
+  },
+  {
+    "courseId":"EE3403",
+    "name":"Cơ sở hệ thống Điều khiển"
+  },
+  {
+    "courseId":"EE3405",
+    "name":"Mạch công suất và điện cơ"
+  },
+  {
+    "courseId":"EE3411",
+    "name":"Mạch điện tử"
+  },
+  {
+    "courseId":"EE3413",
+    "name":"Vi xử lý"
+  },
+  {
+    "courseId":"EE4055",
+    "name":"Điện tử công suất"
+  },
+  {
+    "courseId":"EE4407",
+    "name":"Tự động hóa công nghiệp"
+  },
+  {
+    "courseId":"EE4441",
+    "name":"Cơ sở người máy (Robot)"
+  },
+  {
+    "courseId":"EE4443",
+    "name":"Điều khiển phi tuyến và tn"
+  },
+  {
+    "courseId":"EN1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"EN2051",
+    "name":"Độc học môi trường"
+  },
+  {
+    "courseId":"EN2065",
+    "name":"Hóa phân tích trong môi trường"
+  },
+  {
+    "courseId":"EN3005",
+    "name":"Kỹ thuật xử lý nước cấp"
+  },
+  {
+    "courseId":"EN3013",
+    "name":"Kỹ thuật xử lý nước thải"
+  },
+  {
+    "courseId":"EN3023",
+    "name":"Kỹ thuật sinh thái"
+  },
+  {
+    "courseId":"EN3039",
+    "name":"Quản lý tài nguyên nước"
+  },
+  {
+    "courseId":"EN3069",
+    "name":"Quản lý chất thải rắn và ctnh"
+  },
+  {
+    "courseId":"EN3207",
+    "name":"Kiểm soát ô nhiễm không khí"
+  },
+  {
+    "courseId":"EN3209",
+    "name":"Mô hình hóa môi trường"
+  },
+  {
+    "courseId":"GE1013",
+    "name":"Khoa học trái đất"
+  },
+  {
+    "courseId":"GE1027",
+    "name":"Khoa học dữ liệu"
+  },
+  {
+    "courseId":"GE2031",
+    "name":"Địa chất thủy văn"
+  },
+  {
+    "courseId":"GE2035",
+    "name":"Đchất kiến trúc và đo vẽ bđđc"
+  },
+  {
+    "courseId":"GE2051",
+    "name":"Cơ sở khoa học đcdk và ndk"
+  },
+  {
+    "courseId":"GE2059",
+    "name":"Địa chất kiến trúc và các ppđc"
+  },
+  {
+    "courseId":"GE2079",
+    "name":"Khoáng vật và thạch học"
+  },
+  {
+    "courseId":"GE4069",
+    "name":"Địa chất động lực Công trình"
+  },
+  {
+    "courseId":"IU1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"IU1005",
+    "name":"Cơ kỹ thuật"
+  },
+  {
+    "courseId":"IU2001",
+    "name":"Cơ học vật liệu"
+  },
+  {
+    "courseId":"IU2003",
+    "name":"Mạch điện"
+  },
+  {
+    "courseId":"IU2011",
+    "name":"Kỹ thuật điện tử"
+  },
+  {
+    "courseId":"IU2031",
+    "name":"Phương pháp số và Kỹ thuật lập trình"
+  },
+  {
+    "courseId":"IU2035",
+    "name":"Kỹ thuật Điện trong Bảo trì"
+  },
+  {
+    "courseId":"IU3011",
+    "name":"Kỹ thuật lập trình PLC"
+  },
+  {
+    "courseId":"IU3017",
+    "name":"Kỹ thuật số"
+  },
+  {
+    "courseId":"IU3057",
+    "name":"Công nghệ cơ khí 1"
+  },
+  {
+    "courseId":"IU3059",
+    "name":"Công nghệ điện"
+  },
+  {
+    "courseId":"IU3061",
+    "name":"Công nghệ cơ khí 2"
+  },
+  {
+    "courseId":"IU3067",
+    "name":"Công nghệ lạnh và điều hòa"
+  },
+  {
+    "courseId":"IU4015",
+    "name":"Công nghệ thủy lực"
+  },
+  {
+    "courseId":"IU4019",
+    "name":"An toàn và môi trường trong bd"
+  },
+  {
+    "courseId":"IU4021",
+    "name":"Kỹ thuật bảo trì"
+  },
+  {
+    "courseId":"IU4025",
+    "name":"Chi phí bảo trì"
+  },
+  {
+    "courseId":"MA1001",
+    "name":"Nhập môn về kỹ thuật"
+  },
+  {
+    "courseId":"MA1003",
+    "name":"Cơ sở khoa học vật liệu"
+  },
+  {
+    "courseId":"MA2007",
+    "name":"Hóa học polyme"
+  },
+  {
+    "courseId":"MA2011",
+    "name":"Điện hóa học"
+  },
+  {
+    "courseId":"MA2015",
+    "name":"Hóa lý polymer"
+  },
+  {
+    "courseId":"MA2033",
+    "name":"Vật lý chất rắn"
+  },
+  {
+    "courseId":"MA2035",
+    "name":"Công nghệ vật liệu"
+  },
+  {
+    "courseId":"MA2037",
+    "name":"Hóa lý - cn vật liệu"
+  },
+  {
+    "courseId":"MA2039",
+    "name":"Hóa hữu cơ - cn vật liệu"
+  },
+  {
+    "courseId":"MA3007",
+    "name":"Phương pháp đánh giá vật liệu"
+  },
+  {
+    "courseId":"MA3011",
+    "name":"Hóa học xúc tác"
+  },
+  {
+    "courseId":"MA3019",
+    "name":"K\/t sản xuất các chất cao phân tử"
+  },
+  {
+    "courseId":"MA3021",
+    "name":"Nguyên lý lò công nghiệp"
+  },
+  {
+    "courseId":"MA3085",
+    "name":"Hóa học và hóa lý silicat"
+  },
+  {
+    "courseId":"MA3089",
+    "name":"Quá trình và thiết bị cơ, nhiệt"
+  },
+  {
+    "courseId":"MA3101",
+    "name":"Truyền nhiệt và truyền khối"
+  },
+  {
+    "courseId":"MA3103",
+    "name":"Kim loại học và nhiệt luyện"
+  },
+  {
+    "courseId":"MA3105",
+    "name":"Luyện kim đen"
+  },
+  {
+    "courseId":"MA3107",
+    "name":"Các pppt và đgvl: tctv, tph, p"
+  },
+  {
+    "courseId":"MA3111",
+    "name":"Vật lý Vật liệu"
+  },
+  {
+    "courseId":"MA3113",
+    "name":"Hóa học vật liệu"
+  },
+  {
+    "courseId":"MA3139",
+    "name":"Vật liệu nano cacbon"
+  },
+  {
+    "courseId":"MA3145",
+    "name":"Các nguồn năng lượng bv"
+  },
+  {
+    "courseId":"MA3151",
+    "name":"Các tính chất vật liệu"
+  },
+  {
+    "courseId":"MA3161",
+    "name":"Khoa học và Công nghệ vật liệu Polyme"
+  },
+  {
+    "courseId":"MA3163",
+    "name":"Công nghệ vật liệu ceramic cn đến nc"
+  },
+  {
+    "courseId":"MA4067",
+    "name":"Kỹ thuật gia công polyme"
+  },
+  {
+    "courseId":"MA4087",
+    "name":"Công nghệ xi-măng, bê tông"
+  },
+  {
+    "courseId":"MA4103",
+    "name":"Luyện kim màu"
+  },
+  {
+    "courseId":"MA4125",
+    "name":"Tạo hình kim loại"
+  },
+  {
+    "courseId":"MA4139",
+    "name":"Kỹ thuật Phân tích hóa lý"
+  },
+  {
+    "courseId":"MA4141",
+    "name":"Công nghệ điện hóa"
+  },
+  {
+    "courseId":"MA4183",
+    "name":"Vật liệu và Công nghệ Bán dẫn"
+  },
+  {
+    "courseId":"MA5023",
+    "name":"Pin: Từ Cổ điển đến Hiện đại"
+  },
+  {
+    "courseId":"ME1015",
+    "name":"Nguyên lý máy"
+  },
+  {
+    "courseId":"ME1021",
+    "name":"Vật lý điện từ"
+  },
+  {
+    "courseId":"ME2003",
+    "name":"Nguyên lý máy"
+  },
+  {
+    "courseId":"ME2005",
+    "name":"Trang bị điện - điện tử trong MCN"
+  },
+  {
+    "courseId":"ME2007",
+    "name":"Chi tiết máy"
+  },
+  {
+    "courseId":"ME2009",
+    "name":"Kỹ thuật điều khiển tự động"
+  },
+  {
+    "courseId":"ME2015",
+    "name":"Vật liệu học và xử lý"
+  },
+  {
+    "courseId":"ME2019",
+    "name":"Môi trường và con người"
+  },
+  {
+    "courseId":"ME2049",
+    "name":"Ứng dụng máy tính trong Cn"
+  },
+  {
+    "courseId":"ME2051",
+    "name":"Vận trù học"
+  },
+  {
+    "courseId":"ME2071",
+    "name":"Các quá trình chế tạo"
+  },
+  {
+    "courseId":"ME2089",
+    "name":"Vẽ kỹ thuật cơ khí"
+  },
+  {
+    "courseId":"ME2091",
+    "name":"Phương pháp số"
+  },
+  {
+    "courseId":"ME2099",
+    "name":"Nhiệt động lực học kỹ thuật"
+  },
+  {
+    "courseId":"ME2103",
+    "name":"Khoa học vật liệu dệt"
+  },
+  {
+    "courseId":"ME2121",
+    "name":"Bơm, quạt, máy nén"
+  },
+  {
+    "courseId":"ME2131",
+    "name":"Vl cơ khí và cn kim loại"
+  },
+  {
+    "courseId":"ME2139",
+    "name":"Thiết kế mặt bằng"
+  },
+  {
+    "courseId":"ME2159",
+    "name":"Kỹ thuật lạnh"
+  },
+  {
+    "courseId":"ME2161",
+    "name":"Truyền nhiệt và tbtd nhiệt"
+  },
+  {
+    "courseId":"ME2167",
+    "name":"CAD - CAM trong dệt may"
+  },
+  {
+    "courseId":"ME2179",
+    "name":"Hệ truyền động điện"
+  },
+  {
+    "courseId":"ME3001",
+    "name":"Kỹ thuật thủy lực và khí nén"
+  },
+  {
+    "courseId":"ME3003",
+    "name":"Dung sai và kỹ thuật đo"
+  },
+  {
+    "courseId":"ME3005",
+    "name":"Thiết kế hệ thống cơ điện tử"
+  },
+  {
+    "courseId":"ME3007",
+    "name":"Vi điều khiển"
+  },
+  {
+    "courseId":"ME3009",
+    "name":"Các quá trình chế tạo"
+  },
+  {
+    "courseId":"ME3011",
+    "name":"Động lực học và điều khiển"
+  },
+  {
+    "courseId":"ME3013",
+    "name":"Hệ thống PLC"
+  },
+  {
+    "courseId":"ME3015",
+    "name":"Kỹ thuật robot"
+  },
+  {
+    "courseId":"ME3021",
+    "name":"Kỹ thuật nâng vận chuyển"
+  },
+  {
+    "courseId":"ME3027",
+    "name":"Mô hình hóa hình học và mp"
+  },
+  {
+    "courseId":"ME3031",
+    "name":"Kỹ thuật chế tạo 1"
+  },
+  {
+    "courseId":"ME3033",
+    "name":"Kỹ thuật chế tạo 2"
+  },
+  {
+    "courseId":"ME3035",
+    "name":"Kỹ thuật lạnh"
+  },
+  {
+    "courseId":"ME3037",
+    "name":"Điều hòa không khí"
+  },
+  {
+    "courseId":"ME3043",
+    "name":"Lò hơi và thiết bị đốt"
+  },
+  {
+    "courseId":"ME3051",
+    "name":"Công nghệ dệt thoi"
+  },
+  {
+    "courseId":"ME3061",
+    "name":"Hóa học thuốc nhuộm"
+  },
+  {
+    "courseId":"ME3067",
+    "name":"Công nghệ nhuộm hoàn tất vải"
+  },
+  {
+    "courseId":"ME3095",
+    "name":"Kỹ thuật trang trí trang phục"
+  },
+  {
+    "courseId":"ME3137",
+    "name":"Thiết kế trang phục 1"
+  },
+  {
+    "courseId":"ME3147",
+    "name":"Truyền nhiệt và tbtd nhiệt"
+  },
+  {
+    "courseId":"ME3153",
+    "name":"Kỹ thuật điều hòa không khí"
+  },
+  {
+    "courseId":"ME3171",
+    "name":"Cấu trúc vải"
+  },
+  {
+    "courseId":"ME3207",
+    "name":"Công nghệ vln và gc khuôn mẫu"
+  },
+  {
+    "courseId":"ME3215",
+    "name":"Tối ưu hóa và quy hoạch tn"
+  },
+  {
+    "courseId":"ME3225",
+    "name":"Kiểm soát và quản lý chất lượng"
+  },
+  {
+    "courseId":"ME3245",
+    "name":"Thang máy"
+  },
+  {
+    "courseId":"ME3281",
+    "name":"Vật liệu học và xử lý"
+  },
+  {
+    "courseId":"ME3283",
+    "name":"Công nghệ sợi 1"
+  },
+  {
+    "courseId":"ME4009",
+    "name":"Động lực học cơ hệ"
+  },
+  {
+    "courseId":"ME4015",
+    "name":"Trung tâm nhiệt điện"
+  },
+  {
+    "courseId":"ME4025",
+    "name":"Quản lý tồn kho trong chung cư"
+  },
+  {
+    "courseId":"ME4063",
+    "name":"Công nghệ 4.0 trong lvck"
+  },
+  {
+    "courseId":"ME4083",
+    "name":"Kỹ thuật đo lường trong nl"
+  },
+  {
+    "courseId":"ME4131",
+    "name":"Kỹ thuật sấy"
+  },
+  {
+    "courseId":"ME4133",
+    "name":"Ht PLC trong robot và tđh"
+  },
+  {
+    "courseId":"ME4135",
+    "name":"Thiết kế hệ thống robot"
+  },
+  {
+    "courseId":"ME4137",
+    "name":"Đlh và đk các hệ thống robot"
+  },
+  {
+    "courseId":"ME4201",
+    "name":"Nhập môn thị giác máy tính"
+  },
+  {
+    "courseId":"ME4217",
+    "name":"Điều khiển các hệ thống servo"
+  },
+  {
+    "courseId":"ME4605",
+    "name":"Hoạch định nguồn lực sản xuất"
+  },
+  {
+    "courseId":"ME4631",
+    "name":"Lean Six Sigma"
+  },
+  {
+    "courseId":"ME5005",
+    "name":"Hệ thống PLC"
+  },
+  {
+    "courseId":"PH1003",
+    "name":"Vật lý 1"
+  },
+  {
+    "courseId":"PH1005",
+    "name":"Vật lý 2"
+  },
+  {
+    "courseId":"PH1009",
+    "name":"Vật lý 1"
+  },
+  {
+    "courseId":"PH2001",
+    "name":"Cơ sở kỹ thuật y sinh"
+  },
+  {
+    "courseId":"PH2003",
+    "name":"Tin học vật lý kỹ thuật"
+  },
+  {
+    "courseId":"PH2005",
+    "name":"Vật lý 2"
+  },
+  {
+    "courseId":"TR1003",
+    "name":"Vẽ kỹ thuật Giao thông"
+  },
+  {
+    "courseId":"TR1005",
+    "name":"Cơ học thủy khí"
+  },
+  {
+    "courseId":"TR2005",
+    "name":"Cơ học vật rắn biến dạng"
+  },
+  {
+    "courseId":"TR2011",
+    "name":"Khí động lực học 1"
+  },
+  {
+    "courseId":"TR2017",
+    "name":"Thiết bị n\/lượng tàu thủy 1"
+  },
+  {
+    "courseId":"TR2033",
+    "name":"Kỹ thuật chế tạo"
+  },
+  {
+    "courseId":"TR2037",
+    "name":"Lý thuyết t\/thủy 1 - tĩnh học"
+  },
+  {
+    "courseId":"TR2039",
+    "name":"Cơ kỹ thuật"
+  },
+  {
+    "courseId":"TR3001",
+    "name":"Cơ học bay"
+  },
+  {
+    "courseId":"TR3011",
+    "name":"Khí động lực học 2"
+  },
+  {
+    "courseId":"TR3017",
+    "name":"Kết cấu và sức bền tàu"
+  },
+  {
+    "courseId":"TR3039",
+    "name":"Ổn định và điều khiển bay"
+  },
+  {
+    "courseId":"TR3061",
+    "name":"Công nghệ đóng tàu và tc sản xuất"
+  },
+  {
+    "courseId":"TR3133",
+    "name":"Động lực học tt và ctnk"
+  },
+  {
+    "courseId":"TR3135",
+    "name":"Phân tích kết cấu máy bay"
+  },
+  {
+    "courseId":"TR3137",
+    "name":"Hệ  thống lực đẩy máy bay"
+  },
+  {
+    "courseId":"TR3143",
+    "name":"Động cơ đốt trong"
+  },
+  {
+    "courseId":"TR3145",
+    "name":"Lý thuyết ô tô"
+  },
+  {
+    "courseId":"TR4001",
+    "name":"Kỹ thuật chẩn đoán và bd đc"
+  },
+  {
+    "courseId":"TR4021",
+    "name":"Kỹ thuật chẩn đoán và bd ô tô"
+  },
+  {
+    "courseId":"TR5005",
+    "name":"Cơ học môi trường liên tục"
+  },
+  {
+    "courseId":"GE1023",
+    "name":"Phân tích dữ liệu trong ngành dk"
+  },
+  {
+    "courseId":"GE1025",
+    "name":"Kt hệ thống và thực tiễn cn"
+  },
+  {
+    "courseId":"GE1029",
+    "name":"Sức khỏe an toàn môi trong"
+  },
+  {
+    "courseId":"GE2021",
+    "name":"Cơ sở thủy địa cơ học"
+  },
+  {
+    "courseId":"GE2023",
+    "name":"Địa chất thủy văn"
+  },
+  {
+    "courseId":"GE2029",
+    "name":"Địa chất môi trường"
+  },
+  {
+    "courseId":"GE2043",
+    "name":"Địa tin học đại cương"
+  },
+  {
+    "courseId":"GE2047",
+    "name":"Tb khai thác tbm và htđktđ"
+  },
+  {
+    "courseId":"GE2061",
+    "name":"Tr\/tích học và nhịp đ\/tầng"
+  },
+  {
+    "courseId":"GE2081",
+    "name":"Địa kỹ thuật"
+  },
+  {
+    "courseId":"GE3037",
+    "name":"TT kt pt các ct của mtđc"
+  },
+  {
+    "courseId":"GE3089",
+    "name":"Khai thác và bảo vệ tài nguyên ndđ"
+  },
+  {
+    "courseId":"GE3145",
+    "name":"Đồ án địa kỹ thuật 2"
+  },
+  {
+    "courseId":"GE3165",
+    "name":"Tr\/tích học và nhịp đ\/tầng"
+  },
+  {
+    "courseId":"GE3167",
+    "name":"Công nghệ xử lý dầu khí"
+  },
+  {
+    "courseId":"GE3175",
+    "name":"Hoàn thiện giếng và kt vỉa"
+  },
+  {
+    "courseId":"GE3179",
+    "name":"Thu gom và vận chuyển dk"
+  },
+  {
+    "courseId":"GE3183",
+    "name":"Đc và tài nguyên dầu khí Việt Nam"
+  },
+  {
+    "courseId":"GE3205",
+    "name":"Cơ học đá dầu khí"
+  },
+  {
+    "courseId":"GE3207",
+    "name":"Cn cb dk pv cho các ncnk"
+  },
+  {
+    "courseId":"GE3213",
+    "name":"Địa thống kê ứng dụng trong ktdk"
+  },
+  {
+    "courseId":"GE3223",
+    "name":"Các quá trình vận chuyển và cbdk"
+  },
+  {
+    "courseId":"GE4033",
+    "name":"Nền móng công trình"
+  },
+  {
+    "courseId":"GE4093",
+    "name":"Phân tích và dự báo ktdk"
+  },
+  {
+    "courseId":"CH4131",
+    "name":"Thiết bị đo lường và điều khiển"
+  },
+  {
+    "courseId":"GE1011",
+    "name":"Địa vật lý đại cương + kt"
+  },
+  {
+    "courseId":"GE1021",
+    "name":"Quản lý dự án tncndk"
+  },
+  {
+    "courseId":"GE2011",
+    "name":"Cơ sở khoa học đ\/c dầu khí"
+  },
+  {
+    "courseId":"GE2033",
+    "name":"T\/thể - k\/vật - thạch học + tt"
+  },
+  {
+    "courseId":"GE2037",
+    "name":"Địa kỹ thuật 1"
+  },
+  {
+    "courseId":"GE2041",
+    "name":"Địa vật lý dầu khí"
+  },
+  {
+    "courseId":"GE2063",
+    "name":"Kỹ thuật khoan dầu khí"
+  },
+  {
+    "courseId":"GE3045",
+    "name":"Pp minh giải tài liệu đc"
+  },
+  {
+    "courseId":"GE3147",
+    "name":"Địa hóa môi trường"
+  },
+  {
+    "courseId":"GE3177",
+    "name":"Pp tìm kiếm thăm dò tldk"
+  },
+  {
+    "courseId":"GE3203",
+    "name":"Ứng dụng GIS và v\/thám trong ql tn"
+  },
+  {
+    "courseId":"CH5427",
+    "name":"Công nghệ điện hóa và các hệ chuyển hoá năng lượng"
+  },
+  {
+    "courseId":"CH5445",
+    "name":"Các phương pháp phân tích cấu trúc hợp chất hữu cơ"
+  },
+  {
+    "courseId":"CH5485",
+    "name":"Độc tố học thực phẩm"
+  },
+  {
+    "courseId":"CH5635",
+    "name":"Các chiến lược thực tiễn trong phân tích định tính và định lượng"
+  },
+  {
+    "courseId":"CH5667",
+    "name":"Tin sinh học"
+  },
+  {
+    "courseId":"CH5719",
+    "name":"Công nghệ lên men hiện đại"
+  },
+  {
+    "courseId":"CH5721",
+    "name":"Công nghiệp công nghệ sinh học"
+  },
+  {
+    "courseId":"CH5723",
+    "name":"Kỹ thuật di truyền vi sinh vật"
+  },
+  {
+    "courseId":"CH5725",
+    "name":"Công nghệ sản xuất protein tái tổ hợp"
+  },
+  {
+    "courseId":"CH5735",
+    "name":"Công nghệ sinh học y dược"
+  },
+  {
+    "courseId":"CH5745",
+    "name":"Những tiến bộ về chế phẩm bổ sung vào thực phẩm"
+  },
+  {
+    "courseId":"GE5099",
+    "name":"Hệ thống khai thác dầu khí tích hợp"
+  },
+  {
+    "courseId":"GE5101",
+    "name":"Đặc trưng hóa vỉa dầu khí nâng cao"
+  },
+  {
+    "courseId":"CI4325",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"MA5037",
+    "name":"Vật liệu sinh học"
+  },
+  {
+    "courseId":"TR4313",
+    "name":"Luận văn tốt nghiệp (ô tô)"
+  },
+  {
+    "courseId":"AS5123",
+    "name":"Xác suất và ứng dụng"
+  },
+  {
+    "courseId":"CI4327",
+    "name":"Luận văn tốt nghiệp (csht)"
+  },
+  {
+    "courseId":"CO4331",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"TR4311",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"AS3343",
+    "name":"Thực tập tốt nghiệp"
+  },
+  {
+    "courseId":"AS4341",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"CI3205",
+    "name":"ĐAMH công trình cảng"
+  },
+  {
+    "courseId":"CI3217",
+    "name":"ĐAMH thi công công trình cảng"
+  },
+  {
+    "courseId":"AS3093",
+    "name":"Phương pháp phần tử hhưd"
+  },
+  {
+    "courseId":"EE5017",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"EE5111",
+    "name":"Quản lý và sử dụng hiệu quả năng lượng"
+  },
+  {
+    "courseId":"EE5135",
+    "name":"Những thách thức trong Hệ thống điện hiện đại"
+  },
+  {
+    "courseId":"EE5145",
+    "name":"Phương pháp tính trong kỹ thuật điện"
+  },
+  {
+    "courseId":"EE5147",
+    "name":"Điện tử công suất trong hệ thống điện gió và mặt trời"
+  },
+  {
+    "courseId":"EE5149",
+    "name":"Lưới điện thông minh"
+  },
+  {
+    "courseId":"EE5183",
+    "name":"Giải tích Hệ thống điện nâng cao"
+  },
+  {
+    "courseId":"EE5185",
+    "name":"Giải tích máy điện nâng cao"
+  },
+  {
+    "courseId":"EE5245",
+    "name":"Tối ưu hoá vận hành hệ thống điện"
+  },
+  {
+    "courseId":"EE5251",
+    "name":"Quy hoạch hệ thống điện"
+  },
+  {
+    "courseId":"EE5299",
+    "name":"Mạng cảm biến vô tuyến"
+  },
+  {
+    "courseId":"EE5319",
+    "name":"Điều khiển phi tuyến"
+  },
+  {
+    "courseId":"EE5321",
+    "name":"Điều khiển tối ưu"
+  },
+  {
+    "courseId":"EE5325",
+    "name":"Mô hình hóa và nhận dạng hệ thống"
+  },
+  {
+    "courseId":"EE5327",
+    "name":"Hệ thống điều khiển thông minh"
+  },
+  {
+    "courseId":"EE5331",
+    "name":"Điều khiển bền vững hệ đa biến"
+  },
+  {
+    "courseId":"EE5335",
+    "name":"Điều khiển quá trình"
+  },
+  {
+    "courseId":"EE5337",
+    "name":"Vi điều khiển và Hệ thống nhúng"
+  },
+  {
+    "courseId":"ME2119",
+    "name":"Thực tập công nhân"
+  },
+  {
+    "courseId":"CI4137",
+    "name":"Thiết kế dự án tốt nghiệp"
+  },
+  {
+    "courseId":"CI3177",
+    "name":"ĐAMH kết cấu bê tông ct 2"
+  },
+  {
+    "courseId":"CI3213",
+    "name":"ĐAMH kết cấu thép"
+  },
+  {
+    "courseId":"CI4127",
+    "name":"ĐAMH tổ chức thi công"
+  },
+  {
+    "courseId":"ME5029",
+    "name":"CAD\/CAM nâng cao"
+  },
+  {
+    "courseId":"CI4345",
+    "name":"Đề cương luận văn tn"
+  },
+  {
+    "courseId":"EE5027",
+    "name":"Luận văn tốt nghiệp"
+  },
+  {
+    "courseId":"EE5105",
+    "name":"Hệ thống điều khiển tích hợp"
+  }
+]
