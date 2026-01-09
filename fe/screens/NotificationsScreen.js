@@ -244,8 +244,10 @@ export default function NotificationsScreen() {
   };
 
   useEffect(() => {
-    loadNotifications();
-  }, []);
+    if (userId) {
+      loadNotifications();
+    }
+  }, [userId]);
 
   if (loading) {
     return (

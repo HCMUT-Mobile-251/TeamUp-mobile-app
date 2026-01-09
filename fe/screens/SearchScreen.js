@@ -87,13 +87,22 @@ export default function SearchScreen({ navigation }) {
     }
   };
 
+  // Debounce search with useEffect
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      handleSearch(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
   const handleSearchChange = (text) => {
     setSearchQuery(text);
-    // Debounce search
-    const timeoutId = setTimeout(() => {
-      handleSearch(text);
-    }, 500);
-    return () => clearTimeout(timeoutId);
   };
 
   const handleTagPress = (tagName) => {

@@ -2,14 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Tag from "./Tag";
 import { colors, radii, shadow } from "../ui/theme";
-
-// Helper function để chuẩn hóa status (giống HomeScreen & ProfileScreen)
-const normalizeStatus = (status) => {
-  if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
-  if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL" || status === "PENDING_APPROVAL") return "PENDING";
-  if (status === "LEFT") return "LEFT";
-  return status;
-};
+import { normalizeStatus } from "../utils/statusUtils";
 
 export default function ProjectCard({
   data,

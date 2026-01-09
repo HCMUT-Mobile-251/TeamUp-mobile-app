@@ -22,6 +22,8 @@ import {
 } from "../src/api/groupService";
 import { searchUsers } from "../src/api/userService"; // Add searchUsers import
 import { AuthContext } from "../App";
+import { normalizeStatus } from "../src/utils/statusUtils";
+
 const MEMBER_STATUS = {
   JOINED: "JOINED",
   WAITING: "WAITING_APPROVAL",   // user xin vào
@@ -298,20 +300,11 @@ const handleLeaveGroup = async () => {
     );
   }
 
-  // Normalize status helper
-  const normalizeStatus = (status) => {
-    if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
-    if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL") return "WAITING_APPROVAL";
-    if (status === "PENDING_APPROVAL") return "PENDING_APPROVAL";
-    if (status === "LEFT") return "LEFT";
-    if (status === "REJECTED") return "REJECTED";
-    return status;
-  };
 
   // Check if user is in the group
   const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
   const isUserInGroup = !!userMember && normalizeStatus(userMember.status) === "JOINED";
-  const isWaitingApproval = !!userMember && normalizeStatus(userMember.status) === "WAITING_APPROVAL";
+  const isWaitingApproval = !!userMember && normalizeStatus(userMember.status) === "PENDING";
   const isLeader = group.leaderId?.userId === userId;
 
   // Count members: JOINED members + leader (if leader is not in groupMembers)
@@ -399,7 +392,7 @@ const handleLeaveGroup = async () => {
               </Text>
             )}
           </View>
-          {member.status === "PENDING" && isLeader && (
+          {normalizeStatus(member.status) === "PENDING" && isLeader && (
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => handleApproveRequest(member.user?.userId)}

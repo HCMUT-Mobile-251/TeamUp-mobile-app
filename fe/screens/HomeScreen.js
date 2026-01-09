@@ -8,6 +8,7 @@ import ErrorMessage from "../src/components/ErrorMessage";
 import { colors, radii } from "../src/ui/theme";
 import { useUser } from "../src/hooks";
 import { AuthContext } from "../App";
+import { normalizeStatus } from "../src/utils/statusUtils";
 
 export default function HomeScreen({ navigation, route }) {
   const { userId } = useContext(AuthContext);
@@ -40,14 +41,8 @@ export default function HomeScreen({ navigation, route }) {
       console.log("HomeScreen Groups Debug:", userData.groups.map(g => ({ id: g.group?.groupId, status: g.status })));
     }
   }, [userData]);
-const normalizeStatus = (status) => {
-  // Handle both Vietnamese and English status
-  if (status === "Đã tham gia!" || status === "JOINED") return "JOINED";
-  if (status === "Chờ được chấp nhận!" || status === "WAITING_APPROVAL" || status === "PENDING_APPROVAL") return "PENDING";
-  if (status === "LEFT") return "LEFT";
-  return status; // Return original status if not matched
-};
-const groups = userData?.groups
+
+  const groups = userData?.groups
   ?.filter(gm => normalizeStatus(gm.status) === "JOINED")
   ?.map(gm => ({
     ...gm.group,
