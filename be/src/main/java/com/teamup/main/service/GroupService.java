@@ -85,7 +85,7 @@ public class GroupService {
         LocalDate today = LocalDate.now();
         int year = Integer.parseInt(String.valueOf(today.getYear()).substring(1));
         int semester = (today.getMonthValue() > 4) ? ((today.getMonthValue() > 8) ? 1 : 3) : 2;
-
+        year = year - ((semester != 1) ? 1 : 0);
         return year * 10 + semester;
     }
 
