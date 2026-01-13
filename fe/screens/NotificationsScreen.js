@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
   Text,
@@ -8,7 +9,6 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import Screen from "../src/ui/Screen";
 import { colors, radii, shadow } from "../src/ui/theme";
 import {
   getNotificationsByUserId,
@@ -18,9 +18,7 @@ import { acceptJoinRequest, rejectJoinRequest } from "../src/api/groupService";
 import { AuthContext } from "../App";
 
 /* ====================== CARD ====================== */
-
 function NotificationCard({ notification, onAction, currentUserId }) {
-  // Thêm currentUserId prop
   const [actionLoading, setActionLoading] = useState(false);
 
   const { user, group, time, status, id } = notification;
@@ -28,13 +26,12 @@ function NotificationCard({ notification, onAction, currentUserId }) {
   const isInvite = status === "PENDING_APPROVAL"; // user được mời
   const isRequest = status === "WAITING_APPROVAL"; // leader nhận request
 
-  // userId của người cần được accept/reject
-  // - PENDING_APPROVAL: currentUserId (user được mời)
-  // - WAITING_APPROVAL: id.firstId (user gửi request)
-  // const targetUserId = isInvite ? currentUserId : notification.user.userId;
-  const groupId = group?.groupId ?? id?.secondId ?? id; // fallback
-  const targetUserId =
-    user?.userId ?? id?.firstId ?? (isInvite ? currentUserId : undefined);
+  // target userId:
+  // - invite: currentUserId
+  // - request: người gửi request = id.firstId (theo PairId(userId, groupId))
+  const targetUserId = isInvite ? currentUserId : id?.firstId;
+
+  const groupId = group?.groupId ?? id?.secondId;
 
   let title = "Thông báo";
   let content = "";
@@ -55,7 +52,6 @@ function NotificationCard({ notification, onAction, currentUserId }) {
     return d.toLocaleDateString("vi-VN");
   };
 
-  /* ========== ACCEPT ========== */
   const handleAccept = async () => {
     Alert.alert(
       "Xác nhận",
@@ -69,22 +65,13 @@ function NotificationCard({ notification, onAction, currentUserId }) {
           onPress: async () => {
             setActionLoading(true);
             try {
-              if (!groupId || !targetUserId) {
-                console.log("NOTI_DEBUG", notification);
-                Alert.alert(
-                  "Thiếu dữ liệu",
-                  "Notification thiếu groupId/userId."
-                );
-                return;
-              }
-              // const res = await acceptJoinRequest(group.groupId, targetUserId);
               const res = await acceptJoinRequest(groupId, targetUserId);
 
-              if (res?.code === 200) {
+              if (res?.data?.code === 200) {
                 Alert.alert("Thành công", "Đã xử lý thành công");
                 onAction();
               } else {
-                Alert.alert("Lỗi", res?.message || "Không thể xử lý");
+                Alert.alert("Lỗi", res?.data?.message || "Không thể xử lý");
               }
             } catch (error) {
               console.error("Accept error:", error);
@@ -101,7 +88,6 @@ function NotificationCard({ notification, onAction, currentUserId }) {
     );
   };
 
-  /* ========== REJECT ========== */
   const handleReject = async () => {
     Alert.alert("Xác nhận", "Bạn có chắc muốn từ chối?", [
       { text: "Hủy", style: "cancel" },
@@ -111,22 +97,13 @@ function NotificationCard({ notification, onAction, currentUserId }) {
         onPress: async () => {
           setActionLoading(true);
           try {
-            if (!groupId || !targetUserId) {
-              console.log("NOTI_DEBUG", notification);
-              Alert.alert(
-                "Thiếu dữ liệu",
-                "Notification thiếu groupId/userId."
-              );
-              return;
-            }
-            // const res = await rejectJoinRequest(group.groupId, targetUserId);
             const res = await rejectJoinRequest(groupId, targetUserId);
 
-            if (res?.code === 200) {
+            if (res?.data?.code === 200) {
               Alert.alert("Thành công", "Đã từ chối");
               onAction();
             } else {
-              Alert.alert("Lỗi", res?.message || "Không thể từ chối");
+              Alert.alert("Lỗi", res?.data?.message || "Không thể từ chối");
             }
           } catch (error) {
             console.error("Reject error:", error);
@@ -142,13 +119,11 @@ function NotificationCard({ notification, onAction, currentUserId }) {
     ]);
   };
 
-  /* ========== DELETE NOTI ========== */
   const handleDelete = async () => {
     try {
-      // Sử dụng id.firstId và id.secondId từ notification
       await deleteNotification({
-        firstId: notification.user.userId || targetUserId,
-        secondId: id?.secondId || group?.groupId,
+        firstId: id?.firstId,
+        secondId: id?.secondId,
       });
       onAction();
     } catch (error) {
@@ -242,7 +217,6 @@ function NotificationCard({ notification, onAction, currentUserId }) {
 }
 
 /* ====================== SCREEN ====================== */
-
 export default function NotificationsScreen() {
   const { userId } = useContext(AuthContext);
 
@@ -253,39 +227,20 @@ export default function NotificationsScreen() {
   const loadNotifications = async () => {
     try {
       const res = await getNotificationsByUserId(userId);
-      if (res.code === 200) {
-        // setNotifications(
-        //   (res.result || []).filter(
-        //     (n) =>
-        //       n.status === "WAITING_APPROVAL" || n.status === "PENDING_APPROVAL"
-        //   )
-        // );
+
+      if (res?.code === 200) {
         const list = res.result || [];
+
+        // KHÔNG LƯU LỊCH SỬ: chỉ show pending + waiting theo đúng người
         const filtered = list.filter((n) => {
           if (n.status === "WAITING_APPROVAL") {
             return n.group?.leaderId?.userId === userId; // leader mới thấy
           }
           if (n.status === "PENDING_APPROVAL") {
-            return n.user?.userId === userId; // người được mời mới thấy
+            return n.user?.userId === userId; // user được mời mới thấy
           }
           return false;
         });
-        // const filtered = list.filter((n) => {
-        //   if (n.status === "WAITING_APPROVAL") {
-        //     return n.group?.leaderId?.userId === userId;
-        //   }
-
-        //   // User thấy lời mời + kết quả duyệt
-        //   if (
-        //     n.status === "PENDING_APPROVAL"
-        //     || n.status === "JOINED"
-        //     || n.status === "REJECTED"
-        //   ) {
-        //     return n.user?.userId === userId;
-        //   }
-
-        //   return false;
-        // });
 
         setNotifications(filtered);
       }
@@ -297,6 +252,12 @@ export default function NotificationsScreen() {
     }
   };
 
+  const handleRefresh = () => {
+    console.log("PULL REFRESH TRIGGERED", Date.now());
+    setRefreshing(true);
+    loadNotifications();
+  };
+
   useEffect(() => {
     if (userId) {
       loadNotifications();
@@ -305,13 +266,12 @@ export default function NotificationsScreen() {
 
   if (loading) {
     return (
-      <Screen>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <ActivityIndicator size="large" color={colors.primary} />
-      </Screen>
+      </View>
     );
   }
 
-  // Phân loại notifications theo loại
   const invitations = notifications.filter(
     (n) => n.status === "PENDING_APPROVAL"
   );
@@ -320,16 +280,22 @@ export default function NotificationsScreen() {
   );
 
   return (
-    <Screen>
+    // <SafeAreaView style={{ flex: 1 }} edges={["top"]}></SafeAreaView>
+    <View style={{ flex: 1 }}>
       <ScrollView
+        style={{ flex: 1 }}
+        alwaysBounceVertical
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingHorizontal: 16,
+          paddingBottom: 16,
+          paddingTop: 48,
+        }}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={loadNotifications}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       >
-        {/* Header với badge tổng số thông báo */}
+        {/* Header */}
         <View
           style={{
             flexDirection: "row",
@@ -357,7 +323,7 @@ export default function NotificationsScreen() {
 
         {notifications.length > 0 ? (
           <>
-            {/* Section: Lời mời tham gia */}
+            {/* Section: Invitations */}
             {invitations.length > 0 && (
               <View style={{ marginBottom: 20 }}>
                 <View
@@ -395,6 +361,7 @@ export default function NotificationsScreen() {
                     </Text>
                   </View>
                 </View>
+
                 {invitations.map((n, i) => (
                   <NotificationCard
                     key={`invite-${i}`}
@@ -406,7 +373,7 @@ export default function NotificationsScreen() {
               </View>
             )}
 
-            {/* Section: Yêu cầu vào nhóm */}
+            {/* Section: Join Requests */}
             {joinRequests.length > 0 && (
               <View style={{ marginBottom: 20 }}>
                 <View
@@ -444,6 +411,7 @@ export default function NotificationsScreen() {
                     </Text>
                   </View>
                 </View>
+
                 {joinRequests.map((n, i) => (
                   <NotificationCard
                     key={`request-${i}`}
@@ -482,6 +450,6 @@ export default function NotificationsScreen() {
           </View>
         )}
       </ScrollView>
-    </Screen>
+    </View>
   );
 }

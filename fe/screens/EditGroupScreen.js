@@ -11,9 +11,57 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+// import { KeyboardAvoidingView, Platform } from "react-native";
+
 import { colors, radii } from "../src/ui/theme";
 import { updateGroup, updateGroupTags } from "../src/api/groupService";
 import { searchTags, createTag } from "../src/api/tagService";
+
+const InputField = React.memo(
+  ({
+    label,
+    value,
+    onChangeText,
+    placeholder,
+    multiline = false,
+    keyboardType = "default",
+    editable = true,
+  }) => (
+    <View style={{ marginBottom: 16 }}>
+      <Text
+        style={{
+          marginBottom: 8,
+          fontSize: 14,
+          fontWeight: "600",
+          color: "#333",
+        }}
+      >
+        {label}
+      </Text>
+      <TextInput
+        style={{
+          borderWidth: 1,
+          borderColor: "#E2E8F0",
+          borderRadius: radii.md,
+          paddingHorizontal: 12,
+          paddingVertical: multiline ? 12 : 14,
+          fontSize: 15,
+          backgroundColor: "#fff",
+          color: colors.text,
+          minHeight: multiline ? 100 : undefined,
+          textAlignVertical: multiline ? "top" : "center",
+        }}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        placeholderTextColor="#94A3B8"
+        multiline={multiline}
+        keyboardType={keyboardType}
+        editable={editable}
+      />
+    </View>
+  )
+);
 
 export default function EditGroupScreen({ route, navigation }) {
   const { groupId, group } = route.params;
@@ -37,7 +85,7 @@ export default function EditGroupScreen({ route, navigation }) {
   // Initialize selected tags from group data
   useEffect(() => {
     if (group?.groupTags) {
-      const tags = group.groupTags.map(gt => gt.tag || gt);
+      const tags = group.groupTags.map((gt) => gt.tag || gt);
       setSelectedTags(tags.filter(Boolean));
     }
   }, [group]);
@@ -162,7 +210,7 @@ export default function EditGroupScreen({ route, navigation }) {
               // Navigate back to home and trigger refresh
               navigation.navigate("Tabs", {
                 screen: "Home",
-                params: { refresh: true }
+                params: { refresh: true },
               });
             },
           },
@@ -178,47 +226,27 @@ export default function EditGroupScreen({ route, navigation }) {
     }
   };
 
-  const InputField = ({ label, value, onChangeText, placeholder, multiline = false, keyboardType = "default" }) => (
-    <View style={{ marginBottom: 16 }}>
-      <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: "600", color: "#333" }}>
-        {label}
-      </Text>
-      <TextInput
-        style={{
-          borderWidth: 1,
-          borderColor: "#E2E8F0",
-          borderRadius: radii.md,
-          paddingHorizontal: 12,
-          paddingVertical: multiline ? 12 : 14,
-          fontSize: 15,
-          backgroundColor: "#fff",
-          color: colors.text,
-          minHeight: multiline ? 100 : undefined,
-          textAlignVertical: multiline ? "top" : "center",
-        }}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor="#94A3B8"
-        multiline={multiline}
-        keyboardType={keyboardType}
-        editable={!loading}
-      />
-    </View>
-  );
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
         style={{ flex: 1 }}
       >
         <ScrollView
           contentContainerStyle={{ padding: 16 }}
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps="always"
+          // contentContainerStyle={{ paddingBottom: 140 }}
         >
-          <Text style={{ fontSize: 24, fontWeight: "900", marginBottom: 20, color: colors.text }}>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "900",
+              marginBottom: 20,
+              color: colors.text,
+            }}
+          >
             Chỉnh sửa nhóm
           </Text>
 
@@ -227,6 +255,7 @@ export default function EditGroupScreen({ route, navigation }) {
             value={formData.name}
             onChangeText={(value) => handleInputChange("name", value)}
             placeholder="Nhập tên nhóm"
+            editable={!loading}
           />
 
           <InputField
@@ -234,6 +263,7 @@ export default function EditGroupScreen({ route, navigation }) {
             value={formData.topicName}
             onChangeText={(value) => handleInputChange("topicName", value)}
             placeholder="Nhập tên đề tài"
+            editable={!loading}
           />
 
           <InputField
@@ -241,6 +271,7 @@ export default function EditGroupScreen({ route, navigation }) {
             value={formData.groupClass}
             onChangeText={(value) => handleInputChange("groupClass", value)}
             placeholder="Ví dụ: CC01"
+            editable={!loading}
           />
 
           <InputField
@@ -249,6 +280,7 @@ export default function EditGroupScreen({ route, navigation }) {
             onChangeText={(value) => handleInputChange("maxMembers", value)}
             placeholder="1-10"
             keyboardType="numeric"
+            editable={!loading}
           />
 
           <InputField
@@ -257,17 +289,31 @@ export default function EditGroupScreen({ route, navigation }) {
             onChangeText={(value) => handleInputChange("description", value)}
             placeholder="Mô tả chi tiết về đề tài..."
             multiline
+            editable={!loading}
           />
 
           {/* Tag Selection */}
           <View style={{ marginBottom: 16 }}>
-            <Text style={{ marginBottom: 8, fontSize: 14, fontWeight: "600", color: "#333" }}>
+            <Text
+              style={{
+                marginBottom: 8,
+                fontSize: 14,
+                fontWeight: "600",
+                color: "#333",
+              }}
+            >
               Tags liên quan
             </Text>
 
             {/* Selected Tags */}
             {selectedTags.length > 0 && (
-              <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 8 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginBottom: 8,
+                }}
+              >
                 {selectedTags.map((tag) => (
                   <View
                     key={tag.tagId}
@@ -282,11 +328,23 @@ export default function EditGroupScreen({ route, navigation }) {
                       marginBottom: 8,
                     }}
                   >
-                    <Text style={{ color: "#fff", fontSize: 13, marginRight: 6 }}>
+                    <Text
+                      style={{ color: "#fff", fontSize: 13, marginRight: 6 }}
+                    >
                       {tag.name}
                     </Text>
-                    <TouchableOpacity onPress={() => handleRemoveTag(tag.tagId)}>
-                      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>×</Text>
+                    <TouchableOpacity
+                      onPress={() => handleRemoveTag(tag.tagId)}
+                    >
+                      <Text
+                        style={{
+                          color: "#fff",
+                          fontSize: 16,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        ×
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 ))}
@@ -360,7 +418,13 @@ export default function EditGroupScreen({ route, navigation }) {
                 }}
                 onPress={handleCreateNewTag}
               >
-                <Text style={{ color: colors.primary, textAlign: "center", fontWeight: "600" }}>
+                <Text
+                  style={{
+                    color: colors.primary,
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
                   + Tạo tag mới "{tagSearchQuery}"
                 </Text>
               </TouchableOpacity>
@@ -381,7 +445,14 @@ export default function EditGroupScreen({ route, navigation }) {
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+                <Text
+                  style={{
+                    color: "#fff",
+                    textAlign: "center",
+                    fontWeight: "800",
+                    fontSize: 16,
+                  }}
+                >
                   Lưu thay đổi
                 </Text>
               )}
@@ -396,7 +467,14 @@ export default function EditGroupScreen({ route, navigation }) {
               onPress={() => navigation.goBack()}
               disabled={loading}
             >
-              <Text style={{ color: colors.text, textAlign: "center", fontWeight: "800", fontSize: 16 }}>
+              <Text
+                style={{
+                  color: colors.text,
+                  textAlign: "center",
+                  fontWeight: "800",
+                  fontSize: 16,
+                }}
+              >
                 Hủy
               </Text>
             </TouchableOpacity>

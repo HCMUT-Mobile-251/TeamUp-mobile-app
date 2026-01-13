@@ -38,17 +38,21 @@ export default function HomeScreen({ navigation, route }) {
 
   useEffect(() => {
     if (userData?.groups) {
-      console.log("HomeScreen Groups Debug:", userData.groups.map(g => ({ id: g.group?.groupId, status: g.status })));
+      console.log(
+        "HomeScreen Groups Debug:",
+        userData.groups.map((g) => ({ id: g.group?.groupId, status: g.status }))
+      );
     }
   }, [userData]);
 
-  const groups = userData?.groups
-  ?.filter(gm => normalizeStatus(gm.status) === "JOINED")
-  ?.map(gm => ({
-    ...gm.group,
-    memberStatus: normalizeStatus(gm.status),
-    joinTime: gm.time
-  })) || [];
+  const groups =
+    userData?.groups
+      ?.filter((gm) => normalizeStatus(gm.status) === "JOINED")
+      ?.map((gm) => ({
+        ...gm.group,
+        memberStatus: normalizeStatus(gm.status),
+        joinTime: gm.time,
+      })) || [];
   // Loading state
   if (loading) {
     return <LoadingSpinner message="Đang tải danh sách nhóm..." />;
@@ -90,8 +94,11 @@ export default function HomeScreen({ navigation, route }) {
           <ProjectCard
             key={group.groupId || group.id}
             data={group}
+            currentUserId={userId}
             onPress={() =>
-              navigation.navigate("GroupInfo", { groupId: group.groupId || group.id })
+              navigation.navigate("GroupInfo", {
+                groupId: group.groupId || group.id,
+              })
             }
           />
         ))

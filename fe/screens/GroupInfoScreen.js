@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for close button
 import { colors, radii } from "../src/ui/theme";
+import { updateGroup } from "../src/api/groupService";
 import {
   getGroupById,
   sendJoinRequest,
@@ -174,7 +175,62 @@ export default function GroupInfoScreen({ route, navigation }) {
     ]);
   };
 
+  // const handleTransferLeadership = async (newLeaderId) => {
+  //   console.log("CLICK TRANSFER BUTTON", newLeaderId);
+
+  //   Alert.alert(
+  //     "Xác nhận chuyển quyền",
+  //     "Bạn có chắc chắn muốn chuyển quyền leader cho thành viên này? Sau khi chuyển, bạn có thể rời nhóm.",
+  //     [
+  //       { text: "Hủy", style: "cancel" },
+  //       {
+  //         text: "Chuyển quyền",
+  //         onPress: async () => {
+  //           console.log("CONFIRMED TRANSFER", {
+  //             groupId,
+  //             newLeaderId,
+  //             courseId: group?.course?.courseId,
+  //           });
+  //           setActionLoading(true);
+  //           try {
+  //             // const response = await transferLeadership(groupId, newLeaderId);
+  //             const response = await transferLeadership(
+  //               groupId,
+  //               newLeaderId,
+  //               group?.course?.courseId
+  //             );
+
+  //             console.log("TRANSFER RESPONSE", newLeaderId);
+
+  //             if (response.code === 200) {
+  //               Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
+  //               setTransferModalVisible(false);
+  //               setSelectedNewLeader(null);
+  //               loadGroupInfo(); // Reload to see updated leader
+  //             } else {
+  //               Alert.alert(
+  //                 "Lỗi",
+  //                 response.message || "Không thể chuyển quyền leader"
+  //               );
+  //             }
+  //           } catch (error) {
+  //             console.error("Transfer leadership error:", error);
+  //             Alert.alert(
+  //               "Lỗi",
+  //               error.response?.data?.message ||
+  //                 "Có lỗi xảy ra khi chuyển quyền"
+  //             );
+  //           } finally {
+  //             setActionLoading(false);
+  //           }
+  //         },
+  //       },
+  //     ]
+  //   );
+  // };
   const handleTransferLeadership = async (newLeaderId) => {
+    console.log("CLICK TRANSFER BUTTON", newLeaderId);
+
     Alert.alert(
       "Xác nhận chuyển quyền",
       "Bạn có chắc chắn muốn chuyển quyền leader cho thành viên này? Sau khi chuyển, bạn có thể rời nhóm.",
@@ -183,25 +239,48 @@ export default function GroupInfoScreen({ route, navigation }) {
         {
           text: "Chuyển quyền",
           onPress: async () => {
+            console.log("CONFIRMED TRANSFER", {
+              groupId,
+              newLeaderId,
+              courseId: group?.course?.courseId,
+            });
+
+            // ⚠️ payload đầy đủ để qua @Valid (quan trọng)
+            const payload = {
+              groupId, // bắt buộc
+              leaderId: newLeaderId, // leader mới
+              courseId: group?.course?.courseId, // bắt buộc vì BE setCourse()
+              name: group?.name,
+              topicName: group?.topicName,
+              description: group?.description,
+              maxMembers: group?.maxMembers,
+              groupClass: group?.groupClass,
+            };
+
             setActionLoading(true);
             try {
-              const response = await transferLeadership(groupId, newLeaderId);
-              if (response.code === 200) {
+              const res = await updateGroup(groupId, payload);
+              console.log("TRANSFER RESPONSE", res);
+
+              if (res?.code === 200) {
                 Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
                 setTransferModalVisible(false);
                 setSelectedNewLeader(null);
-                loadGroupInfo(); // Reload to see updated leader
+                loadGroupInfo();
               } else {
                 Alert.alert(
                   "Lỗi",
-                  response.message || "Không thể chuyển quyền leader"
+                  res?.message || "Không thể chuyển quyền leader"
                 );
               }
             } catch (error) {
-              console.error("Transfer leadership error:", error);
+              console.log(
+                "TRANSFER ERROR DATA",
+                error?.response?.data || error
+              );
               Alert.alert(
                 "Lỗi",
-                error.response?.data?.message ||
+                error?.response?.data?.message ||
                   "Có lỗi xảy ra khi chuyển quyền"
               );
             } finally {
@@ -514,11 +593,13 @@ export default function GroupInfoScreen({ route, navigation }) {
                 </View>
               )}
             </View>
-            
+
             {(isLeader || member.status !== "LEFT") && (
-            <Text style={{ color: colors.subtext, fontSize: 13, marginTop: 2 }}>
-              {member.user?.email}
-            </Text>
+              <Text
+                style={{ color: colors.subtext, fontSize: 13, marginTop: 2 }}
+              >
+                {member.user?.email}
+              </Text>
             )}
             {(isLeader || member.status !== "LEFT") && (
               <Text
@@ -676,7 +757,7 @@ export default function GroupInfoScreen({ route, navigation }) {
       {isUserInGroup || isLeader ? (
         group.groupMembers && group.groupMembers.length > 0 ? (
           group.groupMembers.map((member, index) => (
-            <MemberItem key={index} member={member} group={group}/>
+            <MemberItem key={index} member={member} group={group} />
           ))
         ) : (
           <Text
@@ -1104,7 +1185,7 @@ export default function GroupInfoScreen({ route, navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   setSelectedNewLeader(item.user?.userId);
-                  handleTransferLeadership(item.user?.userId);
+                  // handleTransferLeadership(item.user?.userId);
                 }}
                 style={{
                   flexDirection: "row",
@@ -1152,6 +1233,31 @@ export default function GroupInfoScreen({ route, navigation }) {
               </TouchableOpacity>
             )}
           />
+          <TouchableOpacity
+            style={{
+              backgroundColor: selectedNewLeader ? colors.primary : "#CBD5E1",
+              paddingVertical: 16,
+              borderRadius: radii.md,
+              marginTop: 12,
+            }}
+            disabled={!selectedNewLeader || actionLoading}
+            onPress={() => handleTransferLeadership(selectedNewLeader)}
+          >
+            {actionLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text
+                style={{
+                  color: "#fff",
+                  textAlign: "center",
+                  fontWeight: "800",
+                  fontSize: 16,
+                }}
+              >
+                Xác nhận chuyển quyền
+              </Text>
+            )}
+          </TouchableOpacity>
         </View>
       </Modal>
     </ScrollView>

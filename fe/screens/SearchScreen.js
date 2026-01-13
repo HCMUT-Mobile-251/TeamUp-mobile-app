@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { getUserById } from "../src/api/userService";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import Screen from "../src/ui/Screen";
 import Tag from "../src/components/Tag";
 import ProjectCard from "../src/components/ProjectCard";
@@ -11,6 +19,7 @@ import { AuthContext } from "../App";
 
 export default function SearchScreen({ navigation }) {
   const { userId } = useContext(AuthContext);
+  const [interestTagIds, setInterestTagIds] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [suggestedGroups, setSuggestedGroups] = useState([]);
@@ -18,10 +27,28 @@ export default function SearchScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [tagsLoading, setTagsLoading] = useState(true);
   const [suggestionsLoading, setSuggestionsLoading] = useState(true);
+  const loadInterestTags = async () => {
+    if (!userId) return;
+    try {
+      const res = await getUserById(userId);
+      const ids =
+        res?.result?.userTags
+          ?.map((ut) => ut?.tag?.tagId || ut?.tagId)
+          .filter(Boolean) || [];
+      setInterestTagIds(ids);
+    } catch (e) {
+      console.error(
+        "[SearchScreen] loadInterestTags error:",
+        e?.response?.data || e
+      );
+      setInterestTagIds([]);
+    }
+  };
 
   // Load popular tags and suggested groups on mount
   useEffect(() => {
     loadTags();
+    loadInterestTags();
     loadSuggestedGroups();
   }, [userId]);
 
@@ -30,7 +57,11 @@ export default function SearchScreen({ navigation }) {
       const response = await getAllTags();
       console.log("[SearchScreen] getAllTags response:", response);
       if (response.code === 200) {
-        console.log("[SearchScreen] Tags loaded:", response.result?.length || 0, "tags");
+        console.log(
+          "[SearchScreen] Tags loaded:",
+          response.result?.length || 0,
+          "tags"
+        );
         setTags(response.result || []);
       } else {
         console.log("[SearchScreen] Unexpected response code:", response.code);
@@ -52,7 +83,11 @@ export default function SearchScreen({ navigation }) {
       const response = await getSuggestedGroups(userId, 0, 10);
       console.log("[SearchScreen] getSuggestedGroups response:", response);
       if (response.code === 200) {
-        console.log("[SearchScreen] Suggested groups loaded:", response.result?.content?.length || 0, "groups");
+        console.log(
+          "[SearchScreen] Suggested groups loaded:",
+          response.result?.content?.length || 0,
+          "groups"
+        );
         setSuggestedGroups(response.result?.content || []);
       } else {
         console.log("[SearchScreen] Unexpected response code:", response.code);
@@ -77,7 +112,18 @@ export default function SearchScreen({ navigation }) {
     try {
       const response = await searchNormal(query, userId);
       if (response.code === 200) {
-        setSearchResults(response.result || []);
+        // setSearchResults(response.result || []);
+        const groups = response.result?.content || [];
+        const filtered = groups.filter((g) => {
+          const groupTagIds =
+            g?.groupTags
+              ?.map((gt) => gt?.tag?.tagId || gt?.id?.secondId)
+              .filter(Boolean) || [];
+          // nếu user chưa chọn tags quan tâm -> không filter
+          if (!interestTagIds?.length) return true;
+          return groupTagIds.some((id) => interestTagIds.includes(id));
+        });
+        setSuggestedGroups(filtered);
       }
     } catch (error) {
       console.error("Search error:", error);
@@ -148,8 +194,12 @@ export default function SearchScreen({ navigation }) {
 
         {/* Tags Section */}
         <View style={{ marginBottom: 20 }}>
-          <Text style={{ fontWeight: "800", marginBottom: 4 }}>Tags phổ biến</Text>
-          <Text style={{ fontSize: 12, color: colors.subtext, marginBottom: 8 }}>
+          <Text style={{ fontWeight: "800", marginBottom: 4 }}>
+            Tags phổ biến
+          </Text>
+          <Text
+            style={{ fontSize: 12, color: colors.subtext, marginBottom: 8 }}
+          >
             Nhấn vào tag để tìm kiếm nhanh
           </Text>
           {tagsLoading ? (
@@ -157,13 +207,22 @@ export default function SearchScreen({ navigation }) {
           ) : tags.length > 0 ? (
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               {tags.slice(0, 12).map((tag) => (
-                <TouchableOpacity key={tag.tagId} onPress={() => handleTagPress(tag.name)}>
+                <TouchableOpacity
+                  key={tag.tagId}
+                  onPress={() => handleTagPress(tag.name)}
+                >
                   <Tag label={tag.name} />
                 </TouchableOpacity>
               ))}
             </View>
           ) : (
-            <Text style={{ fontSize: 13, color: colors.subtext, fontStyle: "italic" }}>
+            <Text
+              style={{
+                fontSize: 13,
+                color: colors.subtext,
+                fontStyle: "italic",
+              }}
+            >
               Chưa có tags phổ biến
             </Text>
           )}
@@ -221,7 +280,14 @@ export default function SearchScreen({ navigation }) {
                 <Text style={{ color: colors.subtext, fontSize: 16 }}>
                   Chưa có gợi ý phù hợp
                 </Text>
-                <Text style={{ color: colors.subtext, fontSize: 14, marginTop: 8, textAlign: "center" }}>
+                <Text
+                  style={{
+                    color: colors.subtext,
+                    fontSize: 14,
+                    marginTop: 8,
+                    textAlign: "center",
+                  }}
+                >
                   Nhập từ khóa để tìm kiếm nhóm
                 </Text>
               </View>
