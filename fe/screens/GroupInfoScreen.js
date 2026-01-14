@@ -28,8 +28,8 @@ import { normalizeStatus } from "../src/utils/statusUtils";
 
 const MEMBER_STATUS = {
   JOINED: "JOINED",
-  WAITING: "WAITING_APPROVAL", // user xin vào
-  PENDING: "PENDING_APPROVAL", // leader mời
+  WAITING: "WAITING_APPROVAL",   // user xin vào
+  PENDING: "PENDING_APPROVAL",   // leader mời
   REJECTED: "REJECTED",
 };
 
@@ -62,14 +62,9 @@ export default function GroupInfoScreen({ route, navigation }) {
         // DEBUG: Log all members and their status
         console.log("=== GROUP DEBUG ===");
         console.log("Leader ID:", response.result.leaderId?.userId);
-        console.log(
-          "Total groupMembers:",
-          response.result.groupMembers?.length || 0
-        );
+        console.log("Total groupMembers:", response.result.groupMembers?.length || 0);
         response.result.groupMembers?.forEach((m, i) => {
-          console.log(
-            `Member ${i + 1}: ${m.user?.userId} | Status: ${m.status}`
-          );
+          console.log(`Member ${i + 1}: ${m.user?.userId} | Status: ${m.status}`);
         });
         setGroup(response.result);
       } else {
@@ -120,24 +115,27 @@ export default function GroupInfoScreen({ route, navigation }) {
     ]);
   };
 
-  const handleLeaveGroup = async () => {
-    // If user is leader, they must transfer leadership first
-    if (isLeader) {
-      Alert.alert(
-        "Chuyển quyền leader",
-        "Bạn là leader của nhóm. Vui lòng chuyển quyền leader cho thành viên khác trước khi rời nhóm.",
-        [
-          { text: "Hủy", style: "cancel" },
-          {
-            text: "Chuyển quyền",
-            onPress: () => setTransferModalVisible(true),
-          },
-        ]
-      );
-      return;
-    }
+const handleLeaveGroup = async () => {
+  // If user is leader, they must transfer leadership first
+  if (isLeader) {
+    Alert.alert(
+      "Chuyển quyền leader",
+      "Bạn là leader của nhóm. Vui lòng chuyển quyền leader cho thành viên khác trước khi rời nhóm.",
+      [
+        { text: "Hủy", style: "cancel" },
+        {
+          text: "Chuyển quyền",
+          onPress: () => setTransferModalVisible(true),
+        },
+      ]
+    );
+    return;
+  }
 
-    Alert.alert("Rời nhóm", "Bạn có chắc chắn muốn rời khỏi nhóm này?", [
+  Alert.alert(
+    "Rời nhóm",
+    "Bạn có chắc chắn muốn rời khỏi nhóm này?",
+    [
       { text: "Hủy", style: "cancel" },
       {
         text: "Rời nhóm",
@@ -172,65 +170,11 @@ export default function GroupInfoScreen({ route, navigation }) {
           }
         },
       },
-    ]);
-  };
+    ]
+  );
+};
 
-  // const handleTransferLeadership = async (newLeaderId) => {
-  //   console.log("CLICK TRANSFER BUTTON", newLeaderId);
-
-  //   Alert.alert(
-  //     "Xác nhận chuyển quyền",
-  //     "Bạn có chắc chắn muốn chuyển quyền leader cho thành viên này? Sau khi chuyển, bạn có thể rời nhóm.",
-  //     [
-  //       { text: "Hủy", style: "cancel" },
-  //       {
-  //         text: "Chuyển quyền",
-  //         onPress: async () => {
-  //           console.log("CONFIRMED TRANSFER", {
-  //             groupId,
-  //             newLeaderId,
-  //             courseId: group?.course?.courseId,
-  //           });
-  //           setActionLoading(true);
-  //           try {
-  //             // const response = await transferLeadership(groupId, newLeaderId);
-  //             const response = await transferLeadership(
-  //               groupId,
-  //               newLeaderId,
-  //               group?.course?.courseId
-  //             );
-
-  //             console.log("TRANSFER RESPONSE", newLeaderId);
-
-  //             if (response.code === 200) {
-  //               Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
-  //               setTransferModalVisible(false);
-  //               setSelectedNewLeader(null);
-  //               loadGroupInfo(); // Reload to see updated leader
-  //             } else {
-  //               Alert.alert(
-  //                 "Lỗi",
-  //                 response.message || "Không thể chuyển quyền leader"
-  //               );
-  //             }
-  //           } catch (error) {
-  //             console.error("Transfer leadership error:", error);
-  //             Alert.alert(
-  //               "Lỗi",
-  //               error.response?.data?.message ||
-  //                 "Có lỗi xảy ra khi chuyển quyền"
-  //             );
-  //           } finally {
-  //             setActionLoading(false);
-  //           }
-  //         },
-  //       },
-  //     ]
-  //   );
-  // };
   const handleTransferLeadership = async (newLeaderId) => {
-    console.log("CLICK TRANSFER BUTTON", newLeaderId);
-
     Alert.alert(
       "Xác nhận chuyển quyền",
       "Bạn có chắc chắn muốn chuyển quyền leader cho thành viên này? Sau khi chuyển, bạn có thể rời nhóm.",
@@ -259,29 +203,20 @@ export default function GroupInfoScreen({ route, navigation }) {
 
             setActionLoading(true);
             try {
-              const res = await updateGroup(groupId, payload);
-              console.log("TRANSFER RESPONSE", res);
-
-              if (res?.code === 200) {
+              const response = await transferLeadership(groupId, newLeaderId, group?.course?.courseId);
+              if (response.code === 200) {
                 Alert.alert("Thành công", "Đã chuyển quyền leader thành công!");
                 setTransferModalVisible(false);
                 setSelectedNewLeader(null);
-                loadGroupInfo();
+                loadGroupInfo(); // Reload to see updated leader
               } else {
-                Alert.alert(
-                  "Lỗi",
-                  res?.message || "Không thể chuyển quyền leader"
-                );
+                Alert.alert("Lỗi", response.message || "Không thể chuyển quyền leader");
               }
             } catch (error) {
-              console.log(
-                "TRANSFER ERROR DATA",
-                error?.response?.data || error
-              );
+              console.error("Transfer leadership error:", error);
               Alert.alert(
                 "Lỗi",
-                error?.response?.data?.message ||
-                  "Có lỗi xảy ra khi chuyển quyền"
+                error.response?.data?.message || "Có lỗi xảy ra khi chuyển quyền"
               );
             } finally {
               setActionLoading(false);
@@ -470,21 +405,16 @@ export default function GroupInfoScreen({ route, navigation }) {
     );
   }
 
+
   // Check if user is in the group
-  const userMember = group.groupMembers?.find((m) => m.user?.userId === userId);
-  const isUserInGroup =
-    !!userMember && normalizeStatus(userMember.status) === "JOINED";
-  const isWaitingApproval =
-    !!userMember && normalizeStatus(userMember.status) === "PENDING";
+  const userMember = group.groupMembers?.find(m => m.user?.userId === userId);
+  const isUserInGroup = !!userMember && normalizeStatus(userMember.status) === "JOINED";
+  const isWaitingApproval = !!userMember && normalizeStatus(userMember.status) === "PENDING";
   const isLeader = group.leaderId?.userId === userId;
 
   // Count members: JOINED members + leader (if leader is not in groupMembers)
-  const joinedMembers =
-    group.groupMembers?.filter((m) => normalizeStatus(m.status) === "JOINED") ||
-    [];
-  const leaderInMembers = joinedMembers.some(
-    (m) => m.user?.userId === group.leaderId?.userId
-  );
+  const joinedMembers = group.groupMembers?.filter(m => normalizeStatus(m.status) === "JOINED") || [];
+  const leaderInMembers = joinedMembers.some(m => m.user?.userId === group.leaderId?.userId);
   const memberCount = joinedMembers.length + (leaderInMembers ? 0 : 1);
 
   const InfoRow = ({ label, value }) => (
@@ -622,7 +552,7 @@ export default function GroupInfoScreen({ route, navigation }) {
               </Text>
             )}
           </View>
-          {member.status === "WAITING_APPROVAL" && isLeader && (
+          {normalizeStatus(member.status) === "PENDING" && isLeader && (
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => handleApproveRequest(member.user?.userId)}
@@ -969,14 +899,7 @@ export default function GroupInfoScreen({ route, navigation }) {
             onPress={() => setTransferModalVisible(true)}
             disabled={actionLoading}
           >
-            <Text
-              style={{
-                color: "#fff",
-                textAlign: "center",
-                fontWeight: "800",
-                fontSize: 16,
-              }}
-            >
+            <Text style={{ color: "#fff", textAlign: "center", fontWeight: "800", fontSize: 16 }}>
               Chuyển quyền leader
             </Text>
           </TouchableOpacity>
@@ -1132,35 +1055,23 @@ export default function GroupInfoScreen({ route, navigation }) {
         onRequestClose={() => setTransferModalVisible(false)}
       >
         <View style={{ flex: 1, padding: 16, paddingTop: 60 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 20,
-            }}
-          >
-            <Text style={{ fontSize: 20, fontWeight: "800" }}>
-              Chuyển quyền leader
-            </Text>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <Text style={{ fontSize: 20, fontWeight: "800" }}>Chuyển quyền leader</Text>
             <TouchableOpacity onPress={() => setTransferModalVisible(false)}>
               <Text style={{ color: colors.primary, fontSize: 16 }}>Đóng</Text>
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{
-              backgroundColor: "#FEF3C7",
-              padding: 12,
-              borderRadius: radii.md,
-              marginBottom: 16,
-              borderWidth: 1,
-              borderColor: "#F59E0B",
-            }}
-          >
+          <View style={{
+            backgroundColor: "#FEF3C7",
+            padding: 12,
+            borderRadius: radii.md,
+            marginBottom: 16,
+            borderWidth: 1,
+            borderColor: "#F59E0B"
+          }}>
             <Text style={{ color: "#B45309", fontSize: 14, fontWeight: "600" }}>
-              Chọn thành viên để chuyển quyền leader. Sau khi chuyển, bạn sẽ có
-              thể rời nhóm.
+              Chọn thành viên để chuyển quyền leader. Sau khi chuyển, bạn sẽ có thể rời nhóm.
             </Text>
           </View>
 
@@ -1169,15 +1080,12 @@ export default function GroupInfoScreen({ route, navigation }) {
           </Text>
 
           <FlatList
-            data={joinedMembers.filter((m) => m.user?.userId !== userId)}
-            keyExtractor={(item, index) =>
-              item.user?.userId || index.toString()
-            }
+            data={joinedMembers.filter(m => m.user?.userId !== userId)}
+            keyExtractor={(item, index) => item.user?.userId || index.toString()}
             ListEmptyComponent={
               <View style={{ alignItems: "center", padding: 20 }}>
                 <Text style={{ color: colors.subtext, textAlign: "center" }}>
-                  Không có thành viên nào để chuyển quyền. Vui lòng mời thêm
-                  thành viên vào nhóm trước.
+                  Không có thành viên nào để chuyển quyền. Vui lòng mời thêm thành viên vào nhóm trước.
                 </Text>
               </View>
             }
@@ -1185,7 +1093,7 @@ export default function GroupInfoScreen({ route, navigation }) {
               <TouchableOpacity
                 onPress={() => {
                   setSelectedNewLeader(item.user?.userId);
-                  // handleTransferLeadership(item.user?.userId);
+                  handleTransferLeadership(item.user?.userId);
                 }}
                 style={{
                   flexDirection: "row",
@@ -1195,26 +1103,20 @@ export default function GroupInfoScreen({ route, navigation }) {
                   borderRadius: radii.md,
                   marginBottom: 8,
                   borderWidth: 1,
-                  borderColor:
-                    selectedNewLeader === item.user?.userId
-                      ? colors.primary
-                      : "#E5E7EB",
+                  borderColor: selectedNewLeader === item.user?.userId ? colors.primary : "#E5E7EB"
                 }}
               >
-                <View
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 20,
-                    backgroundColor: colors.primary + "20",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: 12,
-                  }}
-                >
+                <View style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  backgroundColor: colors.primary + "20",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12
+                }}>
                   <Text style={{ color: colors.primary, fontWeight: "700" }}>
-                    {item.user?.firstName?.[0]}
-                    {item.user?.lastName?.[0]}
+                    {item.user?.firstName?.[0]}{item.user?.lastName?.[0]}
                   </Text>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -1225,39 +1127,10 @@ export default function GroupInfoScreen({ route, navigation }) {
                     {item.user?.email}
                   </Text>
                 </View>
-                <Ionicons
-                  name="chevron-forward"
-                  size={20}
-                  color={colors.subtext}
-                />
+                <Ionicons name="chevron-forward" size={20} color={colors.subtext} />
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity
-            style={{
-              backgroundColor: selectedNewLeader ? colors.primary : "#CBD5E1",
-              paddingVertical: 16,
-              borderRadius: radii.md,
-              marginTop: 12,
-            }}
-            disabled={!selectedNewLeader || actionLoading}
-            onPress={() => handleTransferLeadership(selectedNewLeader)}
-          >
-            {actionLoading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text
-                style={{
-                  color: "#fff",
-                  textAlign: "center",
-                  fontWeight: "800",
-                  fontSize: 16,
-                }}
-              >
-                Xác nhận chuyển quyền
-              </Text>
-            )}
-          </TouchableOpacity>
         </View>
       </Modal>
     </ScrollView>

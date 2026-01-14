@@ -18,20 +18,19 @@ import { acceptJoinRequest, rejectJoinRequest } from "../src/api/groupService";
 import { AuthContext } from "../App";
 
 /* ====================== CARD ====================== */
-function NotificationCard({ notification, onAction, currentUserId }) {
+
+function NotificationCard({ notification, onAction, currentUserId }) {  // Thêm currentUserId prop
   const [actionLoading, setActionLoading] = useState(false);
 
   const { user, group, time, status, id } = notification;
 
-  const isInvite = status === "PENDING_APPROVAL"; // user được mời
-  const isRequest = status === "WAITING_APPROVAL"; // leader nhận request
+  const isInvite = status === "PENDING_APPROVAL";   // user được mời
+  const isRequest = status === "WAITING_APPROVAL";  // leader nhận request
 
-  // target userId:
-  // - invite: currentUserId
-  // - request: người gửi request = id.firstId (theo PairId(userId, groupId))
+  // userId của người cần được accept/reject
+  // - PENDING_APPROVAL: currentUserId (user được mời)
+  // - WAITING_APPROVAL: id.firstId (user gửi request)
   const targetUserId = isInvite ? currentUserId : id?.firstId;
-
-  const groupId = group?.groupId ?? id?.secondId;
 
   let title = "Thông báo";
   let content = "";
@@ -52,6 +51,7 @@ function NotificationCard({ notification, onAction, currentUserId }) {
     return d.toLocaleDateString("vi-VN");
   };
 
+  /* ========== ACCEPT ========== */
   const handleAccept = async () => {
     Alert.alert(
       "Xác nhận",
@@ -65,7 +65,7 @@ function NotificationCard({ notification, onAction, currentUserId }) {
           onPress: async () => {
             setActionLoading(true);
             try {
-              const res = await acceptJoinRequest(groupId, targetUserId);
+              const res = await acceptJoinRequest(group.groupId, targetUserId);
 
               if (res?.data?.code === 200) {
                 Alert.alert("Thành công", "Đã xử lý thành công");
@@ -88,35 +88,54 @@ function NotificationCard({ notification, onAction, currentUserId }) {
     );
   };
 
+  /* ========== REJECT ========== */
   const handleReject = async () => {
-    Alert.alert("Xác nhận", "Bạn có chắc muốn từ chối?", [
-      { text: "Hủy", style: "cancel" },
-      {
-        text: "Từ chối",
-        style: "destructive",
-        onPress: async () => {
-          setActionLoading(true);
-          try {
-            const res = await rejectJoinRequest(groupId, targetUserId);
+    Alert.alert(
+      "Xác nhận",
+      "Bạn có chắc muốn từ chối?",
+      [
+        { text: "Hủy", style: "cancel" },
+        {
+          text: "Từ chối",
+          style: "destructive",
+          onPress: async () => {
+            setActionLoading(true);
+            try {
+              const res = await rejectJoinRequest(group.groupId, targetUserId);
 
-            if (res?.data?.code === 200) {
-              Alert.alert("Thành công", "Đã từ chối");
-              onAction();
-            } else {
-              Alert.alert("Lỗi", res?.data?.message || "Không thể từ chối");
+              if (res?.data?.code === 200) {
+                Alert.alert("Thành công", "Đã từ chối");
+                onAction();
+              } else {
+                Alert.alert("Lỗi", res?.data?.message || "Không thể từ chối");
+              }
+            } catch (error) {
+              console.error("Reject error:", error);
+              Alert.alert(
+                "Lỗi",
+                error?.response?.data?.message || "Có lỗi xảy ra"
+              );
+            } finally {
+              setActionLoading(false);
             }
-          } catch (error) {
-            console.error("Reject error:", error);
-            Alert.alert(
-              "Lỗi",
-              error?.response?.data?.message || "Có lỗi xảy ra"
-            );
-          } finally {
-            setActionLoading(false);
-          }
+          },
         },
-      },
-    ]);
+      ]
+    );
+  };
+
+  /* ========== DELETE NOTI ========== */
+  const handleDelete = async () => {
+    try {
+      // Sử dụng id.firstId và id.secondId từ notification
+      await deleteNotification({
+        firstId: id?.firstId || targetUserId,
+        secondId: id?.secondId || group?.groupId,
+      });
+      onAction();
+    } catch (error) {
+      console.error("Delete notification error:", error);
+    }
   };
 
   const handleDelete = async () => {
@@ -174,13 +193,7 @@ function NotificationCard({ notification, onAction, currentUserId }) {
             {actionLoading ? (
               <ActivityIndicator size="small" color={colors.pink} />
             ) : (
-              <Text
-                style={{
-                  color: colors.pink,
-                  textAlign: "center",
-                  fontWeight: "800",
-                }}
-              >
+              <Text style={{ color: colors.pink, textAlign: "center", fontWeight: "800" }}>
                 Từ chối
               </Text>
             )}
@@ -199,13 +212,7 @@ function NotificationCard({ notification, onAction, currentUserId }) {
             {actionLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
-              <Text
-                style={{
-                  color: colors.primary,
-                  textAlign: "center",
-                  fontWeight: "800",
-                }}
-              >
+              <Text style={{ color: colors.primary, textAlign: "center", fontWeight: "800" }}>
                 Chấp thuận
               </Text>
             )}
@@ -217,6 +224,7 @@ function NotificationCard({ notification, onAction, currentUserId }) {
 }
 
 /* ====================== SCREEN ====================== */
+
 export default function NotificationsScreen() {
   const { userId } = useContext(AuthContext);
 
@@ -227,22 +235,14 @@ export default function NotificationsScreen() {
   const loadNotifications = async () => {
     try {
       const res = await getNotificationsByUserId(userId);
-
-      if (res?.code === 200) {
-        const list = res.result || [];
-
-        // KHÔNG LƯU LỊCH SỬ: chỉ show pending + waiting theo đúng người
-        const filtered = list.filter((n) => {
-          if (n.status === "WAITING_APPROVAL") {
-            return n.group?.leaderId?.userId === userId; // leader mới thấy
-          }
-          if (n.status === "PENDING_APPROVAL") {
-            return n.user?.userId === userId; // user được mời mới thấy
-          }
-          return false;
-        });
-
-        setNotifications(filtered);
+      if (res.code === 200) {
+        setNotifications(
+          (res.result || []).filter(
+            (n) =>
+              n.status === "WAITING_APPROVAL" ||
+              n.status === "PENDING_APPROVAL"
+          )
+        );
       }
     } catch (error) {
       console.error("Load notifications error:", error);
@@ -250,12 +250,6 @@ export default function NotificationsScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
-
-  const handleRefresh = () => {
-    console.log("PULL REFRESH TRIGGERED", Date.now());
-    setRefreshing(true);
-    loadNotifications();
   };
 
   useEffect(() => {
@@ -266,18 +260,15 @@ export default function NotificationsScreen() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Screen>
         <ActivityIndicator size="large" color={colors.primary} />
-      </View>
+      </Screen>
     );
   }
 
-  const invitations = notifications.filter(
-    (n) => n.status === "PENDING_APPROVAL"
-  );
-  const joinRequests = notifications.filter(
-    (n) => n.status === "WAITING_APPROVAL"
-  );
+  // Phân loại notifications theo loại
+  const invitations = notifications.filter(n => n.status === "PENDING_APPROVAL");
+  const joinRequests = notifications.filter(n => n.status === "WAITING_APPROVAL");
 
   return (
     // <SafeAreaView style={{ flex: 1 }} edges={["top"]}></SafeAreaView>
@@ -292,28 +283,21 @@ export default function NotificationsScreen() {
           paddingTop: 48,
         }}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={loadNotifications} />
         }
       >
-        {/* Header */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 16,
-          }}
-        >
-          <Text style={{ fontSize: 22, fontWeight: "900" }}>Thông báo</Text>
+        {/* Header với badge tổng số thông báo */}
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <Text style={{ fontSize: 22, fontWeight: "900" }}>
+            Thông báo
+          </Text>
           {notifications.length > 0 && (
-            <View
-              style={{
-                backgroundColor: colors.primary,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                borderRadius: radii.md,
-              }}
-            >
+            <View style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              borderRadius: radii.md
+            }}>
               <Text style={{ color: "#fff", fontSize: 12, fontWeight: "700" }}>
                 {notifications.length}
               </Text>
@@ -323,45 +307,32 @@ export default function NotificationsScreen() {
 
         {notifications.length > 0 ? (
           <>
-            {/* Section: Invitations */}
+            {/* Section: Lời mời tham gia */}
             {invitations.length > 0 && (
               <View style={{ marginBottom: 20 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: 12,
-                    paddingBottom: 8,
-                    borderBottomWidth: 2,
-                    borderBottomColor: colors.primary || "#3B82F6",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "800",
-                      color: colors.text,
-                    }}
-                  >
+                <View style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  paddingBottom: 8,
+                  borderBottomWidth: 2,
+                  borderBottomColor: colors.primary || "#3B82F6"
+                }}>
+                  <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
                     📩 Lời mời tham gia
                   </Text>
-                  <View
-                    style={{
-                      backgroundColor: colors.primary || "#3B82F6",
-                      paddingHorizontal: 8,
-                      paddingVertical: 2,
-                      borderRadius: radii.sm,
-                      marginLeft: 8,
-                    }}
-                  >
-                    <Text
-                      style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}
-                    >
+                  <View style={{
+                    backgroundColor: colors.primary || "#3B82F6",
+                    paddingHorizontal: 8,
+                    paddingVertical: 2,
+                    borderRadius: radii.sm,
+                    marginLeft: 8
+                  }}>
+                    <Text style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}>
                       {invitations.length}
                     </Text>
                   </View>
                 </View>
-
                 {invitations.map((n, i) => (
                   <NotificationCard
                     key={`invite-${i}`}
@@ -373,45 +344,32 @@ export default function NotificationsScreen() {
               </View>
             )}
 
-            {/* Section: Join Requests */}
+            {/* Section: Yêu cầu vào nhóm */}
             {joinRequests.length > 0 && (
               <View style={{ marginBottom: 20 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: 12,
-                    paddingBottom: 8,
-                    borderBottomWidth: 2,
-                    borderBottomColor: colors.pink || "#EC4899",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "800",
-                      color: colors.text,
-                    }}
-                  >
+                <View style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  paddingBottom: 8,
+                  borderBottomWidth: 2,
+                  borderBottomColor: colors.pink || "#EC4899"
+                }}>
+                  <Text style={{ fontSize: 16, fontWeight: "800", color: colors.text }}>
                     👥 Yêu cầu vào nhóm
                   </Text>
-                  <View
-                    style={{
-                      backgroundColor: colors.pink || "#EC4899",
-                      paddingHorizontal: 8,
-                      paddingVertical: 2,
-                      borderRadius: radii.sm,
-                      marginLeft: 8,
-                    }}
-                  >
-                    <Text
-                      style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}
-                    >
+                  <View style={{
+                    backgroundColor: colors.pink || "#EC4899",
+                    paddingHorizontal: 8,
+                    paddingVertical: 2,
+                    borderRadius: radii.sm,
+                    marginLeft: 8
+                  }}>
+                    <Text style={{ color: "#fff", fontSize: 11, fontWeight: "700" }}>
                       {joinRequests.length}
                     </Text>
                   </View>
                 </View>
-
                 {joinRequests.map((n, i) => (
                   <NotificationCard
                     key={`request-${i}`}
@@ -426,25 +384,10 @@ export default function NotificationsScreen() {
         ) : (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <Text style={{ fontSize: 64, marginBottom: 16 }}>🔔</Text>
-            <Text
-              style={{
-                color: colors.text,
-                textAlign: "center",
-                fontSize: 18,
-                fontWeight: "700",
-              }}
-            >
+            <Text style={{ color: colors.text, textAlign: "center", fontSize: 18, fontWeight: "700" }}>
               Không có thông báo
             </Text>
-            <Text
-              style={{
-                color: colors.subtext,
-                textAlign: "center",
-                fontSize: 14,
-                marginTop: 8,
-                paddingHorizontal: 40,
-              }}
-            >
+            <Text style={{ color: colors.subtext, textAlign: "center", fontSize: 14, marginTop: 8, paddingHorizontal: 40 }}>
               Bạn sẽ nhận thông báo khi có lời mời hoặc yêu cầu tham gia nhóm
             </Text>
           </View>

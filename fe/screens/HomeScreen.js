@@ -45,14 +45,13 @@ export default function HomeScreen({ navigation, route }) {
     }
   }, [userData]);
 
-  const groups =
-    userData?.groups
-      ?.filter((gm) => normalizeStatus(gm.status) === "JOINED")
-      ?.map((gm) => ({
-        ...gm.group,
-        memberStatus: normalizeStatus(gm.status),
-        joinTime: gm.time,
-      })) || [];
+  const groups = userData?.groups
+  ?.filter(gm => normalizeStatus(gm.status) === "JOINED")
+  ?.map(gm => ({
+    ...gm.group,
+    memberStatus: normalizeStatus(gm.status),
+    joinTime: gm.time
+  })) || [];
   // Loading state
   if (loading) {
     return <LoadingSpinner message="Đang tải danh sách nhóm..." />;
